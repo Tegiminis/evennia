@@ -423,7 +423,7 @@ Buff instances have a number of helper methods.
 - `remove`/`dispel`: Allows you to remove or dispel the buff. Calls `at_remove`/`at_dispel`, depending on optional arguments.
 - `pause`/`unpause`: Pauses and unpauses the buff. Calls `at_pause`/`at_unpause`.
 - `reset`: Resets the buff's start to the current time; same as "refreshing" it.
-- `alter_cache`: Updates the buff's cache with the `{key:value}` pairs in the provided dictionary. Can overwrite default values, so be careful!
+- `update_cache`: Updates the buff's cache with the `{key:value}` pairs in the provided dictionary. Can overwrite default values, so be careful!
 
 #### Playtime Duration
 

@@ -782,7 +782,14 @@ class BuffHandler:
         return False
 
     def check(
-        self, value: float, stat: str, loud=True, context=None, trigger=False, strongest=False
+        self,
+        value: float,
+        stat: str,
+        loud=True,
+        context=None,
+        trigger=False,
+        strongest=False,
+        to_check=None,
     ):
         """Finds all buffs and perks related to a stat and applies their effects.
 
@@ -793,6 +800,7 @@ class BuffHandler:
             context: (optional) A dictionary you wish to pass to the at_pre_check/at_post_check and conditional methods as kwargs
             trigger: (optional) Trigger buffs with the `stat` string as well. (default: False)
             strongest:  (optional) Applies only the strongest mods of the corresponding stat value (default: False)
+            to_check:  (optional) Dictionary of instanced buffs to use instead of a new default dictionary
 
         Returns the value modified by relevant buffs."""
         # Buff cleanup to make sure all buffs are valid before processing
@@ -801,7 +809,7 @@ class BuffHandler:
         # Find all buffs and traits related to the specified stat.
         if not context:
             context = {}
-        applied = self.get_by_stat(stat)
+        applied = self.get_by_stat(stat, to_filter=to_check)
         if not applied:
             return value
 
@@ -833,15 +841,16 @@ class BuffHandler:
 
         return final
 
-    def trigger(self, trigger: str, context: dict = None):
+    def trigger(self, trigger: str, context: dict = None, to_trigger=None):
         """Calls the at_trigger method on all buffs with the matching trigger.
 
         Args:
             trigger:    The string identifier to find relevant buffs. Passed to the at_trigger method.
             context:    (optional) A dictionary you wish to pass to the at_trigger method as kwargs
+            to_trigger: (optional) Dictionary of instanced buffs to use instead of a new default dictionary
         """
         self.cleanup()
-        _effects = self.get_by_trigger(trigger)
+        _effects = self.get_by_trigger(trigger, to_filter=to_trigger)
         if not _effects:
             return
         if not context:
