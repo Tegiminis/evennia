@@ -3,12 +3,14 @@ The managers for the custom Account object and permissions.
 """
 
 import datetime
+
 from django.conf import settings
-from django.utils import timezone
 from django.contrib.auth.models import UserManager
-from evennia.typeclasses.managers import TypedObjectManager, TypeclassManager
+from django.utils import timezone
+
 from evennia.server import signals
-from evennia.utils.utils import make_iter, class_from_module, dbid_to_obj
+from evennia.typeclasses.managers import TypeclassManager, TypedObjectManager
+from evennia.utils.utils import class_from_module, dbid_to_obj, make_iter
 
 __all__ = ("AccountManager", "AccountDBManager")
 
@@ -211,7 +213,7 @@ class AccountDBManager(TypedObjectManager, UserManager):
 
         Keyword Args:
             typeclass (str): The typeclass to use for the account.
-            is_superuser (bool): Wether or not this account is to be a superuser
+            is_superuser (bool): Whether or not this account is to be a superuser
             locks (str): Lockstring.
             permission (list): List of permission strings.
             tags (list): List of Tags on form `(key, category[, data])`

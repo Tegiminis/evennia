@@ -1,6 +1,6 @@
 # Non-interactive setup
 
-The first ime you run `evennia start` (just after having created the database), you will be asked
+The first time you run `evennia start` (just after having created the database), you will be asked
 to interactively insert the superuser username, email and password. If you are deploying Evennia 
 as part of an automatic build script, you don't want to enter this information manually.
 
@@ -15,5 +15,4 @@ These envvars will only be used on the _very first_ server start and then ignore
 
 ```
 EVENNIA_SUPERUSER_USERNAME=myname EVENNIA_SUPERUSER_PASSWORD=mypwd evennia start
-
 ```

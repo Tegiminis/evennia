@@ -142,16 +142,16 @@ from django.utils.translation import gettext as _
 
 import evennia
 from evennia.objects.models import ObjectDB
-from evennia.utils import logger
-from evennia.utils.utils import make_iter, is_iter
 from evennia.prototypes import prototypes as protlib
 from evennia.prototypes.prototypes import (
+    PROTOTYPE_TAG_CATEGORY,
+    init_spawn_value,
+    search_prototype,
     value_to_obj,
     value_to_obj_or_any,
-    init_spawn_value,
-    PROTOTYPE_TAG_CATEGORY,
 )
-
+from evennia.utils import logger
+from evennia.utils.utils import is_iter, make_iter
 
 _CREATE_OBJECT_KWARGS = ("key", "location", "home", "destination")
 _PROTOTYPE_META_NAMES = (
@@ -192,7 +192,7 @@ class Unset:
 # Helper
 
 
-def _get_prototype(inprot, protparents, uninherited=None, _workprot=None):
+def _get_prototype(inprot, protparents=None, uninherited=None, _workprot=None):
     """
     Recursively traverse a prototype dictionary, including multiple
     inheritance. Use validate_prototype before this, we don't check
@@ -200,7 +200,9 @@ def _get_prototype(inprot, protparents, uninherited=None, _workprot=None):
 
     Args:
         inprot (dict): Prototype dict (the individual prototype, with no inheritance included).
-        protparents (dict): Available protparents, keyed by prototype_key.
+        protparents (dict): Custom protparents, supposedly provided specifically for this `inprot`.
+            If given, any parents will first be looked up in this dict, and then by searching
+            the global prototype store given by settings/db.
         uninherited (dict): Parts of prototype to not inherit.
         _workprot (dict, optional): Work dict for the recursive algorithm.
 
@@ -222,6 +224,8 @@ def _get_prototype(inprot, protparents, uninherited=None, _workprot=None):
         old.update(new)
         return list(old.values())
 
+    protparents = {} if protparents is None else protparents
+
     _workprot = {} if _workprot is None else _workprot
     if "prototype_parent" in inprot:
         # move backwards through the inheritance
@@ -236,8 +240,12 @@ def _get_prototype(inprot, protparents, uninherited=None, _workprot=None):
                 # protparent already embedded as-is
                 parent_prototype = prototype
             else:
-                # protparent given by-name
-                parent_prototype = protparents.get(prototype.lower(), {})
+                # protparent given by-name, first search provided parents, then global store
+                parent_prototype = protparents.get(prototype.lower())
+                if not parent_prototype:
+                    parent_prototype = search_prototype(key=prototype.lower()) or {}
+                    if parent_prototype:
+                        parent_prototype = parent_prototype[0]
 
             # Build the prot dictionary in reverse order, overloading
             new_prot = _get_prototype(parent_prototype, protparents, _workprot=_workprot)
@@ -279,14 +287,9 @@ def flatten_prototype(prototype, validate=False, no_db=False):
 
     if prototype:
         prototype = protlib.homogenize_prototype(prototype)
-        protparents = {
-            prot["prototype_key"].lower(): prot for prot in protlib.search_prototype(no_db=no_db)
-        }
-        protlib.validate_prototype(
-            prototype, None, protparents, is_prototype_base=validate, strict=validate
-        )
+        protlib.validate_prototype(prototype, is_prototype_base=validate, strict=validate)
         return _get_prototype(
-            prototype, protparents, uninherited={"prototype_key": prototype.get("prototype_key")}
+            prototype, uninherited={"prototype_key": prototype.get("prototype_key")}
         )
     return {}
 
@@ -634,7 +637,7 @@ def format_diff(diff, minimal=True):
 
 
 def batch_update_objects_with_prototype(
-    prototype, diff=None, objects=None, exact=False, caller=None
+    prototype, diff=None, objects=None, exact=False, caller=None, protfunc_raise_errors=True
 ):
     """
     Update existing objects with the latest version of the prototype.
@@ -653,6 +656,8 @@ def batch_update_objects_with_prototype(
             objects will be removed if they exist. This will lead to a more accurate 1:1 correlation
             between the  object and the prototype but is usually impractical.
         caller (Object or Account, optional): This may be used by protfuncs to do permission checks.
+        protfunc_raise_errors (bool): Have protfuncs raise explicit errors if malformed/not found.
+            This is highly recommended.
     Returns:
         changed (int): The number of objects that had changes applied to them.
 
@@ -661,6 +666,8 @@ def batch_update_objects_with_prototype(
 
     if isinstance(prototype, str):
         new_prototype = protlib.search_prototype(prototype)
+        if new_prototype:
+            new_prototype = new_prototype[0]
     else:
         new_prototype = prototype
 
@@ -704,7 +711,13 @@ def batch_update_objects_with_prototype(
                     do_save = True
 
                     def _init(val, typ):
-                        return init_spawn_value(val, str, caller=caller, prototype=new_prototype)
+                        return init_spawn_value(
+                            val,
+                            str,
+                            caller=caller,
+                            prototype=new_prototype,
+                            protfunc_raise_errors=protfunc_raise_errors,
+                        )
 
                     if key == "key":
                         obj.db_key = _init(val, str)
@@ -886,17 +899,14 @@ def spawn(*prototypes, caller=None, **kwargs):
         prototype_parents (dict): A dictionary holding a custom
             prototype-parent dictionary. Will overload same-named
             prototypes from prototype_modules.
-        return_parents (bool): Return a dict of the entire prototype-parent tree
-            available to this prototype (no object creation happens). This is a
-            merged result between the globally found protparents and whatever
-            custom `prototype_parents` are given to this function.
         only_validate (bool): Only run validation of prototype/parents
             (no object creation) and return the create-kwargs.
+        protfunc_raise_errors (bool): Raise explicit exceptions on a malformed/not-found
+            protfunc. Defaults to True.
 
     Returns:
         object (Object, dict or list): Spawned object(s). If `only_validate` is given, return
-            a list of the creation kwargs to build the object(s) without actually creating it. If
-            `return_parents` is set, instead return dict of prototype parents.
+            a list of the creation kwargs to build the object(s) without actually creating it.
 
     """
     # search string (=prototype_key) from input
@@ -904,9 +914,6 @@ def spawn(*prototypes, caller=None, **kwargs):
         protlib.search_prototype(prot, require_single=True)[0] if isinstance(prot, str) else prot
         for prot in prototypes
     ]
-
-    # get available protparents
-    protparents = {prot["prototype_key"].lower(): prot for prot in protlib.search_prototype()}
 
     if not kwargs.get("only_validate"):
         # homogenization to be more lenient about prototype format when entering the prototype
@@ -916,21 +923,23 @@ def spawn(*prototypes, caller=None, **kwargs):
     # overload module's protparents with specifically given protparents
     # we allow prototype_key to be the key of the protparent dict, to allow for module-level
     # prototype imports. We need to insert prototype_key in this case
+    custom_protparents = {}
     for key, protparent in kwargs.get("prototype_parents", {}).items():
         key = str(key).lower()
         protparent["prototype_key"] = str(protparent.get("prototype_key", key)).lower()
-        protparents[key] = protlib.homogenize_prototype(protparent)
-
-    if "return_parents" in kwargs:
-        # only return the parents
-        return copy.deepcopy(protparents)
+        custom_protparents[key] = protlib.homogenize_prototype(protparent)
 
     objsparams = []
     for prototype in prototypes:
 
-        protlib.validate_prototype(prototype, None, protparents, is_prototype_base=True)
+        # run validation and homogenization of provided prototypes
+        protlib.validate_prototype(
+            prototype, None, protparents=custom_protparents, is_prototype_base=True
+        )
         prot = _get_prototype(
-            prototype, protparents, uninherited={"prototype_key": prototype.get("prototype_key")}
+            prototype,
+            protparents=custom_protparents,
+            uninherited={"prototype_key": prototype.get("prototype_key")},
         )
         if not prot:
             continue
@@ -938,57 +947,55 @@ def spawn(*prototypes, caller=None, **kwargs):
         # extract the keyword args we need to create the object itself. If we get a callable,
         # call that to get the value (don't catch errors)
         create_kwargs = {}
+        init_spawn_kwargs = dict(
+            caller=caller,
+            prototype=prototype,
+            protfunc_raise_errors=kwargs.get("protfunc_raise_errors", True),
+        )
+
         # we must always add a key, so if not given we use a shortened md5 hash. There is a (small)
         # chance this is not unique but it should usually not be a problem.
         val = prot.pop(
             "key",
             "Spawned-{}".format(hashlib.md5(bytes(str(time.time()), "utf-8")).hexdigest()[:6]),
         )
-        create_kwargs["db_key"] = init_spawn_value(val, str, caller=caller, prototype=prototype)
+        create_kwargs["db_key"] = init_spawn_value(val, str, **init_spawn_kwargs)
 
         val = prot.pop("location", None)
-        create_kwargs["db_location"] = init_spawn_value(
-            val, value_to_obj, caller=caller, prototype=prototype
-        )
+        create_kwargs["db_location"] = init_spawn_value(val, value_to_obj, **init_spawn_kwargs)
 
         val = prot.pop("home", None)
         if val:
-            create_kwargs["db_home"] = init_spawn_value(
-                val, value_to_obj, caller=caller, prototype=prototype
-            )
+            create_kwargs["db_home"] = init_spawn_value(val, value_to_obj, **init_spawn_kwargs)
         else:
             try:
                 create_kwargs["db_home"] = init_spawn_value(
-                    settings.DEFAULT_HOME, value_to_obj, caller=caller, prototype=prototype
+                    settings.DEFAULT_HOME, value_to_obj, **init_spawn_kwargs
                 )
             except ObjectDB.DoesNotExist:
                 # settings.DEFAULT_HOME not existing is common for unittests
                 pass
 
         val = prot.pop("destination", None)
-        create_kwargs["db_destination"] = init_spawn_value(
-            val, value_to_obj, caller=caller, prototype=prototype
-        )
+        create_kwargs["db_destination"] = init_spawn_value(val, value_to_obj, **init_spawn_kwargs)
 
         val = prot.pop("typeclass", settings.BASE_OBJECT_TYPECLASS)
-        create_kwargs["db_typeclass_path"] = init_spawn_value(
-            val, str, caller=caller, prototype=prototype
-        )
+        create_kwargs["db_typeclass_path"] = init_spawn_value(val, str, **init_spawn_kwargs)
 
         # extract calls to handlers
         val = prot.pop("permissions", [])
-        permission_string = init_spawn_value(val, make_iter, caller=caller, prototype=prototype)
+        permission_string = init_spawn_value(val, make_iter, **init_spawn_kwargs)
         val = prot.pop("locks", "")
-        lock_string = init_spawn_value(val, str, caller=caller, prototype=prototype)
+        lock_string = init_spawn_value(val, str, **init_spawn_kwargs)
         val = prot.pop("aliases", [])
-        alias_string = init_spawn_value(val, make_iter, caller=caller, prototype=prototype)
+        alias_string = init_spawn_value(val, make_iter, **init_spawn_kwargs)
 
         val = prot.pop("tags", [])
         tags = []
         for (tag, category, *data) in val:
             tags.append(
                 (
-                    init_spawn_value(tag, str, caller=caller, prototype=prototype),
+                    init_spawn_value(tag, str, **init_spawn_kwargs),
                     category,
                     data[0] if data else None,
                 )
@@ -1000,13 +1007,13 @@ def spawn(*prototypes, caller=None, **kwargs):
             tags.append((prototype_key, PROTOTYPE_TAG_CATEGORY))
 
         val = prot.pop("exec", "")
-        execs = init_spawn_value(val, make_iter, caller=caller, prototype=prototype)
+        execs = init_spawn_value(val, make_iter, **init_spawn_kwargs)
 
         # extract ndb assignments
         nattributes = dict(
             (
                 key.split("_", 1)[1],
-                init_spawn_value(val, value_to_obj, caller=caller, prototype=prototype),
+                init_spawn_value(val, value_to_obj, **init_spawn_kwargs),
             )
             for key, val in prot.items()
             if key.startswith("ndb_")
@@ -1019,7 +1026,7 @@ def spawn(*prototypes, caller=None, **kwargs):
             attributes.append(
                 (
                     attrname,
-                    init_spawn_value(value, caller=caller, prototype=prototype),
+                    init_spawn_value(value, **init_spawn_kwargs),
                     rest[0] if rest else None,
                     rest[1] if len(rest) > 1 else None,
                 )
@@ -1036,9 +1043,7 @@ def spawn(*prototypes, caller=None, **kwargs):
                 simple_attributes.append(
                     (
                         key,
-                        init_spawn_value(
-                            value, value_to_obj_or_any, caller=caller, prototype=prototype
-                        ),
+                        init_spawn_value(value, value_to_obj_or_any, **init_spawn_kwargs),
                         None,
                         None,
                     )

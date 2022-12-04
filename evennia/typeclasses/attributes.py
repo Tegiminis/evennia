@@ -8,20 +8,19 @@ which is a non-db version of Attributes.
 
 
 """
-import re
 import fnmatch
-
+import re
 from collections import defaultdict
 
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.utils.encoding import smart_str
 
 from evennia.locks.lockhandler import LockHandler
+from evennia.utils.dbserialize import from_pickle, to_pickle
 from evennia.utils.idmapper.models import SharedMemoryModel
-from evennia.utils.dbserialize import to_pickle, from_pickle
 from evennia.utils.picklefield import PickledObjectField
-from evennia.utils.utils import lazy_property, to_str, make_iter, is_iter
+from evennia.utils.utils import is_iter, lazy_property, make_iter, to_str
 
 _TYPECLASS_AGGRESSIVE_CACHE = settings.TYPECLASS_AGGRESSIVE_CACHE
 
@@ -203,6 +202,21 @@ class AttributeProperty:
         self._autocreate = autocreate
         self._key = ""
 
+    @property
+    def _default(self):
+        """
+        Tries returning a new instance of default if callable.
+
+        """
+        if callable(self.__default):
+            return self.__default()
+
+        return self.__default
+
+    @_default.setter
+    def _default(self, value):
+        self.__default = value
+
     def __set_name__(self, cls, name):
         """
         Called when descriptor is first assigned to the class. It is called with
@@ -218,13 +232,16 @@ class AttributeProperty:
         """
         value = self._default
         try:
-            value = self.at_get(getattr(instance, self.attrhandler_name).get(
-                key=self._key,
-                default=self._default,
-                category=self._category,
-                strattr=self._strattr,
-                raise_exception=self._autocreate,
-            ), instance)
+            value = self.at_get(
+                getattr(instance, self.attrhandler_name).get(
+                    key=self._key,
+                    default=self._default,
+                    category=self._category,
+                    strattr=self._strattr,
+                    raise_exception=self._autocreate,
+                ),
+                instance,
+            )
         except AttributeError:
             if self._autocreate:
                 # attribute didn't exist and autocreate is set

@@ -7,9 +7,13 @@ Unit test module for Trait classes.
 """
 
 from copy import copy
+
 from anything import Something
 from mock import MagicMock, patch
-from evennia.utils.test_resources import BaseEvenniaTestCase
+
+from evennia.objects.objects import DefaultCharacter
+from evennia.utils.test_resources import BaseEvenniaTestCase, EvenniaTest
+
 from . import traits
 
 
@@ -89,7 +93,7 @@ class TraitHandlerTest(_TraitHandlerBase):
         Cache should not be set until first get
         """
         self.assertEqual(len(self.traithandler._cache), 0)
-        self.traithandler.all  # does not affect cache
+        self.traithandler.all()  # does not affect cache
         self.assertEqual(len(self.traithandler._cache), 0)
         self.traithandler.test1
         self.assertEqual(len(self.traithandler._cache), 1)
@@ -121,7 +125,7 @@ class TraitHandlerTest(_TraitHandlerBase):
 
     def test_all(self):
         "Test all method"
-        self.assertEqual(self.traithandler.all, ["test1", "test2"])
+        self.assertEqual(self.traithandler.all(), ["test1", "test2"])
 
     def test_remove(self):
         "Test remove method"
@@ -1040,3 +1044,22 @@ class TestTraitFields(BaseEvenniaTestCase):
 
         self.assertEqual(13, obj2.strength.value)
         self.assertEqual(20, obj.strength.value)
+
+
+class TraitContribTestingChar(DefaultCharacter):
+    HP = traits.TraitProperty("health", trait_type="trait", value=5)
+
+
+class TraitPropertyTestCase(EvenniaTest):
+    """
+    Test atomic updating.
+
+    """
+
+    character_typeclass = TraitContribTestingChar
+
+    def test_round1(self):
+        self.char1.HP.value = 1
+
+    def test_round2(self):
+        self.char1.HP.value = 2

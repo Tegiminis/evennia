@@ -175,7 +175,7 @@ if trait1 > trait2:
 
 The static trait has a `base` value and an optional `mod`-ifier and 'mult'-iplier.
 The modifier defaults to 0, and the multiplier to 1.0, for no change in value.
-A typical use of a static trait would be a Strength stat or Skill value. That is, 
+A typical use of a static trait would be a Strength stat or Skill value. That is,
 somethingthat varies slowly or not at all, and which may be modified in-place.
 
 ```python
@@ -207,9 +207,9 @@ somethingthat varies slowly or not at all, and which may be modified in-place.
 
 A counter describes a value that can move from a base. The `.current` property
 is the thing usually modified. It starts at the `.base`. One can also add a
-modifier, which is added to both the base and to current. '.value' is then formed 
-by multiplying by the multiplier, which defaults to 1.0 for no change. The min/max 
-of the range are optional, a boundary set to None will remove it. A suggested use 
+modifier, which is added to both the base and to current. '.value' is then formed
+by multiplying by the multiplier, which defaults to 1.0 for no change. The min/max
+of the range are optional, a boundary set to None will remove it. A suggested use
 for a Counter Trait would be to track skill values.
 
 ```python
@@ -453,13 +453,19 @@ class Character(DefaultCharacter):
 """
 
 
-from time import time
-from django.conf import settings
 from functools import total_ordering
-from evennia.utils.dbserialize import _SaverDict
-from evennia.utils import logger
-from evennia.utils.utils import inherits_from, class_from_module, list_to_string, percent
+from time import time
 
+from django.conf import settings
+
+from evennia.utils import logger
+from evennia.utils.dbserialize import _SaverDict
+from evennia.utils.utils import (
+    class_from_module,
+    inherits_from,
+    list_to_string,
+    percent,
+)
 
 # Available Trait classes.
 # This way the user can easily supply their own. Each
@@ -592,7 +598,7 @@ class TraitHandler:
             trait_cls = self._get_trait_class(trait_key=trait_key)
             valid_keys = list_to_string(list(trait_cls.default_keys.keys()), endsep="or")
             raise TraitException(
-                "Trait object not settable directly. " f"Assign to {trait_key}.{valid_keys}."
+                f"Trait object not settable directly. Assign to {trait_key}.{valid_keys}."
             )
 
     def __setitem__(self, trait_key, value):
@@ -609,7 +615,7 @@ class TraitHandler:
 
     def __repr__(self):
         return "TraitHandler ({num} Trait(s) stored): {keys}".format(
-            num=len(self), keys=", ".join(self.all)
+            num=len(self), keys=", ".join(self.all())
         )
 
     def _get_trait_class(self, trait_type=None, trait_key=None):
@@ -628,7 +634,6 @@ class TraitHandler:
         except KeyError:
             raise TraitException(f"Trait class for {trait_type} could not be found.")
 
-    @property
     def all(self):
         """
         Get all trait keys in this handler.
@@ -719,7 +724,7 @@ class TraitHandler:
         """
         Remove all Traits from the handler's parent object.
         """
-        for trait_key in self.all:
+        for trait_key in self.all():
             self.remove(trait_key)
 
 
@@ -869,8 +874,7 @@ class Trait:
 
         if not isinstance(trait_data, _SaverDict):
             logger.log_warn(
-                f"Non-persistent Trait data (type(trait_data)) "
-                f"loaded for {type(self).__name__}."
+                f"Non-persistent Trait data (type(trait_data)) loaded for {type(self).__name__}."
             )
 
     @staticmethod
@@ -977,7 +981,7 @@ class Trait:
             if _GA(self, "allow_extra_properties"):
                 _GA(self, "_data")[key] = value
                 return
-        raise AttributeError(f"Can't set attribute {key} on " f"{self.trait_type} Trait.")
+        raise AttributeError(f"Can't set attribute {key} on {self.trait_type} Trait.")
 
     def __delattr__(self, key):
         """
@@ -1268,7 +1272,7 @@ class CounterTrait(Trait):
                 for key, value in descs.items()
             ):
                 raise TraitException(
-                    f"Trait descs must be defined on the "
+                    "Trait descs must be defined on the "
                     f"form {{number:str}} (instead found {descs})."
                 )
         # set up rate

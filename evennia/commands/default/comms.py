@@ -3,20 +3,21 @@ Communication commands:
 
 - channel
 - page
-- irc/rss/grapevine linking
+- irc/rss/grapevine/discord linking
 
 """
 
 from django.conf import settings
-from evennia.comms.models import Msg
-from evennia.accounts.models import AccountDB
+
 from evennia.accounts import bots
-from evennia.locks.lockhandler import LockException
+from evennia.accounts.models import AccountDB
 from evennia.comms.comms import DefaultChannel
-from evennia.utils import create, logger, utils
+from evennia.comms.models import Msg
+from evennia.locks.lockhandler import LockException
+from evennia.utils import create, logger, search, utils
+from evennia.utils.evmenu import ask_yes_no
 from evennia.utils.logger import tail_log_file
 from evennia.utils.utils import class_from_module, strip_unsafe_input
-from evennia.utils.evmenu import ask_yes_no
 
 COMMAND_DEFAULT_CLASS = class_from_module(settings.COMMAND_DEFAULT_CLASS)
 CHANNEL_DEFAULT_TYPECLASS = class_from_module(
@@ -33,6 +34,7 @@ __all__ = (
     "CmdIRCStatus",
     "CmdRSS2Chan",
     "CmdGrapevine2Chan",
+    "CmdDiscord2Chan",
 )
 _DEFAULT_WIDTH = settings.CLIENT_DEFAULT_WIDTH
 
@@ -285,8 +287,8 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
                 return None
             elif len(channels) > 1:
                 self.msg(
-                    "Multiple possible channel matches/alias for "
-                    f"'{channelname}':\n" + ", ".join(chan.key for chan in channels)
+                    f"Multiple possible channel matches/alias for '{channelname}':\n"
+                    + ", ".join(chan.key for chan in channels)
                 )
                 return None
             return channels[0]
@@ -547,7 +549,7 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
         if message:
             channel.msg(message, senders=caller, bypass_mute=True)
         channel.delete()
-        logger.log_sec("Channel {} was deleted by {}".format(channel_key, caller))
+        logger.log_sec(f"Channel {channel_key} was deleted by {caller}")
 
     def set_lock(self, channel, lockstring):
         """
@@ -869,9 +871,7 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
             subscribed, _ = self.list_channels()
             table = self.display_subbed_channels(subscribed)
 
-            self.msg(
-                "\n|wChannel subscriptions|n " f"(use |w/all|n to see all available):\n{table}"
-            )
+            self.msg(f"\n|wChannel subscriptions|n (use |w/all|n to see all available):\n{table}")
             return
 
         if not self.switches and not self.args:
@@ -937,8 +937,8 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
                 )
             elif len(found_channels) > 1:
                 errors.append(
-                    "Multiple possible channel matches/alias for "
-                    "'{channel_name}':\n" + ", ".join(chan.key for chan in found_channels)
+                    "Multiple possible channel matches/alias for '{channel_name}':\n"
+                    + ", ".join(chan.key for chan in found_channels)
                 )
             else:
                 channels.append(found_channels[0])
@@ -965,7 +965,7 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
                     header = f"Channel |w{channel.key}|n"
                     self.msg(
                         f"{header}\n(use |w{channel.key} <msg>|n (or a channel-alias) "
-                        f"to chat and the 'channel' command "
+                        "to chat and the 'channel' command "
                         f"to customize)\n{table}"
                     )
                 elif channel in available:
@@ -1015,9 +1015,7 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
             # un-subscribe from a channel
             success, err = self.unsub_from_channel(channel)
             if success:
-                self.msg(
-                    f"You un-subscribed from channel {channel.key}. " "All aliases were cleared."
-                )
+                self.msg(f"You un-subscribed from channel {channel.key}. All aliases were cleared.")
             else:
                 self.msg(err)
             return
@@ -1069,9 +1067,11 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
 
             ask_yes_no(
                 caller,
-                prompt=f"Are you sure you want to delete channel '{channel.key}' "
-                "(make sure name is correct!)?\nThis will disconnect and "
-                "remove all users' aliases. {options}?",
+                prompt=(
+                    f"Are you sure you want to delete channel '{channel.key}' "
+                    "(make sure name is correct!)?\nThis will disconnect and "
+                    "remove all users' aliases. {options}?"
+                ),
                 yes_action=_perform_delete,
                 no_action="Aborted.",
                 default="N",
@@ -1185,9 +1185,11 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
             )
             ask_yes_no(
                 caller,
-                prompt=f"Are you sure you want to boot user {target.key} from "
-                f"channel(s) {channames} (make sure name/channels are correct{reasonwarn}). "
-                "{options}?",
+                prompt=(
+                    f"Are you sure you want to boot user {target.key} from "
+                    f"channel(s) {channames} (make sure name/channels are correct{reasonwarn}). "
+                    "{options}?"
+                ),
                 yes_action=_boot_user,
                 no_action="Aborted.",
                 default="Y",
@@ -1337,15 +1339,15 @@ class CmdPage(COMMAND_DEFAULT_CLASS):
         caller = self.caller
 
         # get the messages we've sent (not to channels)
-        pages_we_sent = Msg.objects.get_messages_by_sender(caller)
+        pages_we_sent = Msg.objects.get_messages_by_sender(caller).order_by("-db_date_created")
         # get last messages we've got
-        pages_we_got = Msg.objects.get_messages_by_receiver(caller)
+        pages_we_got = Msg.objects.get_messages_by_receiver(caller).order_by("-db_date_created")
         targets, message, number = [], None, None
 
         if "last" in self.switches:
             if pages_we_sent:
-                recv = ",".join(obj.key for obj in pages_we_sent[-1].receivers)
-                self.msg("You last paged |c%s|n:%s" % (recv, pages_we_sent[-1].message))
+                recv = ",".join(obj.key for obj in pages_we_sent[0].receivers)
+                self.msg(f"You last paged |c{recv}|n:{pages_we_sent[0].message}")
                 return
             else:
                 self.msg("You haven't paged anyone yet.")
@@ -1385,14 +1387,14 @@ class CmdPage(COMMAND_DEFAULT_CLASS):
             if not targets:
                 # no target given - send to last person we paged
                 if pages_we_sent:
-                    targets = pages_we_sent[-1].receivers
+                    targets = pages_we_sent[0].receivers
                 else:
                     self.msg("Who do you want page?")
                     return
 
-            header = "|wAccount|n |c%s|n |wpages:|n" % caller.key
+            header = f"|wAccount|n |c{caller.key}|n |wpages:|n"
             if message.startswith(":"):
-                message = "%s %s" % (caller.key, message.strip(":").strip())
+                message = f"{caller.key} {message.strip(':').strip()}"
 
             # create the persistent message object
             create.create_message(caller, message, receivers=targets)
@@ -1468,7 +1470,7 @@ class CmdPage(COMMAND_DEFAULT_CLASS):
             lastpages = "\n ".join(listing)
 
             if lastpages:
-                string = "Your latest pages:\n %s" % lastpages
+                string = f"Your latest pages:\n {lastpages}"
             else:
                 string = "You haven't paged anyone yet."
             self.msg(string)
@@ -1565,7 +1567,7 @@ class CmdIRC2Chan(COMMAND_DEFAULT_CLASS):
             return
 
         if "disconnect" in self.switches or "remove" in self.switches or "delete" in self.switches:
-            botname = "ircbot-%s" % self.lhs
+            botname = f"ircbot-{self.lhs}"
             matches = AccountDB.objects.filter(db_is_bot=True, username=botname)
             dbref = utils.dbref(self.lhs)
             if not matches and dbref:
@@ -1592,7 +1594,7 @@ class CmdIRC2Chan(COMMAND_DEFAULT_CLASS):
             irc_network, irc_port, irc_channel, irc_botname = [
                 part.strip() for part in self.rhs.split(None, 4)
             ]
-            irc_channel = "#%s" % irc_channel
+            irc_channel = f"#{irc_channel}"
         except Exception:
             string = "IRC bot definition '%s' is not valid." % self.rhs
             self.msg(string)
@@ -1601,7 +1603,7 @@ class CmdIRC2Chan(COMMAND_DEFAULT_CLASS):
         botclass = None
         if ":" in irc_botname:
             irc_botname, botclass = [part.strip() for part in irc_botname.split(":", 2)]
-        botname = "ircbot-%s" % irc_botname
+        botname = f"ircbot-{irc_botname}"
         # If path given, use custom bot otherwise use default.
         botclass = botclass if botclass else bots.IRCBot
         irc_ssl = "ssl" in self.switches
@@ -1612,13 +1614,13 @@ class CmdIRC2Chan(COMMAND_DEFAULT_CLASS):
             # re-use an existing bot
             bot = bot[0]
             if not bot.is_bot:
-                self.msg("Account '%s' already exists and is not a bot." % botname)
+                self.msg(f"Account '{botname}' already exists and is not a bot.")
                 return
         else:
             try:
                 bot = create.create_account(botname, None, None, typeclass=botclass)
             except Exception as err:
-                self.msg("|rError, could not create the bot:|n '%s'." % err)
+                self.msg(f"|rError, could not create the bot:|n '{err}'.")
                 return
         bot.start(
             ev_channel=channel,
@@ -1681,26 +1683,21 @@ class CmdIRCStatus(COMMAND_DEFAULT_CLASS):
         channel = ircbot.db.irc_channel
         network = ircbot.db.irc_network
         port = ircbot.db.irc_port
-        chtext = "IRC bot '%s' on channel %s (%s:%s)" % (
-            ircbot.db.irc_botname,
-            channel,
-            network,
-            port,
-        )
+        chtext = f"IRC bot '{ircbot.db.irc_botname}' on channel {channel} ({network}:{port})"
         if option == "ping":
             # check connection by sending outself a ping through the server.
-            self.caller.msg("Pinging through %s." % chtext)
+            self.caller.msg(f"Pinging through {chtext}.")
             ircbot.ping(self.caller)
         elif option in ("users", "nicklist", "who"):
             # retrieve user list. The bot must handles the echo since it's
             # an asynchronous call.
-            self.caller.msg("Requesting nicklist from %s (%s:%s)." % (channel, network, port))
+            self.caller.msg(f"Requesting nicklist from {channel} ({network}:{port}).")
             ircbot.get_nicklist(self.caller)
         elif self.caller.locks.check_lockstring(
             self.caller, "dummy:perm(ircstatus) or perm(Developer)"
         ):
             # reboot the client
-            self.caller.msg("Forcing a disconnect + reconnect of %s." % chtext)
+            self.caller.msg(f"Forcing a disconnect + reconnect of {chtext}.")
             ircbot.reconnect()
         else:
             self.caller.msg("You don't have permission to force-reload the IRC bot.")
@@ -1782,7 +1779,7 @@ class CmdRSS2Chan(COMMAND_DEFAULT_CLASS):
             return
 
         if "disconnect" in self.switches or "remove" in self.switches or "delete" in self.switches:
-            botname = "rssbot-%s" % self.lhs
+            botname = f"rssbot-{self.lhs}"
             matches = AccountDB.objects.filter(db_is_bot=True, db_key=botname)
             if not matches:
                 # try dbref match
@@ -1801,13 +1798,13 @@ class CmdRSS2Chan(COMMAND_DEFAULT_CLASS):
         channel = self.lhs
         url = self.rhs
 
-        botname = "rssbot-%s" % url
+        botname = f"rssbot-{url}"
         bot = AccountDB.objects.filter(username__iexact=botname)
         if bot:
             # re-use existing bot
             bot = bot[0]
             if not bot.is_bot:
-                self.msg("Account '%s' already exists and is not a bot." % botname)
+                self.msg("Account '{botname}' already exists and is not a bot.")
                 return
         else:
             # create a new bot
@@ -1875,7 +1872,7 @@ class CmdGrapevine2Chan(COMMAND_DEFAULT_CLASS):
             return
 
         if "disconnect" in self.switches or "remove" in self.switches or "delete" in self.switches:
-            botname = "grapevinebot-%s" % self.lhs
+            botname = f"grapevinebot-{self.lhs}"
             matches = AccountDB.objects.filter(db_is_bot=True, db_key=botname)
 
             if not matches:
@@ -1902,13 +1899,182 @@ class CmdGrapevine2Chan(COMMAND_DEFAULT_CLASS):
             # re-use existing bot
             bot = bot[0]
             if not bot.is_bot:
-                self.msg("Account '%s' already exists and is not a bot." % botname)
+                self.msg(f"Account '{botname}' already exists and is not a bot.")
                 return
             else:
-                self.msg("Reusing bot '%s' (%s)" % (botname, bot.dbref))
+                self.msg(f"Reusing bot '{botname}' ({bot.dbref})")
         else:
             # create a new bot
             bot = create.create_account(botname, None, None, typeclass=bots.GrapevineBot)
 
         bot.start(ev_channel=channel, grapevine_channel=grapevine_channel)
         self.msg(f"Grapevine connection created {channel} <-> {grapevine_channel}.")
+
+
+class CmdDiscord2Chan(COMMAND_DEFAULT_CLASS):
+    """
+    Link an Evennia channel to an external Discord channel
+
+    Usage:
+      discord2chan[/switches]
+      discord2chan[/switches] <evennia_channel> [= <discord_channel_id>]
+
+    Switches:
+        /list    - (or no switch) show existing Evennia <-> Discord links
+        /remove  - remove an existing link by link ID
+        /delete  - alias to remove
+        /guild   - toggle the Discord server tag on/off
+        /channel - toggle the Evennia/Discord channel tags on/off
+
+    Example:
+        discord2chan mydiscord = 555555555555555
+
+    This creates a link between an in-game Evennia channel and an external
+    Discord channel. You must have a valid Discord bot application
+    ( https://discord.com/developers/applications ) and your DISCORD_BOT_TOKEN
+    must be added to settings. (Please put it in secret_settings !)
+    """
+
+    key = "discord2chan"
+    aliases = ("discord",)
+    switch_options = (
+        "channel",
+        "delete",
+        "guild",
+        "list",
+        "remove",
+    )
+    locks = "cmd:serversetting(DISCORD_ENABLED) and pperm(Developer)"
+    help_category = "Comms"
+
+    def func(self):
+        """Manage the Evennia<->Discord channel links"""
+
+        if not settings.DISCORD_BOT_TOKEN:
+            self.msg(
+                "You must add your Discord bot application token to settings as DISCORD_BOT_TOKEN"
+            )
+            return
+
+        discord_bot = [
+            bot for bot in AccountDB.objects.filter(db_is_bot=True, username="DiscordBot")
+        ]
+        if not discord_bot:
+            # create a new discord bot
+            bot_class = class_from_module(settings.DISCORD_BOT_CLASS, fallback=bots.DiscordBot)
+            discord_bot = create.create_account("DiscordBot", None, None, typeclass=bot_class)
+            discord_bot.start()
+            self.msg("Created and initialized a new Discord relay bot.")
+        else:
+            discord_bot = discord_bot[0]
+
+        if not discord_bot.is_typeclass(settings.DISCORD_BOT_CLASS, exact=True):
+            self.msg(
+                f"WARNING: The Discord bot's typeclass is '{discord_bot.typeclass_path}'. This does not match {settings.DISCORD_BOT_CLASS} in settings!"
+            )
+
+        if "guild" in self.switches:
+            discord_bot.db.tag_guild = not discord_bot.db.tag_guild
+            self.msg(
+                f"Messages to Evennia |wwill {'' if discord_bot.db.tag_guild else 'not '}|ninclude the Discord server."
+            )
+            return
+        if "channel" in self.switches:
+            discord_bot.db.tag_channel = not discord_bot.db.tag_channel
+            self.msg(
+                f"Relayed messages |wwill {'' if discord_bot.db.tag_channel else 'not '}|ninclude the originating channel."
+            )
+            return
+
+        if "list" in self.switches or not self.args:
+            # show all connections
+            if channel_list := discord_bot.db.channels:
+                table = self.styled_table(
+                    "|wLink ID|n",
+                    "|wEvennia|n",
+                    "|wDiscord|n",
+                    border="cells",
+                    maxwidth=_DEFAULT_WIDTH,
+                )
+                # iterate through the channel links
+                # load in the pretty names for the discord channels from cache
+                dc_chan_names = discord_bot.attributes.get("discord_channels", {})
+                for i, (evchan, dcchan) in enumerate(channel_list):
+                    dc_info = dc_chan_names.get(dcchan, {"name": dcchan, "guild": "unknown"})
+                    table.add_row(
+                        i, evchan, f"#{dc_info.get('name','?')}@{dc_info.get('guild','?')}"
+                    )
+                self.msg(table)
+            else:
+                self.msg("No Discord connections found.")
+            return
+
+        if "disconnect" in self.switches or "remove" in self.switches or "delete" in self.switches:
+            if channel_list := discord_bot.db.channels:
+                try:
+                    lid = int(self.args.strip())
+                except ValueError:
+                    self.msg("Usage: discord2chan/remove <link id>")
+                    return
+                if lid < len(channel_list):
+                    ev_chan, dc_chan = discord_bot.db.channels.pop(lid)
+                    dc_chan_names = discord_bot.attributes.get("discord_channels", {})
+                    dc_info = dc_chan_names.get(dc_chan, {"name": "unknown", "guild": "unknown"})
+                    self.msg(
+                        f"Removed link between {ev_chan} and #{dc_info.get('name','?')}@{dc_info.get('guild','?')}"
+                    )
+                    return
+            else:
+                self.msg("There are no active connections to Discord.")
+                return
+
+        ev_channel = self.lhs
+        dc_channel = self.rhs
+
+        if ev_channel and not dc_channel:
+            # show all discord channels linked to self.lhs
+            if channel_list := discord_bot.db.channels:
+                table = self.styled_table(
+                    "|wLink ID|n",
+                    "|wEvennia|n",
+                    "|wDiscord|n",
+                    border="cells",
+                    maxwidth=_DEFAULT_WIDTH,
+                )
+                # iterate through the channel links
+                # load in the pretty names for the discord channels from cache
+                dc_chan_names = discord_bot.attributes.get("discord_channels", {})
+                results = False
+                for i, (evchan, dcchan) in enumerate(channel_list):
+                    if evchan.lower() == ev_channel.lower():
+                        dc_info = dc_chan_names.get(dcchan, {"name": dcchan, "guild": "unknown"})
+                        table.add_row(i, evchan, f"#{dc_info['name']}@{dc_info['guild']}")
+                        results = True
+                if results:
+                    self.msg(table)
+                else:
+                    self.msg(f"There are no Discord channels connected to {ev_channel}.")
+            else:
+                self.msg("There are no active connections to Discord.")
+            return
+
+        # check if link already exists
+        if channel_list := discord_bot.db.channels:
+            if (ev_channel, dc_channel) in channel_list:
+                self.msg("Those channels are already linked.")
+                return
+        else:
+            discord_bot.db.channels = []
+        # create the new link
+        channel_obj = search.search_channel(ev_channel)
+        if not channel_obj:
+            self.msg(f"There is no channel '{ev_channel}'")
+            return
+        channel_obj = channel_obj[0]
+        discord_bot.db.channels.append((channel_obj.name, dc_channel))
+        channel_obj.connect(discord_bot)
+        if dc_chans := discord_bot.db.discord_channels:
+            dc_channel_name = dc_chans.get(dc_channel, {}).get("name", dc_channel)
+        else:
+            dc_channel_name = dc_channel
+        self.msg(f"Discord connection created: {channel_obj.name} <-> #{dc_channel_name}.")

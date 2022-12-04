@@ -149,14 +149,25 @@ Extra Installation Instructions:
 
 """
 import re
+from collections import defaultdict
 from string import punctuation
+
+import inflect
 from django.conf import settings
-from evennia.objects.objects import DefaultObject, DefaultCharacter
-from evennia.objects.models import ObjectDB
-from evennia.commands.command import Command
+
 from evennia.commands.cmdset import CmdSet
+from evennia.commands.command import Command
+from evennia.objects.models import ObjectDB
+from evennia.objects.objects import DefaultCharacter, DefaultObject
 from evennia.utils import ansi, logger
-from evennia.utils.utils import lazy_property, make_iter, variable_from_module
+from evennia.utils.utils import (
+    iter_to_str,
+    lazy_property,
+    make_iter,
+    variable_from_module,
+)
+
+_INFLECT = inflect.engine()
 
 _AT_SEARCH_RESULT = variable_from_module(*settings.SEARCH_AT_RESULT.rsplit(".", 1))
 # ------------------------------------------------------------
@@ -236,6 +247,7 @@ class RecogError(Exception):
 class LanguageError(Exception):
     pass
 
+
 def _get_case_ref(string):
     """
     Helper function which parses capitalization and
@@ -256,6 +268,7 @@ def _get_case_ref(string):
         case = "v"
 
     return case
+
 
 # emoting mechanisms
 def parse_language(speaker, emote):
@@ -317,7 +330,9 @@ def parse_language(speaker, emote):
     return emote, mapping
 
 
-def parse_sdescs_and_recogs(sender, candidates, string, search_mode=False, case_sensitive=True):
+def parse_sdescs_and_recogs(
+    sender, candidates, string, search_mode=False, case_sensitive=True, fallback=None
+):
     """
     Read a raw emote and parse it into an intermediary
     format for distributing to all observers.
@@ -330,11 +345,14 @@ def parse_sdescs_and_recogs(sender, candidates, string, search_mode=False, case_
     string (str): The string (like an emote) we want to analyze for keywords.
     search_mode (bool, optional): If `True`, the "emote" is a query string
         we want to analyze. If so, the return value is changed.
-    case_sensitive (bool, optional); If set, the case of /refs matter, so that
+    case_sensitive (bool, optional): If set, the case of /refs matter, so that
         /tall will come out as 'tall man' while /Tall will become 'Tall man'.
         This allows for more grammatically correct emotes at the cost of being
         a little more to learn for players. If disabled, the original sdesc case
         is always kept and are inserted as-is.
+    fallback (string, optional): If set, any references that don't match a target
+        will be replaced with the fallback string. If `None` (default), the
+        parsing will fail and give a warning about the missing reference.
 
     Returns:
         (emote, mapping) (tuple): If `search_mode` is `False`
@@ -405,7 +423,7 @@ def parse_sdescs_and_recogs(sender, candidates, string, search_mode=False, case_
         match_index = marker_match.start()
         # split the emote string at the reference marker, to process everything after it
         head = string[:match_index]
-        tail = string[match_index + 1:]
+        tail = string[match_index + 1 :]
 
         if search_mode:
             # match the candidates against the whole search string after the marker
@@ -451,7 +469,7 @@ def parse_sdescs_and_recogs(sender, candidates, string, search_mode=False, case_
             # save search string
             matched_text = "".join(tail[1:iend])
             # recombine remainder of emote back into a string
-            tail = "".join(tail[iend + 1:])
+            tail = "".join(tail[iend + 1 :])
 
         nmatches = len(bestmatches)
 
@@ -483,7 +501,11 @@ def parse_sdescs_and_recogs(sender, candidates, string, search_mode=False, case_
             # single-object search mode. Don't continue loop.
             break
         elif nmatches == 0:
-            errors.append(_EMOTE_NOMATCH_ERROR.format(ref=marker_match.group()))
+            if fallback:
+                # replace unmatched reference with the fallback string
+                string = f"{head}{fallback}{tail}"
+            else:
+                errors.append(_EMOTE_NOMATCH_ERROR.format(ref=marker_match.group()))
         elif nmatches == 1:
             # a unique match - parse into intermediary representation
             case = _get_case_ref(marker_match.group()) if case_sensitive else ""
@@ -558,9 +580,10 @@ def send_emote(sender, receivers, emote, msg_type="pose", anonymous_add="first",
 
     """
     case_sensitive = kwargs.pop("case_sensitive", True)
+    fallback = kwargs.pop("fallback", None)
     try:
         emote, obj_mapping = parse_sdescs_and_recogs(
-            sender, receivers, emote, case_sensitive=case_sensitive
+            sender, receivers, emote, case_sensitive=case_sensitive, fallback=fallback
         )
         emote, language_mapping = parse_language(sender, emote)
     except (EmoteError, LanguageError) as err:
@@ -1122,7 +1145,7 @@ class CmdRecog(RPCommand):  # assign personal alias to object in room
             all_recogs = caller.recog.all()
             if not all_recogs:
                 caller.msg(
-                    "You recognize no-one. " "(Use 'recog <sdesc> as <alias>' to recognize people."
+                    "You recognize no-one. (Use 'recog <sdesc> as <alias>' to recognize people."
                 )
             else:
                 # note that we don't skip those failing enable_recog lock here,
@@ -1132,7 +1155,7 @@ class CmdRecog(RPCommand):  # assign personal alias to object in room
                     for key, obj in all_recogs.items()
                 )
                 caller.msg(
-                    f"Currently recognized (use 'recog <sdesc> as <alias>' to add "
+                    "Currently recognized (use 'recog <sdesc> as <alias>' to add "
                     f"new and 'forget <alias>' to remove):\n{lst}"
                 )
             return
@@ -1269,25 +1292,22 @@ class ContribRPObject(DefaultObject):
         # emoting/recog data
         self.db.pose = ""
         self.db.pose_default = "is here."
-
-        # initializing sdesc
         self.db._sdesc = ""
-        self.sdesc.add("Something")
 
     def search(
-            self,
-            searchdata,
-            global_search=False,
-            use_nicks=True,
-            typeclass=None,
-            location=None,
-            attribute_name=None,
-            quiet=False,
-            exact=False,
-            candidates=None,
-            nofound_string=None,
-            multimatch_string=None,
-            use_dbref=None,
+        self,
+        searchdata,
+        global_search=False,
+        use_nicks=True,
+        typeclass=None,
+        location=None,
+        attribute_name=None,
+        quiet=False,
+        exact=False,
+        candidates=None,
+        nofound_string=None,
+        multimatch_string=None,
+        use_dbref=None,
     ):
         """
         Returns an Object matching a search string/condition, taking
@@ -1371,10 +1391,10 @@ class ContribRPObject(DefaultObject):
             )
 
         if global_search or (
-                is_string
-                and searchdata.startswith("#")
-                and len(searchdata) > 1
-                and searchdata[1:].isdigit()
+            is_string
+            and searchdata.startswith("#")
+            and len(searchdata) > 1
+            and searchdata[1:].isdigit()
         ):
             # only allow exact matching if searching the entire database
             # or unique #dbrefs
@@ -1506,42 +1526,74 @@ class ContribRPObject(DefaultObject):
 
         return self.get_posed_sdesc(sdesc) if kwargs.get("pose", False) else sdesc
 
-    def return_appearance(self, looker):
+    def get_display_characters(self, looker, pose=True, **kwargs):
         """
-        This formats a description. It is the hook a 'look' command
-        should call.
+        Get the ‘characters’ component of the object description. Called by return_appearance.
+        """
+
+        def _filter_visible(obj_list):
+            return (obj for obj in obj_list if obj != looker and obj.access(looker, "view"))
+
+        characters = _filter_visible(self.contents_get(content_type="character"))
+        character_names = "\n".join(
+            char.get_display_name(looker, pose=pose, **kwargs) for char in characters
+        )
+
+        return f"\n{character_names}" if character_names else ""
+
+    def get_display_things(self, looker, pose=True, **kwargs):
+        """
+        Get the 'things' component of the object description. Called by `return_appearance`.
 
         Args:
             looker (Object): Object doing the looking.
-
+            **kwargs: Arbitrary data for use when overriding.
         Returns:
-            string (str): A string containing the name, appearance and contents
-                of the object.
-        """
-        if not looker:
-            return ""
-        # get and identify all objects
-        visible = (con for con in self.contents if con != looker and con.access(looker, "view"))
-        exits, users, things = [], [], []
-        for con in visible:
-            key = con.get_display_name(looker, pose=True)
-            if con.destination:
-                exits.append(key)
-            elif con.has_account:
-                users.append(key)
-            else:
-                things.append(key)
-        # get description, build string
-        string = "|c%s|n\n" % self.get_display_name(looker, pose=True)
-        desc = self.db.desc
-        if desc:
-            string += "%s" % desc
-        if exits:
-            string += "\n|wExits:|n " + ", ".join(exits)
-        if users or things:
-            string += "\n " + "\n ".join(users + things)
+            str: The things display data.
 
-        return string
+        """
+        if not pose:
+            # if poses aren't included, we can use the core version instead
+            return super().get_display_things(looker, **kwargs)
+
+        def _filter_visible(obj_list):
+            return [obj for obj in obj_list if obj != looker and obj.access(looker, "view")]
+
+        # sort and handle same-named things
+        things = _filter_visible(self.contents_get(content_type="object"))
+
+        posed_things = defaultdict(list)
+        for thing in things:
+            pose = thing.db.pose or thing.db.pose_default
+            if not pose:
+                pose = ""
+            posed_things[pose].append(thing)
+
+        display_strings = []
+
+        for pose, thinglist in posed_things.items():
+            grouped_things = defaultdict(list)
+            for thing in thinglist:
+                grouped_things[thing.get_display_name(looker, pose=False, **kwargs)].append(thing)
+
+            thing_names = []
+            for thingname, samethings in sorted(grouped_things.items()):
+                nthings = len(samethings)
+                thing = samethings[0]
+                singular, plural = thing.get_numbered_name(nthings, looker, key=thingname)
+                thing_names.append(singular if nthings == 1 else plural)
+            thing_names = iter_to_str(thing_names)
+
+            if pose:
+                pose = _INFLECT.plural(pose) if nthings != 1 else pose
+            grouped_names = f"{thing_names} {pose}"
+            grouped_names = grouped_names[0].upper() + grouped_names[1:]
+            display_strings.append(grouped_names)
+
+        if not display_strings:
+            return ""
+
+        return "\n" + "\n".join(display_strings)
 
 
 class ContribRPRoom(ContribRPObject):

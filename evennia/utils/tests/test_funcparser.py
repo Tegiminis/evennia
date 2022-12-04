@@ -5,11 +5,13 @@ Test the funcparser module.
 """
 
 import time
-from unittest.mock import MagicMock, patch
+import unittest
 from ast import literal_eval
-from simpleeval import simple_eval
-from parameterized import parameterized
+from unittest.mock import MagicMock, patch
+
 from django.test import TestCase, override_settings
+from parameterized import parameterized
+from simpleeval import simple_eval
 
 from evennia.utils import funcparser, test_resources
 
@@ -20,9 +22,7 @@ def _test_callable(*args, **kwargs):
     argstr = ", ".join(args)
     kwargstr = ""
     if kwargs:
-        kwargstr = (", " if args else "") + (
-            ", ".join(f"{key}={val}" for key, val in kwargs.items())
-        )
+        kwargstr = (", " if args else "") + ", ".join(f"{key}={val}" for key, val in kwargs.items())
     return f"_test({argstr}{kwargstr})"
 
 
@@ -79,6 +79,16 @@ def _lsum_callable(*args, **kwargs):
     return ""
 
 
+def _raises_callable(*args, **kwargs):
+    raise RuntimeError("Test exception raised by test callable")
+
+
+def _pass_callable(*args, **kwargs):
+    kwargs.pop("funcparser", None)
+    kwargs.pop("raise_errors", None)
+    return str(args) + str(kwargs)
+
+
 _test_callables = {
     "foo": _test_callable,
     "bar": _test_callable,
@@ -91,6 +101,8 @@ _test_callables = {
     "add": _add_callable,
     "lit": _lit_callable,
     "sum": _lsum_callable,
+    "raise": _raises_callable,
+    "pass": _pass_callable,
 }
 
 
@@ -104,6 +116,22 @@ class TestFuncParser(TestCase):
 
         self.parser = funcparser.FuncParser(_test_callables)
 
+    def test_constructor_wrong_args(self):
+        # Given list argument doesn't contain modules or paths.
+        with self.assertRaises(AttributeError):
+            parser = funcparser.FuncParser(["foo", _test_callable])
+
+    def test_constructor_ignore_non_callables(self):
+        # Ignores callables that aren't actual functions.
+        parser = funcparser.FuncParser({"foo": 1, "bar": "baz"})
+
+    @patch("evennia.utils.funcparser.variable_from_module")
+    def test_constructor_raises(self, patched_variable_from_module):
+        # Patched variable from module returns FUNCPARSER_CALLABLES that isn't dict.
+        patched_variable_from_module.return_value = ["foo"]
+        with self.assertRaises(funcparser.ParsingError):
+            parser = funcparser.FuncParser("foo.module")
+
     @parameterized.expand(
         [
             ("Test normal string", "Test normal string"),
@@ -114,8 +142,8 @@ class TestFuncParser(TestCase):
             ("$foo() Test noargs5", "_test() Test noargs5"),
             ("Test args1 $foo(a,b,c)", "Test args1 _test(a, b, c)"),
             ("Test args2 $bar(foo, bar,    too)", "Test args2 _test(foo, bar, too)"),
-            (r"Test args3 $bar(foo, bar, '   too')", "Test args3 _test(foo, bar,    too)"),
-            ("Test args4 $foo('')", "Test args4 _test()"),
+            (r'Test args3 $bar(foo, bar, "   too")', "Test args3 _test(foo, bar,    too)"),
+            ("Test args4 $foo('')", "Test args4 _test('')"),  # ' treated as literal
             ('Test args4 $foo("")', "Test args4 _test()"),
             ("Test args5 $foo(\(\))", "Test args5 _test(())"),
             ("Test args6 $foo(\()", "Test args6 _test(()"),
@@ -123,16 +151,16 @@ class TestFuncParser(TestCase):
             ("Test args8 $foo())", "Test args8 _test())"),
             ("Test args9 $foo(=)", "Test args9 _test(=)"),
             ("Test args10 $foo(\,)", "Test args10 _test(,)"),
-            ("Test args10 $foo(',')", "Test args10 _test(,)"),
+            (r'Test args10 $foo(",")', "Test args10 _test(,)"),
             ("Test args11 $foo(()", "Test args11 $foo(()"),  # invalid syntax
             (
-                "Test kwarg1 $bar(foo=1, bar='foo', too=ere)",
+                r'Test kwarg1 $bar(foo=1, bar="foo", too=ere)',
                 "Test kwarg1 _test(foo=1, bar=foo, too=ere)",
             ),
             ("Test kwarg2 $bar(foo,bar,too=ere)", "Test kwarg2 _test(foo, bar, too=ere)"),
             ("test kwarg3 $foo(foo = bar, bar = ere )", "test kwarg3 _test(foo=bar, bar=ere)"),
             (
-                r"test kwarg4 $foo(foo =\' bar \',\" bar \"= ere )",
+                r"test kwarg4 $foo(foo =' bar ',\" bar \"= ere )",
                 "test kwarg4 _test(foo=' bar ', \" bar \"=ere)",
             ),
             (
@@ -164,8 +192,8 @@ class TestFuncParser(TestCase):
             ("Test with color |r$foo(a,b)|n is ok", "Test with color |r_test(a, b)|n is ok"),
             ("Test malformed1 This is $foo( and $bar(", "Test malformed1 This is $foo( and $bar("),
             (
-                "Test malformed2 This is $foo( and $bar()",
-                "Test malformed2 This is $foo( and _test()",
+                "Test malformed2 This is $foo( and  $bar()",
+                "Test malformed2 This is $foo( and  _test()",
             ),
             ("Test malformed3 $", "Test malformed3 $"),
             (
@@ -182,7 +210,7 @@ class TestFuncParser(TestCase):
             ("Test eval1 $eval(21 + 21 - 10)", "Test eval1 32"),
             ("Test eval2 $eval((21 + 21) / 2)", "Test eval2 21.0"),
             ("Test eval3 $eval(\"'21' + 'foo' + 'bar'\")", "Test eval3 21foobar"),
-            (r"Test eval4 $eval(\'21\' + \'$repl()\' + \"''\" + str(10 // 2))", "Test eval4 21rr5"),
+            (r"Test eval4 $eval('21' + '$repl()' + \"\" + str(10 // 2))", "Test eval4 21rr5"),
             (
                 r"Test eval5 $eval(\'21\' + \'\$repl()\' + \'\' + str(10 // 2))",
                 "Test eval5 21$repl()5",
@@ -218,13 +246,61 @@ class TestFuncParser(TestCase):
         # print(f"time: {(t1-t0)*1000} ms")
         self.assertEqual(expected, ret)
 
-    def test_parse_raise(self):
+    @parameterized.expand(
+        (
+            "Test malformed This is $dummy(a, b) and $bar(",
+            "Test $funcNotFound()",
+        )
+    )
+    def test_parse_raise_unparseable(self, unparseable):
         """
         Make sure error is raised if told to do so.
 
         """
-        string = "Test malformed This is $dummy(a, b) and $bar("
         with self.assertRaises(funcparser.ParsingError):
+            self.parser.parse(unparseable, raise_errors=True)
+
+    @parameterized.expand(
+        [
+            # max_nest, cause error for 4 nested funcs?
+            (0, False),
+            (1, False),
+            (2, False),
+            (3, False),
+            (4, True),
+            (5, True),
+            (6, True),
+        ]
+    )
+    def test_parse_max_nesting(self, max_nest, ok):
+        """
+        Make sure it is an error if the max nesting value is reached. We test
+        four nested functions against differnt MAX_NESTING values.
+
+        TODO: Does this make sense? When it sees the first function, len(callstack)
+        is 0. It doesn't raise until the stack length is greater than the
+        _MAX_NESTING value, which means you can nest 4 values with a value of
+        2, as demonstrated by this test.
+        """
+        string = "$add(1, $add(1, $add(1, $eval(42))))"
+
+        with patch("evennia.utils.funcparser._MAX_NESTING", max_nest):
+            if ok:
+                ret = self.parser.parse(string, raise_errors=True)
+                self.assertEqual(ret, "45")
+            else:
+                with self.assertRaises(funcparser.ParsingError):
+                    self.parser.parse(string, raise_errors=True)
+
+    def test_parse_underlying_exception(self):
+        string = "test $add(1, 1) $raise()"
+        ret = self.parser.parse(string)
+
+        # TODO: Does this return value actually make sense?
+        # It completed the first function call.
+        self.assertEqual("test 2 $raise()", ret)
+
+        with self.assertRaises(RuntimeError):
             self.parser.parse(string, raise_errors=True)
 
     def test_parse_strip(self):
@@ -235,6 +311,15 @@ class TestFuncParser(TestCase):
         string = "Test $foo(a,b, $bar()) and $repl($eval(3+2)) things"
         ret = self.parser.parse(string, strip=True)
         self.assertEqual("Test  and  things", ret)
+
+    def test_parse_whitespace_preserved(self):
+        string = "The answer is $foobar(1, x)"  # not found, so should be preserved
+        ret = self.parser.parse(string)
+        self.assertEqual("The answer is $foobar(1, x)", ret)
+
+        string = 'The $pass(testing,  bar= $dum(b = "test2" , a), ) $pass('
+        ret = self.parser.parse(string)
+        self.assertEqual("The ('testing',){'bar': '$dum(b = \"test2\" , a)'} $pass(", ret)
 
     def test_parse_escape(self):
         """
@@ -370,8 +455,7 @@ class TestDefaultCallables(TestCase):
     )
     def test_conjugate(self, string, expected_you, expected_them):
         """
-        Test callables with various input strings
-
+        Test the $conj(), $you() and $pron callables with various input strings.
         """
         mapping = {"char1": self.obj1, "char2": self.obj2}
         ret = self.parser.parse(
@@ -382,6 +466,46 @@ class TestDefaultCallables(TestCase):
             string, caller=self.obj1, receiver=self.obj2, mapping=mapping, raise_errors=True
         )
         self.assertEqual(expected_them, ret)
+
+    def test_conjugate_missing_args(self):
+        string = "You $conj(smile)"
+        with self.assertRaises(funcparser.ParsingError):
+            self.parser.parse(string, raise_errors=True)
+
+    @parameterized.expand(
+        [
+            ("male", "Char1 smiles at himself"),
+            ("female", "Char1 smiles at herself"),
+            ("neutral", "Char1 smiles at itself"),
+            ("plural", "Char1 smiles at themselves"),
+        ]
+    )
+    def test_pronoun_gender(self, gender, expected):
+        string = "Char1 smiles at $pron(yourself)"
+
+        self.obj1.gender = gender
+        ret = self.parser.parse(string, caller=self.obj1, raise_errors=True)
+        self.assertEqual(expected, ret)
+
+        self.obj1.gender = lambda: gender
+        ret = self.parser.parse(string, caller=self.obj1, raise_errors=True)
+        self.assertEqual(expected, ret)
+
+    def test_pronoun_viewpoint(self):
+        string = "Char1 smiles at $pron(I)"
+
+        ret = self.parser.parse(string, caller=self.obj1, viewpoint="op", raise_errors=True)
+        self.assertEqual("Char1 smiles at it", ret)
+
+    def test_pronoun_capitalize(self):
+        string = "Char1 smiles at $pron(I)"
+
+        ret = self.parser.parse(string, caller=self.obj1, capitalize=True, raise_errors=True)
+        self.assertEqual("Char1 smiles at It", ret)
+
+        string = "Char1 smiles at $Pron(I)"
+        ret = self.parser.parse(string, caller=self.obj1, capitalize=True, raise_errors=True)
+        self.assertEqual("Char1 smiles at It", ret)
 
     @parameterized.expand(
         [
@@ -398,12 +522,53 @@ class TestDefaultCallables(TestCase):
             ("Some $mult(3, 2) things", "Some 6 things"),
             ("Some $div(6, 2) things", "Some 3.0 things"),
             ("Some $toint(6) things", "Some 6 things"),
+            ("Some $toint(3 + 3) things", "Some 6 things"),
             ("Some $ljust(Hello, 30)", "Some Hello                         "),
             ("Some $rjust(Hello, 30)", "Some                          Hello"),
             ("Some $rjust(Hello, width=30)", "Some                          Hello"),
             ("Some $cjust(Hello, 30)", "Some             Hello             "),
+            (
+                "There $pluralize(is, 1, are) one $pluralize(goose, 1, geese) here.",
+                "There is one goose here.",
+            ),
+            (
+                "There $pluralize(is, 2, are) two $pluralize(goose, 2, geese) here.",
+                "There are two geese here.",
+            ),
+            (
+                "There is $int2str(1) murderer, but $int2str(12) suspects.",
+                "There is one murderer, but twelve suspects.",
+            ),
+            ("There is $an(thing) here", "There is a thing here"),
             ("Some $eval(\"'-'*20\")Hello", "Some --------------------Hello"),
             ('$crop("spider\'s silk", 5)', "spide"),
+            ("$crop(spider's silk, 5)", "spide"),
+            ("$an(apple)", "an apple"),
+            ("$round(2.9) apples", "3.0 apples"),
+            ("$round(2.967, 1) apples", "3.0 apples"),
+            # Degenerate cases
+            ("$int2str() apples", " apples"),
+            ("$int2str(x) apples", "x apples"),
+            ("$int2str(1 + 1) apples", "1 + 1 apples"),
+            ("$int2str(13) apples", "13 apples"),
+            ("$toint([1, 2, 3]) apples", "[1, 2, 3] apples"),
+            ("$an() foo bar", " foo bar"),
+            ("$add(1) apple", " apple"),
+            ("$add(1, [1, 2]) apples", " apples"),
+            ("$round() apples", " apples"),
+            ("$choice() apple", " apple"),
+            ("A $pad() apple", "A  apple"),
+            ("A $pad(tasty, 13, x, -) apple", "A ----tasty---- apple"),
+            ("A $crop() apple", "A  apple"),
+            ("A $space() apple", "A  apple"),
+            ("A $justify() apple", "A  apple"),
+            ("A $clr() apple", "A  apple"),
+            ("A $clr(red) apple", "A red apple"),
+            ("10 $pluralize()", "10 "),
+            ("10 $pluralize(apple, 10)", "10 apples"),
+            ("1 $pluralize(apple)", "1 apple"),
+            ("You $conj()", "You "),
+            ("$pron() smiles", " smiles"),
         ]
     )
     def test_other_callables(self, string, expected):
@@ -415,6 +580,9 @@ class TestDefaultCallables(TestCase):
         self.assertEqual(expected, ret)
 
     def test_random(self):
+        """
+        Test random callable, with ranges of expected values.
+        """
         string = "$random(1,10)"
         for i in range(100):
             ret = self.parser.parse_to_any(string, raise_errors=True)
@@ -425,11 +593,69 @@ class TestDefaultCallables(TestCase):
             ret = self.parser.parse_to_any(string, raise_errors=True)
             self.assertTrue(0 <= ret <= 1)
 
+        string = "$random(2)"
+        for i in range(100):
+            ret = self.parser.parse_to_any(string, raise_errors=True)
+            self.assertTrue(0 <= ret <= 2)
+
         string = "$random(1.0, 3.0)"
         for i in range(100):
             ret = self.parser.parse_to_any(string, raise_errors=True)
             self.assertTrue(isinstance(ret, float))
             self.assertTrue(1.0 <= ret <= 3.0)
+
+        string = "$random([1,2]) apples"
+        ret = self.parser.parse_to_any(string)
+        self.assertEqual(" apples", ret)
+        with self.assertRaises(TypeError):
+            ret = self.parser.parse_to_any(string, raise_errors=True)
+
+    # @unittest.skip("underlying function seems broken")
+    def test_choice(self):
+        """
+        Test choice callable, where output could be either choice.
+        """
+        string = "$choice(red, green) apple"
+        ret = self.parser.parse(string)
+        self.assertIn(ret, ("red apple", "green apple"))
+
+        string = "$choice([red, green]) apple"
+        ret = self.parser.parse(string)
+        self.assertIn(ret, ("red apple", "green apple"))
+
+        string = "$choice(['red', 'green']) apple"
+        ret = self.parser.parse(string)
+        self.assertIn(ret, ("red apple", "green apple"))
+
+        string = "$choice([1, 2])"
+        ret = self.parser.parse(string)
+        self.assertIn(ret, ("1", "2"))
+        ret = self.parser.parse_to_any(string)
+        self.assertIn(ret, (1, 2))
+
+        string = "$choice(1, 2)"
+        ret = self.parser.parse(string)
+        self.assertIn(ret, ("1", "2"))
+        ret = self.parser.parse_to_any(string)
+        self.assertIn(ret, (1, 2))
+
+    def test_choice_quotes(self):
+        """
+        Test choice, but also commas embedded.
+        """
+
+        string = "$choice(spider's, devil's, mummy's, zombie's)"
+        ret = self.parser.parse(string)
+        self.assertIn(ret, ("spider's", "devil's", "mummy's", "zombie's"))
+
+        string = '$choice("Tiamat, queen of dragons", "Dracula, lord of the night")'
+        ret = self.parser.parse(string)
+        self.assertIn(ret, ("Tiamat, queen of dragons", "Dracula, lord of the night"))
+
+        # single quotes are ignored, so this becomes many entries
+        string = "$choice('Tiamat, queen of dragons', 'Dracula, lord of the night')"
+        ret = self.parser.parse(string)
+        self.assertIn(ret, ("'Tiamat", "queen of dragons'", "'Dracula", "lord of the night'"))
 
     def test_randint(self):
         string = "$randint(1.0, 3.0)"
@@ -464,16 +690,14 @@ class TestDefaultCallables(TestCase):
         )
 
     def test_escaped(self):
-        self.assertEqual(
-            self.parser.parse(
-                "this should be $pad('''escaped,''' and '''instead,''' cropped $crop(with a long,5) text., 80)"
-            ),
-            "this should be                    escaped, and instead, cropped with  text.                    ",
+        raw_str = (
+            'this should be $pad("""escaped,""" and """instead,""" cropped $crop(with a long,5)'
+            " text., 80)"
         )
-
-    def test_escaped2(self):
-        raw_str = 'this should be $pad("""escaped,""" and """instead,""" cropped $crop(with a long,5) text., 80)'
-        expected = "this should be                    escaped, and instead, cropped with  text.                    "
+        expected = (
+            "this should be                    escaped, and instead, cropped with  text.           "
+            "         "
+        )
         result = self.parser.parse(raw_str)
         self.assertEqual(
             result,
@@ -509,6 +733,7 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         """
         string = "$search(TestAccount, type=account)"
         expected = self.account
+        self.account.locks.add("control:id(%s)" % self.char1.dbref)
 
         ret = self.parser.parse(string, caller=self.char1, return_str=False, raise_errors=True)
         self.assertEqual(expected, ret)
@@ -520,6 +745,7 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         """
         string = "$search(Script, type=script)"
         expected = self.script
+        self.script.locks.add("control:id(%s)" % self.char1.dbref)
 
         ret = self.parser.parse(string, caller=self.char1, return_str=False, raise_errors=True)
         self.assertEqual(expected, ret)
@@ -534,3 +760,86 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
 
         ret = self.parser.parse(string, caller=self.char1, return_str=False, raise_errors=True)
         self.assertEqual(expected, ret)
+
+    def test_search_tag(self):
+        """
+        Test searching for a tag
+        """
+        self.char1.tags.add("foo")
+
+        string = "This is $search(foo, type=tag)"
+        expected = "This is %s" % str(self.char1)
+
+        ret = self.parser.parse(string, caller=self.char1, return_str=False, raise_errors=True)
+        self.assertEqual(expected, ret)
+
+    def test_search_not_found(self):
+        string = "$search(foo)"
+        with self.assertRaises(funcparser.ParsingError):
+            self.parser.parse(string, caller=self.char1, return_str=False, raise_errors=True)
+
+        ret = self.parser.parse(string, caller=self.char1, return_str=False, raise_errors=False)
+        self.assertEqual("$search(foo)", ret)
+
+        ret = self.parser.parse_to_any(
+            string, caller=self.char1, return_list=True, raise_errors=False
+        )
+        self.assertEqual([], ret)
+
+    def test_search_multiple_results_no_list(self):
+        """
+        Test exception when search returns multiple results but list is not requested
+        """
+        string = "$search(BaseObject)"
+        with self.assertRaises(funcparser.ParsingError):
+            self.parser.parse(string, caller=self.char1, return_str=False, raise_errors=True)
+
+    def test_search_no_access(self):
+        string = "Go to $search(Room)"
+        with self.assertRaises(funcparser.ParsingError):
+            self.parser.parse(string, caller=self.char2, return_list=True, raise_errors=True)
+
+    def test_search_no_caller(self):
+        string = "$search(Char)"
+        with self.assertRaises(funcparser.ParsingError):
+            self.parser.parse(string, caller=None, raise_errors=True)
+
+    def test_search_no_args(self):
+        string = "$search()"
+        ret = self.parser.parse(string, caller=self.char1, return_list=False, raise_errors=True)
+        self.assertEqual("None", ret)
+
+        ret = self.parser.parse(string, caller=self.char1, return_list=True, raise_errors=True)
+        self.assertEqual("[]", ret)
+
+    def test_search_nested__issue2902(self):
+        """
+        Search for objects by-tag, check that the result is a valid object
+
+        """
+        # we
+        parser = funcparser.FuncParser(
+            {**funcparser.SEARCHING_CALLABLES, **funcparser.FUNCPARSER_CALLABLES}
+        )
+
+        # set up search targets
+        self.obj1.tags.add("beach", category="zone")
+        self.obj2.tags.add("beach", category="zone")
+
+        # first a plain search
+        string = "$objlist(beach,category=zone,type=tag)"
+        ret = parser.parse_to_any(string, caller=self.char1, raise_errors=True)
+
+        self.assertEqual(ret, [self.obj1, self.obj2])
+
+        # get random result from the possible matches
+        string = "$choice($objlist(beach,category=zone,type=tag))"
+        ret = parser.parse_to_any(string, caller=self.char1, raise_errors=True)
+
+        self.assertIn(ret, [self.obj1, self.obj2])
+
+        # test wrapping in $obj(), should just pass object through
+        string = "$obj($choice($objlist(beach,category=zone,type=tag)))"
+        ret = parser.parse_to_any(string, caller=self.char1, raise_errors=True)
+
+        self.assertIn(ret, [self.obj1, self.obj2])

@@ -28,11 +28,19 @@ Admin/development commands
 """
 
 import re
+
 from django.conf import settings
-from evennia import SESSION_HANDLER
-from evennia import Command, CmdSet, InterruptCommand, default_cmds
-from evennia import syscmdkeys
+
+from evennia import (
+    SESSION_HANDLER,
+    CmdSet,
+    Command,
+    InterruptCommand,
+    default_cmds,
+    syscmdkeys,
+)
 from evennia.utils import variable_from_module
+
 from .utils import create_evscaperoom_object
 
 _AT_SEARCH_RESULT = variable_from_module(*settings.SEARCH_AT_RESULT.rsplit(".", 1))
@@ -236,7 +244,9 @@ class CmdGiveUp(CmdEvscapeRoom):
             # manually call move hooks
             self.room.msg_room(self.caller, f"|r{self.caller.key} gave up and was whisked away!|n")
             self.room.at_object_leave(self.caller, self.caller.home)
-            self.caller.move_to(self.caller.home, quiet=True, move_hooks=False, move_type="teleport")
+            self.caller.move_to(
+                self.caller.home, quiet=True, move_hooks=False, move_type="teleport"
+            )
 
             # back to menu
             run_evscaperoom_menu(self.caller)

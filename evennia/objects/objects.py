@@ -13,19 +13,21 @@ from collections import defaultdict
 import inflect
 from django.conf import settings
 from django.utils.translation import gettext as _
+
 from evennia.commands import cmdset
 from evennia.commands.cmdsethandler import CmdSetHandler
 from evennia.objects.manager import ObjectManager
 from evennia.objects.models import ObjectDB
 from evennia.scripts.scripthandler import ScriptHandler
+from evennia.server.signals import SIGNAL_EXIT_TRAVERSED
 from evennia.typeclasses.attributes import ModelAttributeBackend, NickHandler
 from evennia.typeclasses.models import TypeclassBase
 from evennia.utils import ansi, create, funcparser, logger, search
 from evennia.utils.utils import (
     class_from_module,
     is_iter,
+    iter_to_str,
     lazy_property,
-    list_to_string,
     make_iter,
     to_str,
     variable_from_module,
@@ -314,68 +316,6 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
 
     # main methods
 
-    def get_display_name(self, looker=None, **kwargs):
-        """
-        Displays the name of the object in a viewer-aware manner.
-
-        Args:
-            looker (TypedObject): The object or account that is looking
-                at/getting inforamtion for this object.
-
-        Returns:
-            name (str): A string containing the name of the object,
-                including the DBREF if this user is privileged to control
-                said object.
-
-        Notes:
-            This function could be extended to change how object names
-            appear to users in character, but be wary. This function
-            does not change an object's keys or aliases when
-            searching, and is expected to produce something useful for
-            builders.
-
-        """
-        if looker and self.locks.check_lockstring(looker, "perm(Builder)"):
-            return "{}(#{})".format(self.name, self.id)
-        return self.name
-
-    def get_numbered_name(self, count, looker, **kwargs):
-        """
-        Return the numbered (singular, plural) forms of this object's key. This is by default called
-        by return_appearance and is used for grouping multiple same-named of this object. Note that
-        this will be called on *every* member of a group even though the plural name will be only
-        shown once. Also the singular display version, such as 'an apple', 'a tree' is determined
-        from this method.
-
-        Args:
-            count (int): Number of objects of this type
-            looker (Object): Onlooker. Not used by default.
-        Keyword Args:
-            key (str): Optional key to pluralize, if given, use this instead of the object's key.
-        Returns:
-            singular (str): The singular form to display.
-            plural (str): The determined plural form of the key, including the count.
-
-        """
-        plural_category = "plural_key"
-        key = kwargs.get("key", self.key)
-        key = ansi.ANSIString(key)  # this is needed to allow inflection of colored names
-        try:
-            plural = _INFLECT.plural(key, count)
-            plural = "{} {}".format(_INFLECT.number_to_words(count, threshold=12), plural)
-        except IndexError:
-            # this is raised by inflect if the input is not a proper noun
-            plural = key
-        singular = _INFLECT.an(key)
-        if not self.aliases.get(plural, category=plural_category):
-            # we need to wipe any old plurals/an/a in case key changed in the interrim
-            self.aliases.clear(category=plural_category)
-            self.aliases.add(plural, category=plural_category)
-            # save the singular form as an alias here too so we can display "an egg" and also
-            # look at 'an egg'.
-            self.aliases.add(singular, category=plural_category)
-        return singular, plural
-
     def search(
         self,
         searchdata,
@@ -387,9 +327,11 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
         quiet=False,
         exact=False,
         candidates=None,
+        use_locks=True,
         nofound_string=None,
         multimatch_string=None,
         use_dbref=None,
+        tags=None,
         stacked=0,
     ):
         """
@@ -444,6 +386,8 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
                 is given. If not set, this list will automatically be defined
                 to include the location, the contents of location and the
                 caller's contents (inventory).
+            use_locks (bool): If True (default) - removes search results which
+                fail the "search" lock.
             nofound_string (str):  optional custom string for not-found error message.
             multimatch_string (str): optional custom string for multimatch error header.
             use_dbref (bool or None, optional): If `True`, allow to enter e.g. a query "#123"
@@ -451,6 +395,8 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
                 will be treated like a normal string. If `None` (default), the ability to query by
                 #dbref is turned on if `self` has the permission 'Builder' and is turned off
                 otherwise.
+            tags (list or tuple): Find objects matching one or more Tags. This should be one or
+                more tag definitions on the form `tagname` or `(tagname, tagcategory)`.
             stacked (int, optional): If > 0, multimatches will be analyzed to determine if they
                 only contains identical objects; these are then assumed 'stacked' and no multi-match
                 error will be generated, instead `stacked` number of matches will be returned. If
@@ -520,21 +466,28 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
                     # included in location.contents
                     candidates.append(self)
 
-        results = ObjectDB.objects.object_search(
+        if tags:
+            tags = [(tagkey, tagcat[0] if tagcat else None) for tagkey, *tagcat in make_iter(tags)]
+
+        results = ObjectDB.objects.search_object(
             searchdata,
             attribute_name=attribute_name,
             typeclass=typeclass,
             candidates=candidates,
             exact=exact,
             use_dbref=use_dbref,
+            tags=tags,
         )
+
+        if use_locks:
+            results = [x for x in list(results) if x.access(self, "search", default=True)]
 
         nresults = len(results)
         if stacked > 0 and nresults > 1:
             # handle stacks, disable multimatch errors
             nstack = nresults
             if not exact:
-                # we re-run exact match agains one of the matches to
+                # we re-run exact match against one of the matches to
                 # make sure we were not catching partial matches not belonging
                 # to the stack
                 nstack = len(
@@ -720,7 +673,15 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
         for obj in contents:
             func(obj, **kwargs)
 
-    def msg_contents(self, text=None, exclude=None, from_obj=None, mapping=None, **kwargs):
+    def msg_contents(
+        self,
+        text=None,
+        exclude=None,
+        from_obj=None,
+        mapping=None,
+        raise_funcparse_errors=False,
+        **kwargs,
+    ):
         """
         Emits a message to all objects inside this object.
 
@@ -737,13 +698,17 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
             exclude (list, optional): A list of objects not to send to.
             from_obj (Object, optional): An object designated as the
                 "sender" of the message. See `DefaultObject.msg()` for
-                more info.
+                more info. This will be used for `$You/you` if using funcparser inlines.
             mapping (dict, optional): A mapping of formatting keys
                 `{"key":<object>, "key2":<object2>,...}.
                 The keys must either match `{key}` or `$You(key)/$you(key)` markers
                 in the `text` string. If `<object>` doesn't have a `get_display_name`
-                method, it will be returned as a string. If not set, a key `you` will
-                be auto-added to point to `from_obj` if given, otherwise to `self`.
+                method, it will be returned as a string. Pass "you" to represent the caller,
+                this can be skipped if `from_obj` is provided (that will then act as 'you').
+            raise_funcparse_errors (bool, optional): If set, a failing `$func()` will
+                lead to an outright error. If unset (default), the failing `$func()`
+                will instead appear in output unparsed.
+
             **kwargs: Keyword arguments will be passed on to `obj.msg()` for all
                 messaged objects.
 
@@ -772,6 +737,7 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
 
                 char.location.msg_contents(
                     "$You() $conj(attack) $you(defender).",
+                    from_obj=player1,
                     mapping={"defender": player2})
 
             - player1 will see `You attack The Second girl.`
@@ -782,7 +748,7 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
 
                 char.location.msg_contents(
                     "{attacker} attacks {defender}.",
-                    mapping={"attacker:player1, "defender":player2})
+                    mapping={"attacker":player1, "defender":player2})
 
             - player1 will see: 'Player1 attacks The Second girl.'
             - player2 will see: 'The First girl attacks Player2'
@@ -806,9 +772,9 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
         for receiver in contents:
 
             # actor-stance replacements
-            inmessage = _MSG_CONTENTS_PARSER.parse(
+            outmessage = _MSG_CONTENTS_PARSER.parse(
                 inmessage,
-                raise_errors=True,
+                raise_errors=raise_funcparse_errors,
                 return_string=True,
                 caller=you,
                 receiver=receiver,
@@ -816,7 +782,7 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
             )
 
             # director-stance replacements
-            outmessage = inmessage.format_map(
+            outmessage = outmessage.format_map(
                 {
                     key: obj.get_display_name(looker=receiver)
                     if hasattr(obj, "get_display_name")
@@ -878,13 +844,15 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
 
             The `DefaultObject` hooks called (if `move_hooks=True`) are, in order:
 
-             1. `self.at_pre_move(destination)` (if this returns False, move is aborted)
-             2. `source_location.at_object_leave(self, destination)`
-             3. `self.announce_move_from(destination)`
-             4. (move happens here)
-             5. `self.announce_move_to(source_location)`
-             6. `destination.at_object_receive(self, source_location)`
-             7. `self.at_post_move(source_location)`
+             1. `self.at_pre_move(destination)` (abort if return False)
+             2. `source_location.at_pre_object_leave(self, destination)` (abort if return False)
+             3. `destination.at_pre_object_receive(self, source_location)` (abort if return False)
+             4. `source_location.at_object_leave(self, destination)`
+             5. `self.announce_move_from(destination)`
+             6. (move happens here)
+             7. `self.announce_move_to(source_location)`
+             8. `destination.at_object_receive(self, source_location)`
+             9. `self.at_post_move(source_location)`
 
         """
 
@@ -909,17 +877,37 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
         if destination.destination and use_destination:
             # traverse exits
             destination = destination.destination
-        # Before the move, call eventual pre-commands.
+
+        # Save the old location
+        source_location = self.location
+
+        # Before the move, call pre-hooks
         if move_hooks:
+            # check if we are okay to move
             try:
                 if not self.at_pre_move(destination, move_type=move_type, **kwargs):
                     return False
             except Exception as err:
                 logerr(errtxt.format(err="at_pre_move()"), err)
                 return False
-
-        # Save the old location
-        source_location = self.location
+            # check if source location lets us go
+            try:
+                if source_location and not source_location.at_pre_object_leave(
+                    self, destination, **kwargs
+                ):
+                    return False
+            except Exception as err:
+                logerr(errtxt.format(err="at_pre_object_leave()"), err)
+                return False
+            # check if destination accepts us
+            try:
+                if destination and not destination.at_pre_object_receive(
+                    self, source_location, **kwargs
+                ):
+                    return False
+            except Exception as err:
+                logerr(errtxt.format(err="at_pre_object_receive()"), err)
+                return False
 
         # Call hook on source location
         if move_hooks and source_location:
@@ -1012,8 +1000,9 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
                 obj.location = None
                 obj.msg(_("Something went wrong! You are dumped into nowhere. Contact an admin."))
                 logger.log_err(
-                    "Missing default home - '{name}(#{dbid})' now "
-                    "has a null location.".format(name=obj.name, dbid=obj.dbid)
+                    "Missing default home - '{name}(#{dbid})' now has a null location.".format(
+                        name=obj.name, dbid=obj.dbid
+                    )
                 )
                 return
 
@@ -1219,6 +1208,248 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
         self.at_access(result, accessing_obj, access_type, **kwargs)
         return result
 
+    # name and return_apperance hooks
+
+    def get_display_name(self, looker=None, **kwargs):
+        """
+        Displays the name of the object in a viewer-aware manner.
+
+        Args:
+            looker (TypedObject): The object or account that is looking
+                at/getting inforamtion for this object. If not given, `.name` will be
+                returned, which can in turn be used to display colored data.
+
+        Returns:
+            str: A name to display for this object. This can contain color codes and may
+                be customized based on `looker`. By default this contains the `.key` of the object,
+                followed by the DBREF if this user is privileged to control said object.
+
+        Notes:
+            This function could be extended to change how object names appear to users in character,
+            but be wary. This function does not change an object's keys or aliases when searching,
+            and is expected to produce something useful for builders.
+
+        """
+        if looker and self.locks.check_lockstring(looker, "perm(Builder)"):
+            return "{}(#{})".format(self.name, self.id)
+        return self.name
+
+    def get_numbered_name(self, count, looker, **kwargs):
+        """
+        Return the numbered (singular, plural) forms of this object's key. This is by default called
+        by return_appearance and is used for grouping multiple same-named of this object. Note that
+        this will be called on *every* member of a group even though the plural name will be only
+        shown once. Also the singular display version, such as 'an apple', 'a tree' is determined
+        from this method.
+
+        Args:
+            count (int): Number of objects of this type
+            looker (Object): Onlooker. Not used by default.
+
+        Keyword Args:
+            key (str): Optional key to pluralize. If not given, the object's `.name` property is
+                used.
+
+        Returns:
+            tuple: This is a tuple `(str, str)` with the singular and plural forms of the key
+                including the count.
+
+        Examples:
+            ::
+                obj.get_numbered_name(3, looker, key="foo") -> ("a foo", "three foos")
+
+        """
+        plural_category = "plural_key"
+        key = kwargs.get("key", self.name)
+        key = ansi.ANSIString(key)  # this is needed to allow inflection of colored names
+        try:
+            plural = _INFLECT.plural(key, count)
+            plural = "{} {}".format(_INFLECT.number_to_words(count, threshold=12), plural)
+        except IndexError:
+            # this is raised by inflect if the input is not a proper noun
+            plural = key
+        singular = _INFLECT.an(key)
+        if not self.aliases.get(plural, category=plural_category):
+            # we need to wipe any old plurals/an/a in case key changed in the interrim
+            self.aliases.clear(category=plural_category)
+            self.aliases.add(plural, category=plural_category)
+            # save the singular form as an alias here too so we can display "an egg" and also
+            # look at 'an egg'.
+            self.aliases.add(singular, category=plural_category)
+        return singular, plural
+
+    def get_display_header(self, looker, **kwargs):
+        """
+        Get the 'header' component of the object description. Called by `return_appearance`.
+
+        Args:
+            looker (Object): Object doing the looking.
+            **kwargs: Arbitrary data for use when overriding.
+        Returns:
+            str: The header display string.
+
+        """
+        return ""
+
+    def get_display_desc(self, looker, **kwargs):
+        """
+        Get the 'desc' component of the object description. Called by `return_appearance`.
+
+        Args:
+            looker (Object): Object doing the looking.
+            **kwargs: Arbitrary data for use when overriding.
+        Returns:
+            str: The desc display string..
+
+        """
+        return self.db.desc or "You see nothing special."
+
+    def get_display_exits(self, looker, **kwargs):
+        """
+        Get the 'exits' component of the object description. Called by `return_appearance`.
+
+        Args:
+            looker (Object): Object doing the looking.
+            **kwargs: Arbitrary data for use when overriding.
+        Returns:
+            str: The exits display data.
+
+        """
+
+        def _filter_visible(obj_list):
+            return (obj for obj in obj_list if obj != looker and obj.access(looker, "view"))
+
+        exits = _filter_visible(self.contents_get(content_type="exit"))
+        exit_names = iter_to_str(exi.get_display_name(looker, **kwargs) for exi in exits)
+
+        return f"|wExits:|n {exit_names}" if exit_names else ""
+
+    def get_display_characters(self, looker, **kwargs):
+        """
+        Get the 'characters' component of the object description. Called by `return_appearance`.
+
+        Args:
+            looker (Object): Object doing the looking.
+            **kwargs: Arbitrary data for use when overriding.
+        Returns:
+            str: The character display data.
+
+        """
+
+        def _filter_visible(obj_list):
+            return (obj for obj in obj_list if obj != looker and obj.access(looker, "view"))
+
+        characters = _filter_visible(self.contents_get(content_type="character"))
+        character_names = iter_to_str(
+            char.get_display_name(looker, **kwargs) for char in characters
+        )
+
+        return f"\n|wCharacters:|n {character_names}" if character_names else ""
+
+    def get_display_things(self, looker, **kwargs):
+        """
+        Get the 'things' component of the object description. Called by `return_appearance`.
+
+        Args:
+            looker (Object): Object doing the looking.
+            **kwargs: Arbitrary data for use when overriding.
+        Returns:
+            str: The things display data.
+
+        """
+
+        def _filter_visible(obj_list):
+            return (obj for obj in obj_list if obj != looker and obj.access(looker, "view"))
+
+        # sort and handle same-named things
+        things = _filter_visible(self.contents_get(content_type="object"))
+
+        grouped_things = defaultdict(list)
+        for thing in things:
+            grouped_things[thing.get_display_name(looker, **kwargs)].append(thing)
+
+        thing_names = []
+        for thingname, thinglist in sorted(grouped_things.items()):
+            nthings = len(thinglist)
+            thing = thinglist[0]
+            singular, plural = thing.get_numbered_name(nthings, looker, key=thingname)
+            thing_names.append(singular if nthings == 1 else plural)
+        thing_names = iter_to_str(thing_names)
+        return f"\n|wYou see:|n {thing_names}" if thing_names else ""
+
+    def get_display_footer(self, looker, **kwargs):
+        """
+        Get the 'footer' component of the object description. Called by `return_appearance`.
+
+        Args:
+            looker (Object): Object doing the looking.
+            **kwargs: Arbitrary data for use when overriding.
+        Returns:
+            str: The footer display string.
+
+        """
+        return ""
+
+    def format_appearance(self, appearance, looker, **kwargs):
+        """
+        Final processing of the entire appearance string. Called by `return_appearance`.
+
+        Args:
+            appearance (str): The compiled appearance string.
+            looker (Object): Object doing the looking.
+            **kwargs: Arbitrary data for use when overriding.
+        Returns:
+            str: The final formatted output.
+
+        """
+        return appearance.strip()
+
+    def return_appearance(self, looker, **kwargs):
+        """
+        Main callback used by 'look' for the object to describe itself.
+        This formats a description. By default, this looks for the `appearance_template`
+        string set on this class and populates it with formatting keys
+            'name', 'desc', 'exits', 'characters', 'things' as well as
+            (currently empty) 'header'/'footer'. Each of these values are
+            retrieved by a matching method `.get_display_*`, such as `get_display_name`,
+            `get_display_footer` etc.
+
+        Args:
+            looker (Object): Object doing the looking. Passed into all helper methods.
+            **kwargs (dict): Arbitrary, optional arguments for users
+                overriding the call. This is passed into all helper methods.
+
+        Returns:
+            str: The description of this entity. By default this includes
+                the entity's name, description and any contents inside it.
+
+        Notes:
+            To simply change the layout of how the object displays itself (like
+            adding some line decorations or change colors of different sections),
+            you can simply edit `.appearance_template`. You only need to override
+            this method (and/or its helpers) if you want to change what is passed
+            into the template or want the most control over output.
+
+        """
+
+        if not looker:
+            return ""
+
+        # populate the appearance_template string.
+        return self.format_appearance(
+            self.appearance_template.format(
+                name=self.get_display_name(looker, **kwargs),
+                desc=self.get_display_desc(looker, **kwargs),
+                header=self.get_display_header(looker, **kwargs),
+                footer=self.get_display_footer(looker, **kwargs),
+                exits=self.get_display_exits(looker, **kwargs),
+                characters=self.get_display_characters(looker, **kwargs),
+                things=self.get_display_things(looker, **kwargs),
+            ),
+            looker,
+            **kwargs,
+        )
+
     #
     # Hook methods
     #
@@ -1423,14 +1654,15 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
         """
         pass
 
-    def at_post_unpuppet(self, account, session=None, **kwargs):
+    def at_post_unpuppet(self, account=None, session=None, **kwargs):
         """
         Called just after the Account successfully disconnected from
         this object, severing all connections.
 
         Args:
             account (Account): The account object that just disconnected
-                from this object.
+                from this object. This can be `None` if this is called
+                automatically (such as after a cleanup operation).
             session (Session): Session id controlling the connection that
                 just disconnected.
             **kwargs (dict): Arbitrary, optional arguments for users
@@ -1470,8 +1702,7 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
             access_type (str): The type of access that was requested.
 
         Keyword Args:
-            Not used by default, added for possible expandability in a
-            game.
+            Unused by default, added for possible expandability in a game.
 
         """
         pass
@@ -1481,7 +1712,7 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
     def at_pre_move(self, destination, move_type="move", **kwargs):
         """
         Called just before starting to move this object to
-        destination.
+        destination. Return False to abort move.
 
         Args:
             destination (Object): The object we are moving to
@@ -1493,14 +1724,54 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
                 overriding the call (unused by default).
 
         Returns:
-            shouldmove (bool): If we should move or not.
+            bool: If we should move or not.
 
         Notes:
             If this method returns False/None, the move is cancelled
             before it is even started.
 
         """
-        # return has_perm(self, destination, "can_move")
+        return True
+
+    def at_pre_object_leave(self, leaving_object, destination, **kwargs):
+        """
+        Called just before this object is about lose an object that was
+        previously 'inside' it. Return False to abort move.
+
+        Args:
+            leaving_object (Object): The object that is about to leave.
+            destination (Object): Where object is going to.
+            **kwargs (dict): Arbitrary, optional arguments for users
+                overriding the call (unused by default).
+        Returns:
+            bool: If `leaving_object` should be allowed to leave or not.
+
+        Notes: If this method returns False, None, the move is canceled before
+            it even started.
+
+        """
+        return True
+
+    def at_pre_object_receive(self, arriving_object, source_location, **kwargs):
+        """
+        Called just before this object received another object. If this
+        method returns `False`, the move is aborted and the moved entity
+        remains where it was.
+
+        Args:
+            arriving_object (Object): The object moved into this one
+            source_location (Object): Where `moved_object` came from.
+                Note that this could be `None`.
+            **kwargs (dict): Arbitrary, optional arguments for users
+                overriding the call (unused by default).
+
+        Returns:
+            bool: If False, abort move and `moved_obj` remains where it was.
+
+        Notes: If this method returns False, None, the move is canceled before
+            it even started.
+
+        """
         return True
 
     # deprecated alias
@@ -1636,7 +1907,7 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
         now in.
 
         Args:
-            source_location (Object): Wwhere we came from. This may be `None`.
+            source_location (Object): Where we came from. This may be `None`.
             move_type (str): The type of move. "give", "traverse", etc.
                 This is an arbitrary string provided to obj.move_to().
                 Useful for altering messages or altering logic depending
@@ -1797,7 +2068,7 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
     def get_visible_contents(self, looker, **kwargs):
         """
         Get all contents of this object that a looker can see (whatever that means, by default it
-        checks the 'view' lock), grouped by type. Helper method to return_appearance.
+        checks the 'view' and 'search' locks), grouped by type. Helper method to return_appearance.
 
         Args:
             looker (Object): The entity looking.
@@ -1811,7 +2082,13 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
         """
 
         def filter_visible(obj_list):
-            return [obj for obj in obj_list if obj != looker and obj.access(looker, "view")]
+            return [
+                obj
+                for obj in obj_list
+                if obj != looker
+                and obj.access(looker, "view")
+                and obj.access(looker, "search", default=True)
+            ]
 
         return {
             "exits": filter_visible(self.contents_get(content_type="exit")),
@@ -1864,58 +2141,6 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
             thing_names.append(singular if nthings == 1 else plural)
 
         return {"exits": exit_names, "characters": character_names, "things": thing_names}
-
-    def return_appearance(self, looker, **kwargs):
-        """
-        Main callback used by 'look' for the object to describe itself.
-        This formats a description. By default, this looks for the `appearance_template`
-        string set on this class and populates it with formatting keys
-            'name', 'desc', 'exits', 'characters', 'things' as well as
-            (currently empty) 'header'/'footer'.
-
-        Args:
-            looker (Object): Object doing the looking.
-            **kwargs (dict): Arbitrary, optional arguments for users
-                overriding the call. This is passed into the helper
-                methods and into `get_display_name` calls.
-
-        Returns:
-            str: The description of this entity. By default this includes
-                the entity's name, description and any contents inside it.
-
-        Notes:
-            To simply change the layout of how the object displays itself (like
-            adding some line decorations or change colors of different sections),
-            you can simply edit `.appearance_template`. You only need to override
-            this method (and/or its helpers) if you want to change what is passed
-            into the template or want the most control over output.
-
-        """
-
-        if not looker:
-            return ""
-
-        # ourselves
-        name = self.get_display_name(looker, **kwargs)
-        desc = self.db.desc or "You see nothing special."
-
-        # contents
-        content_names_map = self.get_content_names(looker, **kwargs)
-        exits = list_to_string(content_names_map["exits"])
-        characters = list_to_string(content_names_map["characters"])
-        things = list_to_string(content_names_map["things"])
-
-        # populate the appearance_template string. It's a good idea to strip it and
-        # let the client add any extra spaces instead.
-        return self.appearance_template.format(
-            header="",
-            name=name,
-            desc=desc,
-            exits=f"|wExits:|n {exits}" if exits else "",
-            characters=f"\n|wCharacters:|n {characters}" if characters else "",
-            things=f"\n|wYou see:|n {things}" if things else "",
-            footer="",
-        ).strip()
 
     def at_look(self, target, **kwargs):
         """
@@ -2296,8 +2521,8 @@ class DefaultCharacter(DefaultObject):
             All other kwargs will be passed into the create_object call.
 
         Returns:
-            character (Object): A newly created Character of the given typeclass.
-            errors (list): A list of errors in string form, if any.
+            tuple: `(new_character, errors)`. On error, the `new_character` is `None` and
+            `errors` is a `list` of error strings (an empty list otherwise).
 
         """
         errors = []
@@ -2475,7 +2700,7 @@ class DefaultCharacter(DefaultObject):
 
         self.location.for_contents(message, exclude=[self], from_obj=self)
 
-    def at_post_unpuppet(self, account, session=None, **kwargs):
+    def at_post_unpuppet(self, account=None, session=None, **kwargs):
         """
         We stove away the character when the account goes ooc/logs off,
         otherwise the character object will remain in the room also
@@ -2486,6 +2711,9 @@ class DefaultCharacter(DefaultObject):
                 from this object.
             session (Session): Session controlling the connection that
                 just disconnected.
+        Keyword Args:
+            reason (str): If given, adds a reason for the unpuppet. This
+                is set when the user is auto-unpuppeted due to being link-dead.
             **kwargs (dict): Arbitrary, optional arguments for users
                 overriding the call (unused by default).
         """
@@ -2495,7 +2723,10 @@ class DefaultCharacter(DefaultObject):
 
                 def message(obj, from_obj):
                     obj.msg(
-                        _("{name} has left the game.").format(name=self.get_display_name(obj)),
+                        _("{name} has left the game{reason}.").format(
+                            name=self.get_display_name(obj),
+                            reason=kwargs.get("reason", ""),
+                        ),
                         from_obj=from_obj,
                     )
 
@@ -2658,6 +2889,7 @@ class ExitCommand(_COMMAND_DEFAULT_CLASS):
         if self.obj.access(self.caller, "traverse"):
             # we may traverse the exit.
             self.obj.at_traverse(self.caller, self.obj.destination)
+            SIGNAL_EXIT_TRAVERSED.send(sender=self.obj, traverser=self.caller)
         else:
             # exit is locked
             if self.obj.db.err_traverse:
@@ -2919,3 +3151,20 @@ class DefaultExit(DefaultObject):
 
         """
         traversing_object.msg(_("You cannot go there."))
+
+    def get_return_exit(self, return_all=False):
+        """
+        Get the exits that pair with this one in its destination room
+        (i.e. returns to its location)
+
+        Args:
+            return_all (bool): Whether to return available results as a
+                               list or single matching exit.
+
+        Returns:
+            queryset or exit (Exit): The matching exit(s).
+        """
+        query = ObjectDB.objects.filter(db_location=self.destination, db_destination=self.location)
+        if return_all:
+            return query
+        return query.first()

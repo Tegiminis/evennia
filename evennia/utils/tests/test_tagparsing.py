@@ -3,10 +3,12 @@ Unit tests for all sorts of inline text-tag parsing, like ANSI, html conversion,
 
 """
 import re
+
 from django.test import TestCase, override_settings
+
+from evennia.utils import funcparser
 from evennia.utils.ansi import ANSIString
 from evennia.utils.text2html import TextToHTMLparser
-from evennia.utils import funcparser
 
 
 class ANSIStringTestCase(TestCase):
@@ -250,13 +252,13 @@ class TestTextToHTMLparser(TestCase):
     def test_url_scheme_ftp(self):
         self.assertEqual(
             self.parser.convert_urls("ftp.example.com"),
-            '<a href="ftp.example.com" target="_blank">ftp.example.com</a>',
+            '<a href="http://ftp.example.com" target="_blank">ftp.example.com</a>',
         )
 
     def test_url_scheme_www(self):
         self.assertEqual(
             self.parser.convert_urls("www.example.com"),
-            '<a href="www.example.com" target="_blank">www.example.com</a>',
+            '<a href="http://www.example.com" target="_blank">www.example.com</a>',
         )
 
     def test_url_scheme_ftpproto(self):
@@ -280,7 +282,7 @@ class TestTextToHTMLparser(TestCase):
     def test_url_chars_slash(self):
         self.assertEqual(
             self.parser.convert_urls("www.example.com/homedir"),
-            '<a href="www.example.com/homedir" target="_blank">www.example.com/homedir</a>',
+            '<a href="http://www.example.com/homedir" target="_blank">www.example.com/homedir</a>',
         )
 
     def test_url_chars_colon(self):
@@ -313,22 +315,16 @@ class TestTextToHTMLparser(TestCase):
             ' target="_blank">https://groups.google.com/forum/?fromgroups#!categories/evennia/ainneve</a>',
         )
 
-    def test_url_edge_leadingw(self):
-        self.assertEqual(
-            self.parser.convert_urls("wwww.example.com"),
-            'w<a href="www.example.com" target="_blank">www.example.com</a>',
-        )
-
     def test_url_edge_following_period_eol(self):
         self.assertEqual(
             self.parser.convert_urls("www.example.com."),
-            '<a href="www.example.com" target="_blank">www.example.com</a>.',
+            '<a href="http://www.example.com" target="_blank">www.example.com</a>.',
         )
 
     def test_url_edge_following_period(self):
         self.assertEqual(
             self.parser.convert_urls("see www.example.com. "),
-            'see <a href="www.example.com" target="_blank">www.example.com</a>. ',
+            'see <a href="http://www.example.com" target="_blank">www.example.com</a>. ',
         )
 
     def test_url_edge_brackets(self):
@@ -356,3 +352,12 @@ class TestTextToHTMLparser(TestCase):
             '</span><a href="http://example.com/" target="_blank">'
             'http://example.com/</a><span class="red">',
         )
+
+    def test_non_url_with_www(self):
+        self.assertEqual(
+            self.parser.convert_urls("Awwww.this should not be highlighted"),
+            "Awwww.this should not be highlighted",
+        )
+
+    def test_invalid_www_url(self):
+        self.assertEqual(self.parser.convert_urls("www.t"), "www.t")

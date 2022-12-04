@@ -60,6 +60,9 @@ _multiversion-check-env:
 _clean_api_index:
 	rm source/api/*
 
+_clean_api_rsts:
+	rm source/api/*.rst
+
 # remove superfluos 'module' and 'package' text from api headers
 _reformat_apidoc_headers:
 	for f in source/api/*.rst; do\
@@ -89,7 +92,8 @@ _multiversion-build:
 	@EVDIR=$(EVDIR) EVGAMEDIR=$(EVGAMEDIR) $(SPHINXMULTIVERSION) $(SPHINXOPTS) "$(SOURCEDIR)" "$(BUILDDIR)/html" $(SPHINXOPTS)
 
 _multiversion-deploy:
-	@bash -e deploy.sh
+	@python deploy.py
+	# @bash -e deploy.sh
 
 _latex-build:
 	@NOAUTODOC=1 EVDIR=$(EVDIR) EVGAMEDIR=$(EVGAMEDIR) $(SPHINXBUILD) -M latexpdf "$(SOURCEDIR)" "$(BUILDDIR)/latex" $(QUICKFILES)
@@ -111,7 +115,6 @@ pdf:
 
 quick:
 	make _check-env
-	make _quick_autodoc-index
 	make _html-build
 	@echo ""
 	@echo "Documentation built (single version, no autodocs)."
@@ -124,11 +127,10 @@ quickstrict:
 # we build index directly for the current branch
 local:
 	make _check-env
-	make clean
 	make _autodoc-index
 	make _html-build
 	@echo ""
-	@echo "Documentation built (single version)."
+	@echo "Documentation built (single version + autodocs)."
 	@echo "To see result, open evennia/docs/build/html/index.html in a browser."
 
 # build only that which updated since last run (no clean or index-creation)
@@ -136,7 +138,7 @@ localupdate:
 	make _check-env
 	make _html-build
 	@echo ""
-	@echo "Documentation built (single version, only updates, no auto-index)."
+	@echo "Documentation built (single version, only updates, no autodocs)."
 	@echo "To see result, open evennia/docs/build/html/index.html in a browser."
 
 # note that this should be done for each relevant multiversion branch.
@@ -146,7 +148,6 @@ mv-index:
 
 mv-local:
 	make _multiversion-check-env
-	make clean
 	make _multiversion-build
 	@echo ""
 	@echo "Documentation built (multiversion + autodocs)."
@@ -159,7 +160,6 @@ deploy:
 	@echo "Documentation deployed."
 
 # build and prepare the docs for release
-#
 release:
 	make mv-local
 	make deploy

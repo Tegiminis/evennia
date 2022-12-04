@@ -23,16 +23,16 @@ body {
     color: #555;
     margin: 0;
     padding: 0;
-    height:88
 }
 
 div.documentwrapper {
-    float: left;
-    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 div.bodywrapper {
-    margin: 0 0 0 230px;
+    width: 79%;
+    box-sizing: border-box;
 }
 
 hr {
@@ -83,9 +83,21 @@ blockquote {
   font-style: italic;
   color: #797979;
   background-color: #e1e8e2;
-  padding: 3px;
   border: 1px solid #c7cdc8;
   padding-left: 14px;
+  padding-right: 15px;
+  margin-left: 0;
+  width: 96%; 
+  border-left-style: dotted;
+  border-left-width: medium;
+}
+
+blockquote:before { 
+    content: "!";
+    float: left;
+    font-size: 230%;
+    opacity: 0.3;
+    padding-right: 5px;
 }
 
 div.sphinxsidebar {
@@ -228,7 +240,20 @@ p.admonition-title {
 
 div.highlight {
     background-color: #f1f1ef;
+    border-left: 4px;
+    border-color: #7ea6b3;
+    border-left-style: double;
 }
+
+.highlight .hll {
+    background-color: #ffffcc54 !important;
+    border-radius: 5px;
+}
+
+div.highlight-shell.notranslate > div.highlight .nb { 
+    color: #79ecff !important;
+}
+
 
 div.note {
     background-color: #eee;
@@ -325,9 +350,10 @@ code {
     background-color: #ecf0f3;
     color: #6e0e0e;
     /* padding: 1px 2px; */
-    font-size: 0.8em;
+    font-size: 0.9em;
 	  font-family: "Courier Prime", Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
     font-weight: bold;
+    background-color: #f7f7f7;
 }
 
 .viewcode-back {
@@ -419,6 +445,13 @@ code.descname {
   padding: 5px;
 }
 
+div.linenodiv>pre {
+    font-size: 0.9em;
+    line-height: 153%;
+    padding-right: 0;
+    padding-top: 8px;
+}
+
 /* The develop-branch warning header */
 
 .develop {
@@ -430,12 +463,15 @@ code.descname {
 }
 
 
+
 /* -- screen sizes ------------------------------------------------------------------ */
 
 @media print, screen and (max-width: 960px) {
 
   div.body {
-    width: auto;
+    min-width: auto;
+    max-width: none;
+    padding: 0 30px 30px 30px;
   }
 
   div.bodywrapper {
@@ -446,28 +482,16 @@ code.descname {
   div.document,
   div.documentwrapper,
   div.bodywrapper {
-      margin: 0 !important;
-      width: 100%;
-  }
+    margin: 0 !important;
 
-  div.sphinxsidebar {
-    visibility: hidden;
-  }
-
-  .search {
-    visibility: visible;
-    position: absolute;
-    top: -7px;
-    right: 200px;
   }
 
   #top-link {
-      display: none;
+    display: none;
   }
 }
 
 @media print, screen and (max-width: 720px) {
-
   div.related>ul {
     visibility: hidden;
   }
@@ -476,16 +500,25 @@ code.descname {
     visibility: visible;
   }
 
-  .search {
-    right: 10px;
-  }
-
 }
 
 @media print, screen and (max-width: 480px) {
-
   div.body {
-    padding-left: 2px;
+    box-sizing: border-box;
+    padding: 5px;
   }
 
+  /*
+   * At screen sizes this small, the sidebar stacks on top
+   * of the main content, so they both are 100% width.
+   */
+  div.sphinxsidebar {
+    width: 100%;
+  }
+
+  div.document,
+  div.documentwrapper,
+  div.bodywrapper {
+    width: 100%;
+  }
 }

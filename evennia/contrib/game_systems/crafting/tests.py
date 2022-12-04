@@ -4,11 +4,14 @@ Unit tests for the crafting system contrib.
 """
 
 from unittest import mock
-from django.test import override_settings
+
 from django.core.exceptions import ObjectDoesNotExist
+from django.test import override_settings
+
 from evennia.commands.default.tests import BaseEvenniaCommandTest
-from evennia.utils.test_resources import BaseEvenniaTestCase
 from evennia.utils.create import create_object
+from evennia.utils.test_resources import BaseEvenniaTestCase
+
 from . import crafting, example_recipes
 
 
@@ -689,4 +692,11 @@ class TestCraftCommand(BaseEvenniaCommandTest):
             crafting.CmdCraft(),
             "testrecipe using tool1, tool2",
             _MockRecipe.error_consumable_missing_message.format(outputs="Result1", missing="cons1"),
+        )
+
+    def test_craft__unknown_recipe__failure(self):
+        self.call(
+            crafting.CmdCraft(),
+            "nonexistent from cons1, cons2, cons3 using tool1, tool2",
+            "Unknown recipe 'nonexistent'",
         )

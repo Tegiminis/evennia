@@ -4,20 +4,18 @@ Rest Framework provides collections called 'ViewSets', which can generate a
 number of views for the common CRUD operations.
 
 """
-from rest_framework.viewsets import ModelViewSet
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.viewsets import ModelViewSet
 
-from django_filters.rest_framework import DjangoFilterBackend
-
+from evennia.accounts.models import AccountDB
+from evennia.help.models import HelpEntry
 from evennia.objects.models import ObjectDB
 from evennia.objects.objects import DefaultCharacter, DefaultExit, DefaultRoom
-from evennia.accounts.models import AccountDB
 from evennia.scripts.models import ScriptDB
-from evennia.help.models import HelpEntry
-from evennia.web.api import serializers
-from evennia.web.api import filters
+from evennia.web.api import filters, serializers
 from evennia.web.api.permissions import EvenniaPermission
 
 
@@ -112,10 +110,7 @@ class CharacterViewSet(ObjectDBViewSet):
 
     """
 
-    queryset = DefaultCharacter.objects.typeclass_search(
-        DefaultCharacter.path, include_children=True
-    )
-    list_serializer_class = serializers.ObjectListSerializer
+    queryset = DefaultCharacter.objects.all_family()
 
 
 class RoomViewSet(ObjectDBViewSet):
@@ -124,8 +119,7 @@ class RoomViewSet(ObjectDBViewSet):
 
     """
 
-    queryset = DefaultRoom.objects.typeclass_search(DefaultRoom.path, include_children=True)
-    list_serializer_class = serializers.ObjectListSerializer
+    queryset = DefaultRoom.objects.all_family()
 
 
 class ExitViewSet(ObjectDBViewSet):
@@ -135,8 +129,7 @@ class ExitViewSet(ObjectDBViewSet):
 
     """
 
-    queryset = DefaultExit.objects.typeclass_search(DefaultExit.path, include_children=True)
-    list_serializer_class = serializers.ObjectListSerializer
+    queryset = DefaultExit.objects.all_family()
 
 
 class AccountDBViewSet(TypeclassViewSetMixin, ModelViewSet):

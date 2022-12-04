@@ -7,7 +7,7 @@ focused on free form storytelling. Even if you are not interested in MUSH:es, th
 first game-type to try since it's not so code heavy. You will be able to use the same principles for
 building other types of games.
 
-The tutorial starts from scratch. If you did the [First Steps Coding](Beginner-Tutorial/Part1/Beginner-Tutorial-Part1-Intro.md) tutorial
+The tutorial starts from scratch. If you did the [First Steps Coding](Beginner-Tutorial/Part1/Beginner-Tutorial-Part1-Overview.md) tutorial
 already you should have some ideas about how to do some of the steps already.
 
 The following are the (very simplistic and cut-down) features we will implement (this was taken from
@@ -334,9 +334,8 @@ this:
     This is a great warrior.
 
 We don't actually have to modify the `look` command itself however. To understand why, take a look
-at how the default `look` is actually defined. It sits in `evennia/commands/default/general.py` (or
-browse it online
-[here](https://github.com/evennia/evennia/blob/master/evennia/commands/default/general.py#L44)).
+at how the default `look` is actually defined. It sits in [evennia/commands/default/general.py](evennia.commands.default.general).
+
 You will find that the actual return text is done by the `look` command calling a *hook method*
 named `return_appearance` on the object looked at. All the `look` does is to echo whatever this hook
 returns.  So what we need to do is to edit our custom Character typeclass and overload its
@@ -344,10 +343,9 @@ returns.  So what we need to do is to edit our custom Character typeclass and ov
 comes into play for real).
 
 Go back to your custom Character typeclass in `mygame/typeclasses/characters.py`. The default
-implementation of `return appearance` is found in  `evennia.DefaultCharacter` (or online
-[here](https://github.com/evennia/evennia/blob/master/evennia/objects/objects.py#L1438)).  If you
-want to make bigger changes you could copy & paste the whole default thing into our overloading
-method. In our case the change is small though:
+implementation of `return appearance` is found in  [evennia.DefaultCharacter](evennia.objects.objects.DefaultCharacter).
+
+If you  want to make bigger changes you could copy & paste the whole default thing into our overloading method. In our case the change is small though:
 
 ```python
 class Character(DefaultCharacter):
@@ -660,6 +658,6 @@ The simple "Power" game mechanic should be easily expandable to something more f
 useful, same is true for the combat score principle. The `+attack` could be made to target a
 specific player (or npc) and automatically compare their relevant attributes to determine a result.
 
-To continue from here, you can take a look at the [Tutorial World](Beginner-Tutorial/Part1/Tutorial-World.md). For
+To continue from here, you can take a look at the [Tutorial World](Beginner-Tutorial/Part1/Beginner-Tutorial-Tutorial-World.md). For
 more specific ideas, see the [other tutorials and hints](./Howtos-Overview.md) as well
 as the [Evennia Component overview](../Components/Components-Overview.md).

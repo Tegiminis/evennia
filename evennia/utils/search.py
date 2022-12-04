@@ -26,8 +26,8 @@ Example: To reach the search method 'get_object_with_account'
 
 # Import the manager methods to be wrapped
 
-from django.db.utils import OperationalError, ProgrammingError
 from django.contrib.contenttypes.models import ContentType
+from django.db.utils import OperationalError, ProgrammingError
 
 # limit symbol import from API
 __all__ = (
@@ -41,6 +41,7 @@ __all__ = (
     "search_script_tag",
     "search_account_tag",
     "search_channel_tag",
+    "search_typeclass",
 )
 
 
@@ -56,11 +57,11 @@ try:
 except (OperationalError, ProgrammingError):
     # this is a fallback used during tests/doc building
     print("Database not available yet - using temporary fallback for search managers.")
-    from evennia.objects.models import ObjectDB
     from evennia.accounts.models import AccountDB
-    from evennia.scripts.models import ScriptDB
-    from evennia.comms.models import Msg, ChannelDB
+    from evennia.comms.models import ChannelDB, Msg
     from evennia.help.models import HelpEntry
+    from evennia.objects.models import ObjectDB
+    from evennia.scripts.models import ScriptDB
     from evennia.typeclasses.tags import Tag  # noqa
 
 # -------------------------------------------------------------------
@@ -362,3 +363,35 @@ def search_channel_tag(key=None, category=None, tagtype=None, **kwargs):
 
 # search for tag objects (not the objects they are attached to
 search_tag_object = ObjectDB.objects.get_tag
+
+
+# Locate Objects by Typeclass
+
+# search_objects_by_typeclass(typeclass="", include_children=False, include_parents=False) (also search_typeclass works)
+# This returns the objects of the given typeclass
+
+
+def search_objects_by_typeclass(typeclass, include_children=False, include_parents=False):
+    """
+    Searches through all objects returning those of a certain typeclass.
+
+    Args:
+        typeclass (str or class): A typeclass class or a python path to a typeclass.
+        include_children (bool, optional): Return objects with
+            given typeclass *and* all children inheriting from this
+            typeclass. Mutuall exclusive to `include_parents`.
+        include_parents (bool, optional): Return objects with
+            given typeclass *and* all parents to this typeclass.
+            Mutually exclusive to `include_children`.
+
+    Returns:
+        objects (list): The objects found with the given typeclasses.
+    """
+    return ObjectDB.objects.typeclass_search(
+        typeclass=typeclass,
+        include_children=include_children,
+        include_parents=include_parents,
+    )
+
+
+search_typeclass = search_objects_by_typeclass

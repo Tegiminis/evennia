@@ -4,19 +4,18 @@ The base Command class.
 All commands in Evennia inherit from the 'Command' class in this module.
 
 """
-import re
-import math
 import inspect
+import math
+import re
 
 from django.conf import settings
 from django.urls import reverse
 from django.utils.text import slugify
 
 from evennia.locks.lockhandler import LockHandler
-from evennia.utils.utils import is_iter, fill, lazy_property, make_iter
-from evennia.utils.evtable import EvTable
 from evennia.utils.ansi import ANSIString
-
+from evennia.utils.evtable import EvTable
+from evennia.utils.utils import fill, is_iter, lazy_property, make_iter
 
 CMD_IGNORE_PREFIXES = settings.CMD_IGNORE_PREFIXES
 
@@ -147,17 +146,19 @@ class Command(metaclass=CommandMeta):
 
     The cmdhandler makes the following variables available to the
     command methods (so you can always assume them to be there):
+
     self.caller - the game object calling the command
     self.cmdstring - the command name used to trigger this command (allows
                      you to know which alias was used, for example)
-    cmd.args - everything supplied to the command following the cmdstring
+    self.args - everything supplied to the command following the cmdstring
                (this is usually what is parsed in self.parse())
-    cmd.cmdset - the cmdset from which this command was matched (useful only
-                seldomly, notably for help-type commands, to create dynamic
-                help entries and lists)
-    cmd.obj - the object on which this command is defined. If a default command,
-                 this is usually the same as caller.
-    cmd.rawstring - the full raw string input, including any args and no parsing.
+    self.cmdset - the cmdset from which this command was matched (useful only
+                  seldomly, notably for help-type commands, to create dynamic
+                  help entries and lists)
+    self.obj - the object on which this command is defined. If a default command,
+               this is usually the same as caller.
+    self.raw_string - the full raw string input, including the command name,
+                      any args and no parsing.
 
     The following class properties can/should be defined on your child class:
 
@@ -264,7 +265,7 @@ class Command(metaclass=CommandMeta):
         str, too.
 
         """
-        return hash("\n".join(self._matchset))
+        return hash("command")
 
     def __ne__(self, cmd):
         """
@@ -361,11 +362,15 @@ class Command(metaclass=CommandMeta):
         """
         if include_prefixes:
             for cmd_key in self._keyaliases:
-                if cmdname.startswith(cmd_key) and (not self.arg_regex or self.arg_regex.match(cmdname[len(cmd_key) :])):
+                if cmdname.startswith(cmd_key) and (
+                    not self.arg_regex or self.arg_regex.match(cmdname[len(cmd_key) :])
+                ):
                     return cmd_key, cmd_key
         else:
             for k, v in self._noprefix_aliases.items():
-                if cmdname.startswith(k) and (not self.arg_regex or self.arg_regex.match(cmdname[len(k) :])):
+                if cmdname.startswith(k) and (
+                    not self.arg_regex or self.arg_regex.match(cmdname[len(k) :])
+                ):
                     return k, v
         return None, None
 

@@ -1,19 +1,11 @@
 # Unit Testing
 
-*Unit testing* means testing components of a program in isolation from each other to make sure every
-part works on its own before using it with others. Extensive testing helps avoid new updates causing
-unexpected side effects as well as alleviates general code rot (a more comprehensive wikipedia
-article on unit testing can be found [here](https://en.wikipedia.org/wiki/Unit_test)).
+*Unit testing* means testing components of a program in isolation from each other to make sure every part works on its own before using it with others. Extensive testing helps avoid new updates causing unexpected side effects as well as alleviates general code rot (a more comprehensive wikipedia article on unit testing can be found [here](https://en.wikipedia.org/wiki/Unit_test)). 
 
-A typical unit test set calls some function or method with a given input, looks at the result and
-makes sure that this result looks as expected. Rather than having lots of stand-alone test programs,
-Evennia makes use of a central *test runner*. This is a program that gathers all available tests all
-over the Evennia source code (called *test suites*) and runs them all in one go. Errors and
-tracebacks are reported.
+A typical unit test set calls some function or method with a given input, looks at the result and makes sure that this result looks as expected. Rather than having lots of stand-alone test programs, Evennia makes use of a central *test runner*. This is a program that gathers all available tests all over the Evennia source code (called *test suites*) and runs them all in one go. Errors and tracebacks are reported.
 
-By default Evennia only tests itself. But you can also add your own tests to your game code and have
-Evennia run those for you.
-
+ By default Evennia only tests itself. But you can also add your own tests to your game code and have Evennia run those for you. 
+ 
 ## Running the Evennia test suite
 
 To run the full Evennia test suite, go to your game folder and issue the command
@@ -30,12 +22,12 @@ how many tests were run and how long it took. If something went wrong you will g
 If you contribute to Evennia, this is a useful sanity check to see you haven't introduced an
 unexpected bug.
 
-## Running tests for your game dir
+## Running custom game-dir unit tests
 
 If you have implemented your own tests for your game you can run them from your game dir
 with
 
-    evennia test .
+    evennia test --settings settings.py .
 
 The period (`.`) means to run all tests found in the current directory and all subdirectories. You
 could also specify, say, `typeclasses` or `world` if you wanted to just run tests in those subdirs.
@@ -54,7 +46,7 @@ You can also test specific things by giving their path
     evennia test --settings settings.py .world.tests.YourTest
 
 
-## Writing new tests
+## Writing new unit tests
 
 Evennia's test suite makes use of Django unit test system, which in turn relies on Python's
 *unittest* module.
@@ -126,14 +118,14 @@ You can also run a specific test:
 
 You might also want to read the [Python documentation for the unittest module](https://docs.python.org/library/unittest.html).
 
-## Using the Evennia testing classes
+### Using the Evennia testing classes
 
 Evennia offers many custom testing classes that helps with testing Evennia features. 
 They are all found in [evennia.utils.test_resources](evennia.utils.test_resources). Note that 
 these classes implement the `setUp` and `tearDown` already, so if you want to add stuff in them 
 yourself you should remember to use e.g. `super().setUp()` in your code.
 
-### Classes for testing your game dir
+#### Classes for testing your game dir
 
 These all use whatever setting you pass to them and works well for testing code in your game dir.
 
@@ -206,7 +198,7 @@ the `.call` helper), `||` to indicate multiple uses of `.msg()` in the Command. 
 has a lot of arguments for mimicing different ways of calling a Command, so make sure to 
 [read the API docs for .call()](evennia.utils.test_resources.EvenniaCommandTestMixin.call).
 
-### Classes for testing Evennia core
+#### Classes for testing Evennia core
 
 These are used for testing Evennia itself. They provide the same resources as the classes 
 above but enforce Evennias default settings found in `evennia/settings_default.py`, ignoring
@@ -226,10 +218,10 @@ If you want to help out writing unittests for Evennia, take a look at Evennia's 
 page](https://coveralls.io/github/evennia/evennia). There you see which modules have any form of
 test coverage and which does not. All help is appreciated!
 
-## Unit testing contribs with custom models
+### Unit testing contribs with custom models
 
 A special case is if you were to create a contribution to go to the `evennia/contrib` folder that
-uses its [own database models](../Concepts/New-Models.md). The problem with this is that Evennia (and Django) will
+uses its [own database models](../Concepts/Models.md). The problem with this is that Evennia (and Django) will
 only recognize models in `settings.INSTALLED_APPS`. If a user wants to use your contrib, they will
 be required to add your models to their settings file. But since contribs are optional you cannot
 add the model to Evennia's central `settings_default.py` file - this would always create your
@@ -237,12 +229,9 @@ optional models regardless of if the user wants them. But at the same time a con
 of the Evennia distribution and its unit tests should be run with all other Evennia tests using
 `evennia test evennia`.
 
-The way to do this is to only temporarily add your models to the `INSTALLED_APPS` directory when the
-test runs. here is an example of how to do it.
+The way to do this is to only temporarily add your models to the `INSTALLED_APPS` directory when the test runs. here is an example of how to do it.
 
-> Note that this solution, derived from this [stackexchange
-answer](http://stackoverflow.com/questions/502916/django-how-to-create-a-model-dynamically-just-for-
-testing#503435) is currently untested! Please report your findings.
+> Note that this solution, derived from this [stackexchange answer](http://stackoverflow.com/questions/502916/django-how-to-create-a-model-dynamically-just-for-testing#503435) is currently untested! Please report your findings.
 
 ```python
 # a file contrib/mycontrib/tests.py
@@ -292,10 +281,9 @@ class TestMyModel(BaseEvenniaTest):
 ```
 
 
-## A note on making the test runner faster
+### A note on making the test runner faster
 
-If you have custom models with a large number of migrations, creating the test database can take a
-very long time. If you don't require migrations to run for your tests, you can disable them with the
+If you have custom models with a large number of migrations, creating the test database can take a very long time. If you don't require migrations to run for your tests, you can disable them with the
 django-test-without-migrations package. To install it, simply:
 
 ```

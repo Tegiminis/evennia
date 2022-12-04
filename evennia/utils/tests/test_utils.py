@@ -7,15 +7,15 @@ TODO: Not nearly all utilities are covered yet.
 
 import os.path
 import random
-from parameterized import parameterized
-import mock
 from datetime import datetime, timedelta
 
+import mock
 from django.test import TestCase
+from parameterized import parameterized
 from twisted.internet import task
 
-from evennia.utils.ansi import ANSIString
 from evennia.utils import utils
+from evennia.utils.ansi import ANSIString
 from evennia.utils.test_resources import BaseEvenniaTest
 
 
@@ -66,8 +66,12 @@ class TestListToString(TestCase):
         [1,2,3] -> '1, 2, 3'
      with sep==';' and endsep==';':
         [1,2,3] -> '1; 2; 3'
+     with sep=='or':
+        [1,2,3] -> '1 or 2, and 3'
      with endsep=='and':
         [1,2,3] -> '1, 2 and 3'
+     with endsep=='; and':
+        [1,2,3] -> '1, 2; and 3'
      with endsep=='':
         [1,2,3] -> '1, 2 3'
      with addquote and endsep="and"
@@ -80,7 +84,11 @@ class TestListToString(TestCase):
         self.assertEqual("1, 2 and 3", utils.list_to_string([1, 2, 3], endsep="and"))
         self.assertEqual("1, 2 3", utils.list_to_string([1, 2, 3], endsep=""))
         self.assertEqual("1; 2; 3", utils.list_to_string([1, 2, 3], sep=";", endsep=";"))
-        self.assertEqual('"1", "2", "3"', utils.list_to_string([1, 2, 3], endsep=",", addquote=True))
+        self.assertEqual("1 or 2, and 3", utils.list_to_string([1, 2, 3], sep="or"))
+        self.assertEqual("1, 2; and 3", utils.list_to_string([1, 2, 3], endsep="; and"))
+        self.assertEqual(
+            '"1", "2", "3"', utils.list_to_string([1, 2, 3], endsep=",", addquote=True)
+        )
         self.assertEqual(
             '"1", "2" and "3"', utils.list_to_string([1, 2, 3], endsep="and", addquote=True)
         )
@@ -694,3 +702,74 @@ class TestDelay(BaseEvenniaTest):
             timedelay
         )  # Clock must advance to trigger, even if past timedelay
         self.assertEqual(self.char1.ndb.dummy_var, "dummy_func ran")
+
+
+class TestIntConversions(TestCase):
+    def test_int2str(self):
+        self.assertEqual("three", utils.int2str(3))
+        # special adjective conversion
+        self.assertEqual("3rd", utils.int2str(3, adjective=True))
+        # generic adjective conversion
+        self.assertEqual("5th", utils.int2str(5, adjective=True))
+        # No mapping return int as str
+        self.assertEqual("15", utils.int2str(15))
+
+    def test_str2int(self):
+        # simple conversions
+        self.assertEqual(5, utils.str2int("5"))
+
+        # basic mapped numbers
+        self.assertEqual(3, utils.str2int("three"))
+        self.assertEqual(20, utils.str2int("twenty"))
+
+        # multi-place numbers
+        self.assertEqual(2345, utils.str2int("two thousand, three hundred and forty-five"))
+
+        # ordinal numbers
+        self.assertEqual(1, utils.str2int("1st"))
+        self.assertEqual(1, utils.str2int("first"))
+        self.assertEqual(4, utils.str2int("fourth"))
+        # ordinal sound-change conversions
+        self.assertEqual(5, utils.str2int("fifth"))
+        self.assertEqual(20, utils.str2int("twentieth"))
+
+        with self.assertRaises(ValueError):
+            utils.str2int("not a number")
+
+
+class TestJustify(TestCase):
+    def test_justify_whitespace(self):
+        result = utils.justify(" ", 1, align="l")
+        self.assertEqual(" ", result)
+
+        result = utils.justify("", 1, align="l")
+        self.assertEqual(" ", result)
+
+    @parameterized.expand(
+        [
+            (5, "Task \n ID  "),
+            (6, " Task \n  ID  "),
+            (7, "Task ID"),
+            (8, "Task ID "),
+            (9, " Task ID "),
+            (10, " Task ID  "),
+            (11, "  Task ID  "),
+        ]
+    )
+    def test_center_justify_small(self, width, expected):
+        result = utils.justify("Task ID", width, align="c", indent=0, fillchar=" ")
+        self.assertEqual(expected, result)
+
+    def test_justify_ansi(self):
+        """
+        Justify ansistring
+
+        """
+
+        from evennia.utils.ansi import ANSI_RED
+
+        line = ANSIString("This is a |rred|n word")
+
+        result = utils.justify(line, align="c", width=30)
+
+        self.assertIn(ANSI_RED, str(result))

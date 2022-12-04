@@ -7,15 +7,14 @@ default ones in evennia core.
 
 """
 
-from evennia import DefaultCharacter, DefaultExit, DefaultObject, DefaultRoom
-from evennia import ScriptDB
-from evennia.utils.utils import delay, inherits_from, lazy_property
+from evennia import DefaultCharacter, DefaultExit, DefaultObject, DefaultRoom, ScriptDB
 from evennia.contrib.base_systems.ingame_python.callbackhandler import CallbackHandler
 from evennia.contrib.base_systems.ingame_python.utils import (
+    phrase_event,
     register_events,
     time_event,
-    phrase_event,
 )
+from evennia.utils.utils import delay, inherits_from, lazy_property
 
 # Character help
 CHARACTER_CAN_DELETE = """
@@ -234,7 +233,9 @@ class EventCharacter(DefaultCharacter):
         if not string:
             return
 
-        super().announce_move_from(destination, msg=string, move_type=move_type, mapping=mapping, **kwargs)
+        super().announce_move_from(
+            destination, msg=string, move_type=move_type, mapping=mapping, **kwargs
+        )
 
     def announce_move_to(self, source_location, msg=None, move_type="move", mapping=None, **kwargs):
         """
@@ -292,7 +293,9 @@ class EventCharacter(DefaultCharacter):
         if not string:
             return
 
-        super().announce_move_to(source_location, msg=string, move_type=move_type, mapping=mapping, **kwargs)
+        super().announce_move_to(
+            source_location, msg=string, move_type=move_type, mapping=mapping, **kwargs
+        )
 
     def at_pre_move(self, destination, move_type="move", **kwargs):
         """

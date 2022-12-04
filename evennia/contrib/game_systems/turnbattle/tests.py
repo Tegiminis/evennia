@@ -3,12 +3,14 @@ Turnbattle tests.
 
 """
 
-from mock import patch, MagicMock
+from mock import MagicMock, patch
+
 from evennia.commands.default.tests import BaseEvenniaCommandTest
+from evennia.objects.objects import DefaultRoom
 from evennia.utils.create import create_object
 from evennia.utils.test_resources import BaseEvenniaTest
-from evennia.objects.objects import DefaultRoom
-from . import tb_basic, tb_equip, tb_range, tb_items, tb_magic
+
+from . import tb_basic, tb_equip, tb_items, tb_magic, tb_range
 
 
 class TestTurnBattleBasicCmd(BaseEvenniaCommandTest):

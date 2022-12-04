@@ -46,18 +46,20 @@ The `FuncParser` also accepts a direct dict mapping of `{'name': callable, ...}`
 import dataclasses
 import inspect
 import random
+
 from django.conf import settings
-from evennia.utils import logger
+
+from evennia.utils import logger, search
 from evennia.utils.utils import (
-    make_iter,
     callables_from_module,
-    variable_from_module,
-    pad,
     crop,
+    int2str,
     justify,
+    make_iter,
+    pad,
     safe_convert_to_types,
+    variable_from_module,
 )
-from evennia.utils import search
 from evennia.utils.verb_conjugation.conjugate import verb_actor_stance_components
 from evennia.utils.verb_conjugation.pronouns import pronoun_to_viewpoints
 
@@ -84,7 +86,7 @@ class _ParsedFunc:
     # state storage
     fullstr: str = ""
     infuncstr: str = ""
-    single_quoted: int = -1
+    rawstr: str = ""
     double_quoted: int = -1
     current_kwarg: str = ""
     open_lparens: int = 0
@@ -96,7 +98,7 @@ class _ParsedFunc:
         return self.funcname, self.args, self.kwargs
 
     def __str__(self):
-        return self.fullstr + self.infuncstr
+        return self.prefix + self.rawstr + self.infuncstr
 
 
 class ParsingError(RuntimeError):
@@ -242,7 +244,7 @@ class FuncParser:
             if raise_errors:
                 available = ", ".join(f"'{key}'" for key in self.callables)
                 raise ParsingError(
-                    f"Unknown parsed function '{str(parsedfunc)}' " f"(available: {available})"
+                    f"Unknown parsed function '{str(parsedfunc)}' (available: {available})"
                 )
             return str(parsedfunc)
 
@@ -318,7 +320,6 @@ class FuncParser:
         # parsing state
         callstack = []
 
-        single_quoted = -1
         double_quoted = -1
         open_lparens = 0  # open (
         open_lsquare = 0  # open [
@@ -353,8 +354,7 @@ class FuncParser:
 
                 if curr_func:
                     # we are starting a nested funcdef
-                    return_str = True
-                    if len(callstack) > _MAX_NESTING:
+                    if len(callstack) >= _MAX_NESTING - 1:
                         # stack full - ignore this function
                         if raise_errors:
                             raise ParsingError(
@@ -367,14 +367,14 @@ class FuncParser:
                         # store state for the current func and stack it
                         curr_func.current_kwarg = current_kwarg
                         curr_func.infuncstr = infuncstr
-                        curr_func.single_quoted = single_quoted
                         curr_func.double_quoted = double_quoted
                         curr_func.open_lparens = open_lparens
                         curr_func.open_lsquare = open_lsquare
                         curr_func.open_lcurly = open_lcurly
+                        # we must strip the remaining funcstr so it's not counted twice
+                        curr_func.rawstr = curr_func.rawstr[: -len(infuncstr)]
                         current_kwarg = ""
                         infuncstr = ""
-                        single_quoted = -1
                         double_quoted = -1
                         open_lparens = 0
                         open_lsquare = 0
@@ -396,6 +396,8 @@ class FuncParser:
 
             # in a function def (can be nested)
 
+            curr_func.rawstr += char
+
             if exec_return != "" and char not in (",=)"):
                 # if exec_return is followed by any other character
                 # than one demarking an arg,kwarg or function-end
@@ -403,24 +405,7 @@ class FuncParser:
                 infuncstr += str(exec_return)
                 exec_return = ""
 
-            if char == "'" and double_quoted < 0:  # note that this is the same as "\'"
-                # a single quote - flip status
-                if single_quoted == 0:
-                    infuncstr = infuncstr[1:]
-                    single_quoted = -1
-                elif single_quoted > 0:
-                    prefix = infuncstr[0:single_quoted]
-                    infuncstr = prefix + infuncstr[single_quoted + 1 :]
-                    single_quoted = -1
-                else:
-                    infuncstr += char
-                    infuncstr = infuncstr.strip()
-                    single_quoted = len(infuncstr) - 1
-                    literal_infuncstr = True
-
-                continue
-
-            if char == '"' and single_quoted < 0:  # note that this is the same as '\"'
+            if char == '"':  # note that this is the same as '\"'
                 # a double quote = flip status
                 if double_quoted == 0:
                     infuncstr = infuncstr[1:]
@@ -437,7 +422,7 @@ class FuncParser:
 
                 continue
 
-            if double_quoted >= 0 or single_quoted >= 0:
+            if double_quoted >= 0:
                 # inside a string definition - this escapes everything else
                 infuncstr += char
                 continue
@@ -551,7 +536,6 @@ class FuncParser:
                             infuncstr = curr_func.infuncstr + str(exec_return)
                             exec_return = ""
                         curr_func.infuncstr = ""
-                        single_quoted = curr_func.single_quoted
                         double_quoted = curr_func.double_quoted
                         open_lparens = curr_func.open_lparens
                         open_lsquare = curr_func.open_lsquare
@@ -574,8 +558,15 @@ class FuncParser:
             # these are malformed (no closing bracket) and we should get their
             # strings as-is.
             callstack.append(curr_func)
-            for _ in range(len(callstack)):
-                infuncstr = str(callstack.pop()) + infuncstr
+            for inum, _ in enumerate(range(len(callstack))):
+                funcstr = str(callstack.pop())
+                if inum == 0 and funcstr.endswith(infuncstr):
+                    # avoid double-echo of nested function calls. This should
+                    # produce a good result most of the time, but it's not 100%
+                    # guaranteed to, since it can ignore genuine duplicates
+                    infuncstr = funcstr
+                else:
+                    infuncstr = funcstr + infuncstr
 
         if not return_str and exec_return != "":
             # return explicit return
@@ -586,7 +577,9 @@ class FuncParser:
 
         return fullstr
 
-    def parse_to_any(self, string, raise_errors=False, **reserved_kwargs):
+    def parse_to_any(
+        self, string, raise_errors=False, escape=False, strip=False, **reserved_kwargs
+    ):
         """
         This parses a string and if the string only contains a "$func(...)",
         the return will be the return value of that function, even if it's not
@@ -598,6 +591,10 @@ class FuncParser:
             raise_errors (bool, optional): If unset, leave a failing (or
                 unrecognized) inline function as unparsed in the string. If set,
                 raise an ParsingError.
+            escape (bool, optional): If set, escape all found functions so they
+                are not executed by later parsing.
+            strip (bool, optional): If set, strip any inline funcs from string
+                as if they were not there.
             **reserved_kwargs: If given, these are guaranteed to _always_ pass
                 as part of each parsed callable's **kwargs. These  override
                 same-named default options given in `__init__` as well as any
@@ -634,9 +631,9 @@ class FuncParser:
         """
         return self.parse(
             string,
-            raise_errors=False,
-            escape=False,
-            strip=False,
+            raise_errors=raise_errors,
+            escape=escape,
+            strip=strip,
             return_str=False,
             **reserved_kwargs,
         )
@@ -671,12 +668,47 @@ def funcparser_callable_eval(*args, **kwargs):
 
 
 def funcparser_callable_toint(*args, **kwargs):
-    """Usage: toint(43.0) -> 43"""
+    """Usage: $toint(43.0) -> 43"""
     inp = funcparser_callable_eval(*args, **kwargs)
     try:
         return int(inp)
     except TypeError:
         return inp
+    except ValueError:
+        return inp
+
+
+def funcparser_callable_int2str(*args, **kwargs):
+    """
+    Usage: $int2str(1) -> 'one' etc, up to 12->twelve.
+
+    Args:
+        number (int): The number. If not an int, will be converted.
+
+    Uses the int2str utility function.
+    """
+    if not args:
+        return ""
+    try:
+        number = int(args[0])
+    except ValueError:
+        return args[0]
+    return int2str(number)
+
+
+def funcparser_callable_an(*args, **kwargs):
+    """
+    Usage: $an(thing) -> a thing
+
+    Adds a/an depending on if the first letter of the given word is a consonant or not.
+
+    """
+    if not args:
+        return ""
+    item = str(args[0])
+    if item and item[0] in "aeiouy":
+        return f"an {item}"
+    return f"a {item}"
 
 
 def _apply_operation_two_elements(*args, operator="+", **kwargs):
@@ -759,7 +791,7 @@ def funcparser_callable_round(*args, **kwargs):
     num, *significant = args
     significant = significant[0] if significant else 0
     try:
-        round(num, significant)
+        return round(num, significant)
     except Exception:
         if kwargs.get("raise_errors"):
             raise
@@ -827,20 +859,33 @@ def funcparser_callable_choice(*args, **kwargs):
     Args:
         listing (list): A list of items to randomly choose between.
             This will be converted from a string to a real list.
+        *args: If multiple args are given, will pick one randomly from them.
 
     Returns:
         any: The randomly chosen element.
 
     Example:
-        - `$choice([key, flower, house])`
+        - `$choice(key, flower, house)`
         - `$choice([1, 2, 3, 4])`
 
     """
     if not args:
         return ""
-    args, _ = safe_convert_to_types(("py", {}), *args, **kwargs)
+
+    nargs = len(args)
+    if nargs == 1:
+        # this needs to be a list/tuple for this to make sense
+        args, _ = safe_convert_to_types(("py", {}), args[0], **kwargs)
+        args = make_iter(args[0]) if args else None
+    else:
+        # separate arg per entry
+        converters = ["py" for _ in range(nargs)]
+        args, _ = safe_convert_to_types((converters, {}), *args, **kwargs)
+
+    if not args:
+        return ""
     try:
-        return random.choice(args[0])
+        return random.choice(args)
     except Exception:
         if kwargs.get("raise_errors"):
             raise
@@ -872,7 +917,7 @@ def funcparser_callable_pad(*args, **kwargs):
     nrest = len(rest)
     try:
         width = int(kwargs.get("width", rest[0] if nrest > 0 else _CLIENT_DEFAULT_WIDTH))
-    except TypeError:
+    except (TypeError, ValueError):
         width = _CLIENT_DEFAULT_WIDTH
 
     align = kwargs.get("align", rest[1] if nrest > 1 else "c")
@@ -904,7 +949,7 @@ def funcparser_callable_crop(*args, **kwargs):
     nrest = len(rest)
     try:
         width = int(kwargs.get("width", rest[0] if nrest > 0 else _CLIENT_DEFAULT_WIDTH))
-    except TypeError:
+    except (TypeError, ValueError):
         width = _CLIENT_DEFAULT_WIDTH
     suffix = kwargs.get("suffix", rest[1] if nrest > 1 else "[...]")
     return crop(str(text), width=width, suffix=str(suffix))
@@ -921,7 +966,7 @@ def funcparser_callable_space(*args, **kwarg):
         return ""
     try:
         width = int(args[0])
-    except TypeError:
+    except ValueError:
         width = 1
     return " " * width
 
@@ -950,12 +995,12 @@ def funcparser_callable_justify(*args, **kwargs):
     lrest = len(rest)
     try:
         width = int(kwargs.get("width", rest[0] if lrest > 0 else _CLIENT_DEFAULT_WIDTH))
-    except TypeError:
+    except (TypeError, ValueError):
         width = _CLIENT_DEFAULT_WIDTH
     align = str(kwargs.get("align", rest[1] if lrest > 1 else "f"))
     try:
         indent = int(kwargs.get("indent", rest[2] if lrest > 2 else 0))
-    except TypeError:
+    except (TypeError, ValueError):
         indent = 0
     return justify(str(text), width=width, align=align, indent=indent)
 
@@ -1017,6 +1062,36 @@ def funcparser_callable_clr(*args, **kwargs):
     return f"{startclr}{text}{endclr}"
 
 
+def funcparser_callable_pluralize(*args, **kwargs):
+    """
+    FuncParser callable. Handles pluralization of a word.
+
+    Args:
+        singular_word (str): The base (singular) word to optionally pluralize
+        number (int): The number of elements; if 1 (or 0), use `singular_word` as-is,
+            otherwise use plural form.
+        plural_word (str, optional): If given, this will be used if `number`
+            is greater than one. If not given, we simply add 's' to the end of
+            `singular_word`.
+
+    Example:
+        - `$pluralize(thing, 2)` -> "things"
+        - `$pluralize(goose, 18, geese)` -> "geese"
+
+    """
+    if not args:
+        return ""
+    nargs = len(args)
+    if nargs > 2:
+        singular_word, number, plural_word = args[:3]
+    elif nargs > 1:
+        singular_word, number = args[:2]
+        plural_word = f"{singular_word}s"
+    else:
+        singular_word, number = args[0], 1
+    return singular_word if abs(int(number)) in (0, 1) else plural_word
+
+
 def funcparser_callable_search(*args, caller=None, access="control", **kwargs):
     """
     FuncParser callable. Finds an object based on name or #dbref. Note that
@@ -1024,7 +1099,9 @@ def funcparser_callable_search(*args, caller=None, access="control", **kwargs):
     security. If called without session, the call is aborted.
 
     Args:
-        query (str): The key or dbref to search for.
+        query (str): The key or dbref to search for. This can consist of any args used
+            for one of the regular search methods. Also kwargs will be passed into
+            the search (except the kwargs given below)
 
     Keyword Args:
         return_list (bool): If set, return a list of objects with
@@ -1035,6 +1112,7 @@ def funcparser_callable_search(*args, caller=None, access="control", **kwargs):
             The 'control' permission is required.
         access (str): Which locktype access to check. Unset to disable the
             security check.
+        **kwargs: Will be passed into the main search.
 
     Returns:
         any: An entity match or None if no match or a list if `return_list` is set.
@@ -1047,30 +1125,38 @@ def funcparser_callable_search(*args, caller=None, access="control", **kwargs):
         - "$search(#233)"
         - "$search(Tom, type=account)"
         - "$search(meadow, return_list=True)"
+        - "$search(beach, category=outdoors, type=tag)
 
     """
-    return_list = kwargs.get("return_list", "false").lower() == "true"
+    # clean out funcparser-specific kwargs so we can use the kwargs for
+    # searching
+    search_kwargs = {
+        key: value
+        for key, value in kwargs.items()
+        if key not in ("funcparser", "raise_errors", "type", "return_list")
+    }
+    return_list = str(kwargs.pop("return_list", "false")).lower() == "true"
 
     if not args:
         return [] if return_list else None
     if not caller:
         raise ParsingError("$search requires a `caller` passed to the parser.")
 
-    query = str(args[0])
-
     typ = kwargs.get("type", "obj")
     targets = []
     if typ == "obj":
-        targets = search.search_object(query)
+        targets = search.search_object(*args, **search_kwargs)
     elif typ == "account":
-        targets = search.search_account(query)
+        targets = search.search_account(*args, **search_kwargs)
     elif typ == "script":
-        targets = search.search_script(query)
+        targets = search.search_script(*args, **search_kwargs)
+    elif typ == "tag":
+        targets = search.search_object_by_tag(*args, **search_kwargs)
 
     if not targets:
         if return_list:
             return []
-        raise ParsingError(f"$search: Query '{query}' gave no matches.")
+        raise ParsingError(f"$search: Query '{args[0]}' gave no matches.")
 
     if len(targets) > 1 and not return_list:
         raise ParsingError(
@@ -1079,7 +1165,7 @@ def funcparser_callable_search(*args, caller=None, access="control", **kwargs):
         )
 
     for target in targets:
-        if not target.access(caller, target, access):
+        if not target.access(caller, access):
             raise ParsingError("$search Cannot add found entity - access failure.")
 
     return list(targets) if return_list else targets[0]
@@ -1382,6 +1468,9 @@ FUNCPARSER_CALLABLES = {
     "justify_center": funcparser_callable_center_justify,
     "space": funcparser_callable_space,
     "clr": funcparser_callable_clr,
+    "pluralize": funcparser_callable_pluralize,
+    "int2str": funcparser_callable_int2str,
+    "an": funcparser_callable_an,
 }
 
 SEARCHING_CALLABLES = {

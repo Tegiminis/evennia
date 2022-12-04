@@ -10,8 +10,15 @@ command method rather than caller.msg().
 """
 
 from evennia.commands.cmdset import CmdSet
-from evennia.commands.default import help, comms, admin, system
-from evennia.commands.default import building, account, general
+from evennia.commands.default import (
+    account,
+    admin,
+    building,
+    comms,
+    general,
+    help,
+    system,
+)
 
 
 class AccountCmdSet(CmdSet):
@@ -65,6 +72,7 @@ class AccountCmdSet(CmdSet):
         self.add(comms.CmdIRCStatus())
         self.add(comms.CmdRSS2Chan())
         self.add(comms.CmdGrapevine2Chan())
+        self.add(comms.CmdDiscord2Chan())
         # self.add(comms.CmdChannels())
         # self.add(comms.CmdAddCom())
         # self.add(comms.CmdDelCom())

@@ -1,12 +1,11 @@
 # Server Setup and Life
 
-This documentation covers how to setup and maintain the server, 
-from first install to opening your game to the public.
+This sums up all steps of maintaining your Evennia game from first installation to production release.
 
-## Installation & running 
+## Installation and running 
 
 ```{toctree}
-:maxdepth: 2
+:maxdepth: 1
 
 Installation
 Installation-Git
@@ -15,34 +14,34 @@ Installation-Troubleshooting
 Installation-Android
 Installation-Upgrade
 Installation-Non-Interactive
-Start-Stop-Reload
+Running-Evennia
+Updating-Evennia
 ```
 
-## Configuring
+## Configuration
 
 ```{toctree}
 :maxdepth: 2
 
 Settings
 Settings-Default
-Choosing-An-SQL-Server
-Evennia-Game-Index
-IRC
-Grapevine
-RSS
-How-to-connect-Evennia-to-Twitter
-Client-Support-Grid
-
+Choosing-a-Database
+Channels-to-Discord
+Channels-to-Grapevine
+Channels-to-IRC
+Channels-to-RSS
+Channels-to-Twitter
 ```
 
-## Going public 
+## Going Online
 
 ```{toctree} 
 :maxdepth: 2
 
+Evennia-Game-Index
 Online-Setup
-Security
-HAProxy-Config
-Apache-Config
-
+Client-Support-Grid
+Security-Practices
+Config-HAProxy
+Config-Apache-Proxy
 ```

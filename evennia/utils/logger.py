@@ -18,10 +18,11 @@ import os
 import time
 from datetime import datetime
 from traceback import format_exc
+
 from twisted import logger as twisted_logger
+from twisted.internet.threads import deferToThread
 from twisted.python import logfile
 from twisted.python import util as twisted_util
-from twisted.internet.threads import deferToThread
 
 log = twisted_logger.Logger()
 
@@ -348,6 +349,12 @@ class WeeklyLogFile(logfile.DailyLogFile):
                 break
         return suffix
 
+    def rotate(self):
+        try:
+            super().rotate()
+        except Exception:
+            log_trace(f"Could not rotate the log file {self.name}.")
+
     def write(self, data):
         """
         Write data to log file
@@ -377,7 +384,7 @@ class EvenniaLogFile(logfile.LogFile):
         from django.conf import settings
 
         _CHANNEL_LOG_NUM_TAIL_LINES = settings.CHANNEL_LOG_NUM_TAIL_LINES
-    num_lines_to_append = _CHANNEL_LOG_NUM_TAIL_LINES
+    num_lines_to_append = max(1, _CHANNEL_LOG_NUM_TAIL_LINES)
 
     def rotate(self, num_lines_to_append=None):
         """
@@ -456,7 +463,7 @@ def _open_log_file(filename):
         from django.conf import settings
 
         _LOGDIR = settings.LOG_DIR
-        _LOG_ROTATE_SIZE = settings.CHANNEL_LOG_ROTATE_SIZE
+        _LOG_ROTATE_SIZE = max(1000, settings.CHANNEL_LOG_ROTATE_SIZE)
 
     filename = os.path.join(_LOGDIR, filename)
     if filename in _LOG_FILE_HANDLES:

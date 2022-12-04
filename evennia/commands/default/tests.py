@@ -12,41 +12,42 @@ main test suite started with
 
 """
 import datetime
+from unittest.mock import MagicMock, Mock, patch
+
 from anything import Anything
-
-from parameterized import parameterized
 from django.conf import settings
+from django.test import override_settings
+from parameterized import parameterized
 from twisted.internet import task
-from unittest.mock import patch, Mock, MagicMock
 
-from evennia import DefaultRoom, DefaultExit, ObjectDB
-from evennia.commands.default.cmdset_character import CharacterCmdSet
-from evennia.utils.test_resources import (
-    BaseEvenniaTest,
-    BaseEvenniaCommandTest,
-    EvenniaCommandTest,
-)  # noqa
-from evennia.commands.default import (
-    help as help_module,
-    general,
-    system,
-    admin,
-    account,
-    building,
-    batchprocess,
-    comms,
-    unloggedin,
-    syscommands,
+from evennia import (
+    DefaultCharacter,
+    DefaultExit,
+    DefaultObject,
+    DefaultRoom,
+    ObjectDB,
+    search_object,
 )
-from evennia.commands.default.muxcommand import MuxCommand
-from evennia.commands.command import Command, InterruptCommand
 from evennia.commands import cmdparser
 from evennia.commands.cmdset import CmdSet
-from evennia.utils import utils, gametime, create
-from evennia.server.sessionhandler import SESSIONS
-from evennia import search_object
-from evennia import DefaultObject, DefaultCharacter
+from evennia.commands.command import Command, InterruptCommand
+from evennia.commands.default import (
+    account,
+    admin,
+    batchprocess,
+    building,
+    comms,
+    general,
+)
+from evennia.commands.default import help as help_module
+from evennia.commands.default import syscommands, system, unloggedin
+from evennia.commands.default.cmdset_character import CharacterCmdSet
+from evennia.commands.default.muxcommand import MuxCommand
 from evennia.prototypes import prototypes as protlib
+from evennia.server.sessionhandler import SESSIONS
+from evennia.utils import create, gametime, utils
+from evennia.utils.test_resources import BaseEvenniaCommandTest  # noqa
+from evennia.utils.test_resources import BaseEvenniaTest, EvenniaCommandTest
 
 # ------------------------------------------------------------
 # Command testing
@@ -232,19 +233,16 @@ class TestHelp(BaseEvenniaCommandTest):
             ),
             (
                 "test/extra/subsubtopic",  # partial subsub-match
-                "Help for test/creating extra stuff/subsubtopic\n\n" "A subsubtopic text",
+                "Help for test/creating extra stuff/subsubtopic\n\nA subsubtopic text",
             ),
             (
                 "test/creating extra/subsub",  # partial subsub-match
-                "Help for test/creating extra stuff/subsubtopic\n\n" "A subsubtopic text",
+                "Help for test/creating extra stuff/subsubtopic\n\nA subsubtopic text",
             ),
-            ("test/Something else", "Help for test/something else\n\n" "Something else"),  # case
+            ("test/Something else", "Help for test/something else\n\nSomething else"),  # case
             (
                 "test/More",  # case
-                "Help for test/more\n\n"
-                "Another text\n\n"
-                "Subtopics:\n"
-                "  test/more/second-more",
+                "Help for test/more\n\nAnother text\n\nSubtopics:\n  test/more/second-more",
             ),
             (
                 "test/More/Second-more",
@@ -264,11 +262,11 @@ class TestHelp(BaseEvenniaCommandTest):
             ),
             (
                 "test/more/second/more again",
-                "Help for test/more/second-more/more again\n\n" "Even more text.\n",
+                "Help for test/more/second-more/more again\n\nEven more text.\n",
             ),
             (
                 "test/more/second/third",
-                "Help for test/more/second-more/third more\n\n" "Third more text\n",
+                "Help for test/more/second-more/third more\n\nThird more text\n",
             ),
         ]
     )
@@ -520,7 +518,7 @@ class TestCmdTasks(BaseEvenniaCommandTest):
 
     def test_misformed_command(self):
         wanted_msg = (
-            "Task command misformed.|Proper format tasks[/switch] " "[function name or task id]"
+            "Task command misformed.|Proper format tasks[/switch] [function name or task id]"
         )
         self.call(system.CmdTasks(), f"/cancel", wanted_msg)
 
@@ -557,18 +555,49 @@ class TestAdmin(BaseEvenniaCommandTest):
 
 
 class TestAccount(BaseEvenniaCommandTest):
-    def test_ooc_look(self):
-        if settings.MULTISESSION_MODE < 2:
-            self.call(
-                account.CmdOOCLook(), "", "You are out-of-character (OOC).", caller=self.account
-            )
-        if settings.MULTISESSION_MODE == 2:
-            self.call(
-                account.CmdOOCLook(),
-                "",
-                "Account TestAccount (you are OutofCharacter)",
-                caller=self.account,
-            )
+    """
+    Test different account-specific modes
+
+    """
+
+    @parameterized.expand(
+        # multisession-mode, auto-puppet, max_nr_characters
+        [
+            (0, True, 1, "You are out-of-character"),
+            (1, True, 1, "You are out-of-character"),
+            (2, True, 1, "You are out-of-character"),
+            (3, True, 1, "You are out-of-character"),
+            (0, False, 1, "Account TestAccount"),
+            (1, False, 1, "Account TestAccount"),
+            (2, False, 1, "Account TestAccount"),
+            (3, False, 1, "Account TestAccount"),
+            (0, True, 2, "Account TestAccount"),
+            (1, True, 2, "Account TestAccount"),
+            (2, True, 2, "Account TestAccount"),
+            (3, True, 2, "Account TestAccount"),
+            (0, False, 2, "Account TestAccount"),
+            (1, False, 2, "Account TestAccount"),
+            (2, False, 2, "Account TestAccount"),
+            (3, False, 2, "Account TestAccount"),
+        ]
+    )
+    def test_ooc_look(self, multisession_mode, auto_puppet, max_nr_chars, expected_result):
+
+        self.account.db._playable_characters = [self.char1]
+        self.account.unpuppet_all()
+
+        with self.settings(MULTISESSION=multisession_mode):
+            # we need to patch the module header instead of settings
+            with patch("evennia.commands.default.account._MAX_NR_CHARACTERS", new=max_nr_chars):
+                with patch(
+                    "evennia.commands.default.account._AUTO_PUPPET_ON_LOGIN", new=auto_puppet
+                ):
+                    self.call(
+                        account.CmdOOCLook(),
+                        "",
+                        expected_result,
+                        caller=self.account,
+                    )
 
     def test_ooc(self):
         self.call(account.CmdOOC(), "", "You go OOC.", caller=self.account)
@@ -901,7 +930,8 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(
             building.CmdSetAttribute(),
             "Obj/test2[+'three']",
-            "Attribute Obj/test2[+'three'] [category:None] does not exist. (Nested lookups attempted)",
+            "Attribute Obj/test2[+'three'] [category:None] does not exist. (Nested lookups"
+            " attempted)",
         )
         self.call(
             building.CmdSetAttribute(),
@@ -1091,7 +1121,8 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(
             building.CmdSetAttribute(),
             "Obj/test4[0]['one']",
-            "Attribute Obj/test4[0]['one'] [category:None] does not exist. (Nested lookups attempted)",
+            "Attribute Obj/test4[0]['one'] [category:None] does not exist. (Nested lookups"
+            " attempted)",
         )
 
     def test_split_nested_attr(self):
@@ -1339,7 +1370,8 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(
             building.CmdTypeclass(),
             "Obj = evennia.objects.objects.DefaultExit",
-            "Obj already has the typeclass 'evennia.objects.objects.DefaultExit'. Use /force to override.",
+            "Obj already has the typeclass 'evennia.objects.objects.DefaultExit'. Use /force to"
+            " override.",
         )
         self.call(
             building.CmdTypeclass(),
@@ -1355,9 +1387,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(
             building.CmdTypeclass(),
             "Obj",
-            "Obj updated its existing typeclass (evennia.objects.objects.DefaultObject).\n"
-            "Only the at_object_creation hook was run (update mode). Attributes set before swap were not removed\n"
-            "(use `swap` or `type/reset` to clear all).",
+            "Obj updated its existing typeclass (evennia.objects.objects.DefaultObject).\nOnly the"
+            " at_object_creation hook was run (update mode). Attributes set before swap were not"
+            " removed\n(use `swap` or `type/reset` to clear all).",
             cmdstring="update",
         )
         self.call(
@@ -1598,7 +1630,7 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(
             building.CmdTag(),
             "Obj",
-            "Tags on Obj: 'testtag', 'testtag2', " "'testtag2' (category: category1), 'testtag3'",
+            "Tags on Obj: 'testtag', 'testtag2', 'testtag2' (category: category1), 'testtag3'",
         )
 
         self.call(building.CmdTag(), "/search NotFound", "No objects found with tag 'NotFound'.")
@@ -1654,7 +1686,7 @@ class TestBuilding(BaseEvenniaCommandTest):
 
         self.call(
             building.CmdSpawn(),
-            "/save {'key':'Test Char', " "'typeclass':'evennia.objects.objects.DefaultCharacter'}",
+            "/save {'key':'Test Char', 'typeclass':'evennia.objects.objects.DefaultCharacter'}",
             "A prototype_key must be given, either as `prototype_key = <prototype>` or as "
             "a key 'prototype_key' inside the prototype structure.",
         )
@@ -1725,8 +1757,8 @@ class TestBuilding(BaseEvenniaCommandTest):
         # Location should be the specified location.
         self.call(
             building.CmdSpawn(),
-            "/noloc {'prototype_parent':'TESTBALL', 'key': 'Ball', 'prototype_key': 'foo', 'location':'%s'}"
-            % spawnLoc.dbref,
+            "/noloc {'prototype_parent':'TESTBALL', 'key': 'Ball', 'prototype_key': 'foo',"
+            " 'location':'%s'}" % spawnLoc.dbref,
             "Spawned Ball",
         )
         ball = get_object(self, "Ball")
@@ -1785,8 +1817,8 @@ class TestBuilding(BaseEvenniaCommandTest):
 
 
 import evennia.commands.default.comms as cmd_comms  # noqa
-from evennia.utils.create import create_channel  # noqa
 from evennia.comms.comms import DefaultChannel  # noqa
+from evennia.utils.create import create_channel  # noqa
 
 
 @patch("evennia.commands.default.comms.CHANNEL_DEFAULT_TYPECLASS", DefaultChannel)
@@ -1970,6 +2002,58 @@ class TestComms(BaseEvenniaCommandTest):
         )
 
 
+@override_settings(DISCORD_BOT_TOKEN="notarealtoken", DISCORD_ENABLED=True)
+class TestDiscord(BaseEvenniaCommandTest):
+    def setUp(self):
+        super().setUp()
+        self.channel = create.create_channel(key="testchannel", desc="A test channel")
+        self.cmddiscord = cmd_comms.CmdDiscord2Chan
+        self.cmddiscord.account_caller = False
+        # create bot manually so it doesn't get started
+        self.discordbot = create.create_account(
+            "DiscordBot", None, None, typeclass="evennia.accounts.bots.DiscordBot"
+        )
+
+    def tearDown(self):
+        if self.channel.pk:
+            self.channel.delete()
+
+    @parameterized.expand(
+        [
+            ("", "No Discord connections found."),
+            ("/list", "No Discord connections found."),
+            ("/guild", "Messages to Evennia will include the Discord server."),
+            ("/channel", "Relayed messages will include the originating channel."),
+        ]
+    )
+    def test_discord__switches(self, cmd_args, expected):
+        self.call(self.cmddiscord(), cmd_args, expected)
+
+    def test_discord__linking(self):
+        self.call(
+            self.cmddiscord(), "nosuchchannel = 5555555", "There is no channel 'nosuchchannel'"
+        )
+        self.call(
+            self.cmddiscord(),
+            "testchannel = 5555555",
+            "Discord connection created: testchannel <-> #5555555",
+        )
+        self.assertTrue(self.discordbot in self.channel.subscriptions.all())
+        self.assertTrue(("testchannel", "5555555") in self.discordbot.db.channels)
+        self.call(self.cmddiscord(), "testchannel = 5555555", "Those channels are already linked.")
+
+    def test_discord__list(self):
+        self.discordbot.db.channels = [("testchannel", "5555555")]
+        cmdobj = self.cmddiscord()
+        cmdobj.msg = lambda text, **kwargs: setattr(self, "out", str(text))
+        self.call(cmdobj, "", None)
+        self.assertIn("testchannel", self.out)
+        self.assertIn("5555555", self.out)
+        self.call(cmdobj, "testchannel", None)
+        self.assertIn("testchannel", self.out)
+        self.assertIn("5555555", self.out)
+
+
 class TestBatchProcess(BaseEvenniaCommandTest):
     """
     Test the batch processor.
@@ -1986,7 +2070,8 @@ class TestBatchProcess(BaseEvenniaCommandTest):
         self.call(
             batchprocess.CmdBatchCommands(),
             "batchprocessor.example_batch_cmds",
-            "Running Batch-command processor - Automatic mode for batchprocessor.example_batch_cmds",
+            "Running Batch-command processor - Automatic mode for"
+            " batchprocessor.example_batch_cmds",
         )
         # we make sure to delete the button again here to stop the running reactor
         confirm = building.CmdDestroy.confirm
@@ -2018,7 +2103,8 @@ class TestUnconnectedCommand(BaseEvenniaCommandTest):
         # instead of using SERVER_START_TIME (0), we use 86400 because Windows won't let us use anything lower
         gametime.SERVER_START_TIME = 86400
         expected = (
-            "## BEGIN INFO 1.1\nName: %s\nUptime: %s\nConnected: %d\nVersion: Evennia %s\n## END INFO"
+            "## BEGIN INFO 1.1\nName: %s\nUptime: %s\nConnected: %d\nVersion: Evennia %s\n## END"
+            " INFO"
             % (
                 settings.SERVERNAME,
                 datetime.datetime.fromtimestamp(gametime.SERVER_START_TIME).ctime(),

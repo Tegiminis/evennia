@@ -1,10 +1,10 @@
-from evennia.utils.test_resources import BaseEvenniaTest, EvenniaTestCase
-from evennia import DefaultObject, DefaultCharacter, DefaultRoom, DefaultExit
-from evennia.typeclasses.attributes import AttributeProperty
-from evennia.typeclasses.tags import TagProperty, AliasProperty, PermissionProperty
+from evennia import DefaultCharacter, DefaultExit, DefaultObject, DefaultRoom
 from evennia.objects.models import ObjectDB
 from evennia.objects.objects import DefaultObject
+from evennia.typeclasses.attributes import AttributeProperty
+from evennia.typeclasses.tags import AliasProperty, PermissionProperty, TagProperty
 from evennia.utils import create
+from evennia.utils.test_resources import BaseEvenniaTest, EvenniaTestCase
 
 
 class DefaultObjectTest(BaseEvenniaTest):
@@ -68,6 +68,23 @@ class DefaultObjectTest(BaseEvenniaTest):
         self.assertFalse(errors, errors)
         self.assertEqual(description, obj.db.desc)
         self.assertEqual(obj.db.creator_ip, self.ip)
+
+    def test_exit_get_return_exit(self):
+        ex1, _ = DefaultExit.create("north", self.room1, self.room2, account=self.account)
+        single_return_exit = ex1.get_return_exit()
+        all_return_exit = ex1.get_return_exit(return_all=True)
+        self.assertEqual(single_return_exit, None)
+        self.assertEqual(len(all_return_exit), 0)
+
+        ex2, _ = DefaultExit.create("south", self.room2, self.room1, account=self.account)
+        single_return_exit = ex1.get_return_exit()
+        all_return_exit = ex1.get_return_exit(return_all=True)
+        self.assertEqual(single_return_exit, ex2)
+        self.assertEqual(len(all_return_exit), 1)
+
+        ex3, _ = DefaultExit.create("also_south", self.room2, self.room1, account=self.account)
+        all_return_exit = ex1.get_return_exit(return_all=True)
+        self.assertEqual(len(all_return_exit), 2)
 
     def test_urls(self):
         "Make sure objects are returning URLs"
@@ -239,13 +256,15 @@ class SubAttributeProperty(AttributeProperty):
 class SubTagProperty(TagProperty):
     pass
 
+
 class CustomizedProperty(AttributeProperty):
     def at_set(self, value, obj):
         obj.settest = value
         return value
-    
+
     def at_get(self, value, obj):
         return value + obj.awaretest
+
 
 class TestObjectPropertiesClass(DefaultObject):
     attr1 = AttributeProperty(default="attr1")
@@ -265,6 +284,7 @@ class TestObjectPropertiesClass(DefaultObject):
     def base_property(self):
         self.property_initialized = True
 
+
 class TestProperties(EvenniaTestCase):
     """
     Test Properties.
@@ -272,7 +292,9 @@ class TestProperties(EvenniaTestCase):
     """
 
     def setUp(self):
-        self.obj: TestObjectPropertiesClass = create.create_object(TestObjectPropertiesClass, key="testobj")
+        self.obj: TestObjectPropertiesClass = create.create_object(
+            TestObjectPropertiesClass, key="testobj"
+        )
 
     def tearDown(self):
         self.obj.delete()
@@ -316,7 +338,7 @@ class TestProperties(EvenniaTestCase):
         self.assertFalse(hasattr(obj, "property_initialized"))
 
     def test_object_awareness(self):
-        '''Test the "object-awareness" of customized AttributeProperty getter/setters'''
+        """Test the "object-awareness" of customized AttributeProperty getter/setters"""
         obj = self.obj
 
         # attribute properties receive on obj ref in the getter/setter that can customize return

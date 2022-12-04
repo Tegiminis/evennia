@@ -8,19 +8,25 @@ outside the game in modules given by ``settings.FILE_HELP_ENTRY_MODULES``.
 
 """
 
-import re
-from itertools import chain
-from dataclasses import dataclass
-from django.conf import settings
 from collections import defaultdict
-from evennia.utils.utils import dedent
+from dataclasses import dataclass
+from itertools import chain
+
+from django.conf import settings
+
+from evennia.help.filehelp import FILE_HELP_ENTRIES
 from evennia.help.models import HelpEntry
+from evennia.help.utils import help_search_with_index, parse_entry_for_subcategories
 from evennia.utils import create, evmore
 from evennia.utils.ansi import ANSIString
-from evennia.help.filehelp import FILE_HELP_ENTRIES
 from evennia.utils.eveditor import EvEditor
-from evennia.utils.utils import class_from_module, inherits_from, format_grid, pad
-from evennia.help.utils import help_search_with_index, parse_entry_for_subcategories
+from evennia.utils.utils import (
+    class_from_module,
+    dedent,
+    format_grid,
+    inherits_from,
+    pad,
+)
 
 CMD_IGNORE_PREFIXES = settings.CMD_IGNORE_PREFIXES
 COMMAND_DEFAULT_CLASS = class_from_module(settings.COMMAND_DEFAULT_CLASS)
@@ -174,7 +180,11 @@ class CmdHelp(COMMAND_DEFAULT_CLASS):
             else:
                 subtopics = [f"|w{topic}/{subtop}|n" for subtop in subtopics]
             subtopics = "\n|CSubtopics:|n\n  {}".format(
-                "\n  ".join(format_grid(subtopics, width=self.client_width()))
+                "\n  ".join(
+                    format_grid(
+                        subtopics, width=self.client_width(), line_prefix=self.index_topic_clr
+                    )
+                )
             )
         else:
             subtopics = ""
@@ -186,7 +196,11 @@ class CmdHelp(COMMAND_DEFAULT_CLASS):
             else:
                 suggested = [f"|w{sug}|n" for sug in suggested]
             suggested = "\n|COther topic suggestions:|n\n{}".format(
-                "\n  ".join(format_grid(suggested, width=self.client_width()))
+                "\n  ".join(
+                    format_grid(
+                        suggested, width=self.client_width(), line_prefix=self.index_topic_clr
+                    )
+                )
             )
         else:
             suggested = ""
@@ -280,7 +294,13 @@ class CmdHelp(COMMAND_DEFAULT_CLASS):
                 + self.index_topic_clr
             )
             grid, verbatim_elements = _group_by_category(cmd_help_dict)
-            gridrows = format_grid(grid, width, sep="  ", verbatim_elements=verbatim_elements)
+            gridrows = format_grid(
+                grid,
+                width,
+                sep="  ",
+                verbatim_elements=verbatim_elements,
+                line_prefix=self.index_topic_clr,
+            )
             cmd_grid = ANSIString("\n").join(gridrows) if gridrows else ""
 
         if any(db_help_dict.values()):
@@ -291,7 +311,13 @@ class CmdHelp(COMMAND_DEFAULT_CLASS):
                 + self.index_topic_clr
             )
             grid, verbatim_elements = _group_by_category(db_help_dict)
-            gridrows = format_grid(grid, width, sep="  ", verbatim_elements=verbatim_elements)
+            gridrows = format_grid(
+                grid,
+                width,
+                sep="  ",
+                verbatim_elements=verbatim_elements,
+                line_prefix=self.index_topic_clr,
+            )
             db_grid = ANSIString("\n").join(gridrows) if gridrows else ""
 
         # only show the main separators if there are actually both cmd and db-based help
@@ -943,7 +969,7 @@ class CmdSetHelp(CmdHelp):
         if "append" in switches or "merge" in switches or "extend" in switches:
             # merge/append operations
             if not old_entry:
-                self.msg("Could not find topic '%s'. You must give an exact name." % topicstr)
+                self.msg(f"Could not find topic '{topicstr}'. You must give an exact name.")
                 return
             if not self.rhs:
                 self.msg("You must supply text to append/merge.")
@@ -953,16 +979,16 @@ class CmdSetHelp(CmdHelp):
             else:
                 old_entry.entrytext += "\n%s" % self.rhs
             old_entry.aliases.add(aliases)
-            self.msg("Entry updated:\n%s%s" % (old_entry.entrytext, aliastxt))
+            self.msg(f"Entry updated:\n{old_entry.entrytext}{aliastxt}")
             return
 
         if "delete" in switches or "del" in switches:
             # delete the help entry
             if not old_entry:
-                self.msg("Could not find topic '%s'%s." % (topicstr, aliastxt))
+                self.msg(f"Could not find topic '{topicstr}'{aliastxt}.")
                 return
             old_entry.delete()
-            self.msg("Deleted help entry '%s'%s." % (topicstr, aliastxt))
+            self.msg(f"Deleted help entry '{topicstr}'{aliastxt}.")
             return
 
         # at this point it means we want to add a new help entry.
@@ -979,7 +1005,7 @@ class CmdSetHelp(CmdHelp):
                 old_entry.locks.add(lockstring)
                 old_entry.aliases.add(aliases)
                 old_entry.save()
-                self.msg("Overwrote the old topic '%s'%s." % (topicstr, aliastxt))
+                self.msg(f"Overwrote the old topic '{topicstr}'{aliastxt}.")
             else:
                 self.msg(
                     f"Topic '{topicstr}'{aliastxt} already exists. Use /edit to open in editor, or "

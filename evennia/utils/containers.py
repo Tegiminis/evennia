@@ -12,11 +12,12 @@ evennia.OPTION_CLASSES
 
 
 from pickle import dumps
-from django.db.utils import OperationalError, ProgrammingError
-from django.conf import settings
-from evennia.utils.utils import class_from_module, callables_from_module
-from evennia.utils import logger
 
+from django.conf import settings
+from django.db.utils import OperationalError, ProgrammingError
+
+from evennia.utils import logger
+from evennia.utils.utils import callables_from_module, class_from_module
 
 SCRIPTDB = None
 
@@ -202,14 +203,11 @@ class GlobalScriptContainer(Container):
         """
         if self.typeclass_storage is None:
             self.typeclass_storage = {}
-            for key, data in self.loaded_data.items():
-                try:
-                    typeclass = data.get("typeclass", settings.BASE_SCRIPT_TYPECLASS)
-                    self.typeclass_storage[key] = class_from_module(typeclass)
-                except Exception:
-                    logger.log_trace(
-                        f"GlobalScriptContainer could not start import global script {key}."
-                    )
+            for key, data in list(self.loaded_data.items()):
+                typeclass = data.get("typeclass", settings.BASE_SCRIPT_TYPECLASS)
+                self.typeclass_storage[key] = class_from_module(
+                    typeclass, fallback=settings.BASE_SCRIPT_TYPECLASS
+                )
 
     def get(self, key, default=None):
         """
@@ -228,6 +226,13 @@ class GlobalScriptContainer(Container):
         res = self._get_scripts(key)
         if not res:
             if key in self.loaded_data:
+                if key not in self.typeclass_storage:
+                    # this means we are trying to load in a loop
+                    raise RuntimeError(
+                        f"Trying to access `GLOBAL_SCRIPTS.{key}` before scripts have finished "
+                        "initializing. This can happen if accessing GLOBAL_SCRIPTS from the same "
+                        "module the script is defined in."
+                    )
                 # recreate if we have the info
                 return self._load_script(key) or default
             return default

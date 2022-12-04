@@ -2,10 +2,12 @@
 
 ### Evennia 1.0
 
-> Not released yet
-> 2019-2022 develop branch (WIP)
+2019-2022 develop branch
 
-Up requirements to Django 4.0+, Twisted 22+, Python 3.9 or 3.10
+Changed to using `main` branch to follow github standard. Old `master` branch remains
+for now but will not be used anymore, so as to not break installs during transition.
+
+Increase requirements: Django 4.1+, Twisted 22.10+ Python 3.10, 3.11.  PostgreSQL 11+.
 
 - New `drop:holds()` lock default to limit dropping nonsensical things. Access check
   defaults to True for backwards-compatibility in 0.9, will be False in 1.0
@@ -160,18 +162,26 @@ Up requirements to Django 4.0+, Twisted 22+, Python 3.9 or 3.10
 - Attribute storage support defaultdics (Hendher)
 - Add ObjectParent mixin to default game folder template as an easy, ready-made
   way to override features on all ObjectDB-inheriting objects easily.
+  source location, mimicking behavior of `at_pre_move` hook - returning False will abort move.
 - Add `TagProperty`, `AliasProperty` and `PermissionProperty` to assign these
   data in a similar way to django fields.
+- New `at_pre_object_receive(obj, source_location)` method on Objects. Called on
+  destination, mimicking behavior of `at_pre_move` hook - returning False will abort move.
+- New `at_pre_object_leave(obj, destination)` method on Objects. Called on
 - The db pickle-serializer now checks for methods `__serialize_dbobjs__` and `__deserialize_dbobjs__`
   to allow custom packing/unpacking of nested dbobjs, to allow storing in Attribute.
 - Optimizations to rpsystem contrib performance. Breaking change: `.get_sdesc()` will
   now return `None` instead of `.db.desc` if no sdesc is set; fallback in hook (inspectorCaracal)
 - Reworked text2html parser to avoid problems with stateful color tags (inspectorCaracal)
 - Simplified `EvMenu.options_formatter` hook to use `EvColumn` and f-strings (inspectorcaracal)
+- Allow `# CODE`, `# HEADER` etc as well as `#CODE`/`#HEADER` in batchcode
+  files - this works better with black linting.
 - Added `move_type` str kwarg to `move_to()` calls, optionally identifying the type of
   move being done ('teleport', 'disembark', 'give' etc). (volund)
 - Made RPSystem contrib msg calls pass `pose` or `say` as msg-`type` for use in
   e.g. webclient pane filtering where desired. (volund)
+- Added `Account.uses_screenreader(session=None)` as a quick shortcut for
+  finding if a user uses a screenreader (and adjust display accordingly).
 - Fixed bug in `cmdset.remove()` where a command could not be deleted by `key`,
   even though doc suggested one could (ChrisLR)
 - New contrib `name_generator` for building random real-world based or fantasy-names
@@ -184,7 +194,37 @@ Up requirements to Django 4.0+, Twisted 22+, Python 3.9 or 3.10
 - Contrib `buffs` for managing temporary and permanent RPG status buffs effects (tegiminis)
 - New `at_server_init()` hook called before all other startup hooks for all
   startup modes. Used for more generic overriding (volund)
-
+- New `search` lock type used to completely hide an object from being found by
+  the `DefaultObject.search` (`caller.search`) method. (CloudKeeper)
+- Change setting `MULTISESSION_MODE` to now only control sessions, not how many
+  characters can be puppeted simultaneously. New settings now control that.
+- Add new setting `AUTO_CREATE_CHARACTER_WITH_ACCOUNT`, a boolean deciding if
+  the new account should also get a matching character (legacy MUD style).
+- Add new setting `AUTO_PUPPET_ON_LOGIN`, boolean deciding if one should
+  automatically puppet the last/available character on connection (legacy MUD style)
+- Add new setting `MAX_NR_SIMULTANEUS_PUPPETS` - how many puppets the account
+  can run at the same time. Used to limit multi-playing.
+- Make setting `MAX_NR_CHARACTERS` interact better with the new settings above.
+- Allow `$search` funcparser func to search tags and to accept kwargs for more
+  powerful searches passed into the regular search functions.
+- `spawner.spawn` and linked methods now has a kwarg `protfunc_raise_errors`
+  (default True) to disable strict errors on malformed/not-found protfuncs
+- Improve search performance when having many DB-based prototypes via caching.
+- Remove the `return_parents` kwarg of `evennia.prototypes.spawner.spawn` since it
+  was inefficient and unused.
+- Made all id fields BigAutoField for all databases. (owllex)
+- `EvForm` refactored. New `literals` mapping, for literal mappings into the
+  main template (e.g. for single-character replacements).
+- `EvForm` `cells` kwarg now accepts `EvCells` with custom formatting options
+  (mainly for custom align/valign). `EvCells` now makes use of `utils.justify`.
+- `utils.justify` now supports `align="a"` (absolute alignments. This keeps
+  the given left indent but crops/fills to the width. Used in EvCells.
+- `EvTable` now supports passing `EvColumn`s as a list directly, (`EvTable(table=[colA,colB])`)
+- Add `tags=` search criterion to `DefaultObject.search`.
+- Add `AT_EXIT_TRAVERSE` signal, firing when an exit is traversed.
+- Add integration between Evennia and Discord channels (PR by Inspector Cararacal)
+- Support for using a Godot-powered client with Evennia (PR by ChrisLR)
+- Added German translation (patch by Zhuraj)
 
 ## Evennia 0.9.5
 

@@ -1,42 +1,33 @@
 # Coding and development help
 
 This documentation aims to help you set up a sane development environment to
-make your game, also if you never coded before. If you are an experienced coder, much of this will be familiar
-to you, but some things may still be useful. 
+make your game, also if you never coded before.
 
-
-## Setting up a workflow
-
-See also the [Beginner Tutorial](../Howtos/Beginner-Tutorial/Beginner-Tutorial-Intro.md).
+See also the [Beginner Tutorial](../Howtos/Beginner-Tutorial/Beginner-Tutorial-Overview.md).
 
 ```{toctree}
 :maxdepth: 2
 
+Evennia-Code-Style.md
+Default-Command-Syntax.md
 Version-Control.md
-Updating-Your-Game.md
-
-```
-
-## Coding away
-
-```{toctree}
-:maxdepth: 2
-
-Coding-Introduction.md
 Debugging.md
 Unit-Testing.md
 Profiling.md
-Quirks.md
-Changelog.md
-
+Continuous-Integration.md
+Setting-up-PyCharm.md
 ```
 
-## Third-party integrations
+## Evennia Changelog
 
 ```{toctree}
 :maxdepth: 2
 
-Continuous-Integration.md
-Setting-up-PyCharm.md
+Changelog.md
+```
 
+
+```{toctree}
+:hidden:
+Release-Notes-1.0
 ```

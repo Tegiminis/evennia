@@ -7,39 +7,37 @@ the networking features.  (this is done automatically by
 evennia/server/server_runner.py).
 
 """
-import time
-import sys
 import os
+import sys
+import time
 import traceback
 
-from twisted.web import static
+import django
 from twisted.application import internet, service
-from twisted.internet import reactor, defer
+from twisted.internet import defer, reactor
 from twisted.internet.task import LoopingCall
 from twisted.logger import globalLogPublisher
-
-import django
+from twisted.web import static
 
 django.setup()
 
-import evennia
 import importlib
+
+import evennia
 
 evennia._init()
 
+from django.conf import settings
 from django.db import connection
 from django.db.utils import OperationalError
-from django.conf import settings
+from django.utils.translation import gettext as _
 
 from evennia.accounts.models import AccountDB
 from evennia.scripts.models import ScriptDB
 from evennia.server.models import ServerConfig
-
-from evennia.utils.utils import get_evennia_version, mod_import, make_iter
-from evennia.utils import logger
 from evennia.server.sessionhandler import SESSIONS
-
-from django.utils.translation import gettext as _
+from evennia.utils import logger
+from evennia.utils.utils import get_evennia_version, make_iter, mod_import
 
 _SA = object.__setattr__
 
@@ -47,8 +45,11 @@ _SA = object.__setattr__
 SERVER_RESTART = os.path.join(settings.GAME_DIR, "server", "server.restart")
 
 # modules containing hook methods called during start_stop
-SERVER_STARTSTOP_MODULES = [mod_import(mod) for mod in make_iter(settings.AT_SERVER_STARTSTOP_MODULE)
-                            if isinstance(mod, str)]
+SERVER_STARTSTOP_MODULES = [
+    mod_import(mod)
+    for mod in make_iter(settings.AT_SERVER_STARTSTOP_MODULE)
+    if isinstance(mod, str)
+]
 
 # modules containing plugin services
 SERVER_SERVICES_PLUGIN_MODULES = make_iter(settings.SERVER_SERVICES_PLUGIN_MODULES)
@@ -98,16 +99,16 @@ except ImportError:
         "copy 'evennia/game_template/server/conf/web_plugins.py to mygame/server/conf."
     )
 
-
 # Maintenance function - this is called repeatedly by the server
+
+_IDMAPPER_CACHE_MAXSIZE = settings.IDMAPPER_CACHE_MAXSIZE
+_IDLE_TIMEOUT = settings.IDLE_TIMEOUT
+_LAST_SERVER_TIME_SNAPSHOT = 0
 
 _MAINTENANCE_COUNT = 0
 _FLUSH_CACHE = None
-_IDMAPPER_CACHE_MAXSIZE = settings.IDMAPPER_CACHE_MAXSIZE
 _GAMETIME_MODULE = None
-
-_IDLE_TIMEOUT = settings.IDLE_TIMEOUT
-_LAST_SERVER_TIME_SNAPSHOT = 0
+_OBJECTDB = None
 
 
 def _server_maintenance():
@@ -117,11 +118,14 @@ def _server_maintenance():
     """
     global EVENNIA, _MAINTENANCE_COUNT, _FLUSH_CACHE, _GAMETIME_MODULE
     global _LAST_SERVER_TIME_SNAPSHOT
+    global _OBJECTDB
 
-    if not _FLUSH_CACHE:
-        from evennia.utils.idmapper.models import conditional_flush as _FLUSH_CACHE
+    if not _OBJECTDB:
+        from evennia.objects.models import ObjectDB as _OBJECTDB
     if not _GAMETIME_MODULE:
         from evennia.utils import gametime as _GAMETIME_MODULE
+    if not _FLUSH_CACHE:
+        from evennia.utils.idmapper.models import conditional_flush as _FLUSH_CACHE
 
     _MAINTENANCE_COUNT += 1
 
@@ -163,6 +167,20 @@ def _server_maintenance():
 
         for session in to_disconnect:
             SESSIONS.disconnect(session, reason=reason)
+
+    # run unpuppet hooks for objects that are marked as being puppeted,
+    # but which lacks an account (indicates a broken unpuppet operation
+    # such as a server crash)
+    if _MAINTENANCE_COUNT > 1:
+        unpuppet_count = 0
+        for obj in _OBJECTDB.objects.get_by_tag(key="puppeted", category="account"):
+            if not obj.has_account:
+                obj.at_pre_unpuppet()
+                obj.at_post_unpuppet(None, reason=_(" (connection lost)"))
+                obj.tags.remove("puppeted", category="account")
+                unpuppet_count += 1
+        if unpuppet_count:
+            logger.log_msg(f"Ran unpuppet-hooks for {unpuppet_count} link-dead puppets.")
 
 
 # ------------------------------------------------------------
@@ -277,8 +295,8 @@ class Evennia:
         ):  # can't use any() since mismatches may be [0] which reads as False for any()
             # we have a changed default. Import relevant objects and
             # run the update
-            from evennia.objects.models import ObjectDB
             from evennia.comms.models import ChannelDB
+            from evennia.objects.models import ObjectDB
 
             # from evennia.accounts.models import AccountDB
             for i, prev, curr in (
@@ -369,8 +387,8 @@ class Evennia:
 
         """
 
-        from evennia.comms.models import ChannelDB
         from evennia.accounts.models import AccountDB
+        from evennia.comms.models import ChannelDB
         from evennia.utils.create import create_channel
 
         superuser = AccountDB.objects.get(id=1)
@@ -706,10 +724,10 @@ if WEBSERVER_ENABLED:
 
     from evennia.server.webserver import (
         DjangoWebRoot,
-        WSGIWebServer,
-        Website,
         LockableThreadPool,
         PrivateStaticRoot,
+        Website,
+        WSGIWebServer,
     )
 
     # start a thread pool and define the root url (/) as a wsgi resource

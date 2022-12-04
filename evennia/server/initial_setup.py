@@ -8,12 +8,13 @@ Everything starts at handle_setup()
 
 
 import time
+
 from django.conf import settings
 from django.utils.translation import gettext as _
+
 from evennia.accounts.models import AccountDB
 from evennia.server.models import ServerConfig
 from evennia.utils import create, logger
-
 
 ERROR_NO_SUPERUSER = """
     No superuser exists yet. The superuser is the 'owner' account on
@@ -110,7 +111,7 @@ def create_objects():
         "examine:perm(Developer);edit:false();delete:false();boot:false();msg:all();puppet:false()"
     )
     # we set this low so that quelling is more useful
-    superuser_character.permissions.add("Player")
+    superuser_character.permissions.add("Developer")
     superuser_character.save()
 
     superuser.attributes.add("_first_login", True)

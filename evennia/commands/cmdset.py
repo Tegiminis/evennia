@@ -29,6 +29,7 @@ Set theory.
 from weakref import WeakKeyDictionary
 
 from django.utils.translation import gettext as _
+
 from evennia.utils.utils import inherits_from, is_iter
 
 __all__ = ("CmdSet",)
@@ -515,7 +516,6 @@ class CmdSet(object, metaclass=_CmdSetMeta):
             existing ones to make a unique set.
 
         """
-
         if inherits_from(cmd, "evennia.commands.cmdset.CmdSet"):
             # cmd is a command set so merge all commands in that set
             # to this one. We raise a visible error if we created
@@ -536,31 +536,32 @@ class CmdSet(object, metaclass=_CmdSetMeta):
             cmds = [self._instantiate(c) for c in cmd]
         else:
             cmds = [self._instantiate(cmd)]
+
         commands = self.commands
         system_commands = self.system_commands
+
         for cmd in cmds:
             # add all commands
             if not hasattr(cmd, "obj") or cmd.obj is None:
                 cmd.obj = self.cmdsetobj
-            try:
-                ic = commands.index(cmd)
-                commands[ic] = cmd  # replace
-            except ValueError:
-                commands.append(cmd)
+
+            # remove duplicates and add new
+            for _dum in range(commands.count(cmd)):
+                commands.remove(cmd)
+            commands.append(cmd)
 
             # add system_command to separate list as well,
-            # for quick look-up
+            # for quick look-up. These have no
             if cmd.key.startswith("__"):
-                try:
-                    ic = system_commands.index(cmd)
-                    system_commands[ic] = cmd  # replace
-                except ValueError:
-                    system_commands.append(cmd)
+                # remove same-matches and add new
+                for _dum in range(system_commands.count(cmd)):
+                    system_commands.remove(cmd)
+                system_commands.append(cmd)
 
-        self.commands = commands
         if not allow_duplicates:
             # extra run to make sure to avoid doublets
-            self.commands = list(set(self.commands))
+            commands = list(set(commands))
+        self.commands = commands
 
     def remove(self, cmd):
         """
