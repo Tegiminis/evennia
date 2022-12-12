@@ -210,6 +210,7 @@ class TestBuffsAndHandler(EvenniaTest):
             "add": {"total": 15, "strongest": 15},
             "mult": {"total": 0, "strongest": 0},
             "div": {"total": 0, "strongest": 0},
+            "custom": [],
         }
         self.assertDictEqual(mods, _testmods)
 

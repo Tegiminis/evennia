@@ -107,6 +107,27 @@ from evennia.typeclasses.attributes import AttributeProperty
 from evennia.utils import search, utils
 
 
+class Mod:
+    """A single stat mod object. One buff or trait can hold multiple mods, for the same or different stats."""
+
+    stat = "null"  # The stat string that is checked to see if this mod should be applied
+    value = 0  # Buff's value
+    perstack = 0  # How much additional value is added to the buff per stack
+    modifier = "add"  # The modifier the buff applies. 'add' or 'mult'
+
+    def __init__(self, stat: str, modifier: str, value, perstack=0.0) -> None:
+        """
+        Args:
+            stat:       The stat the buff affects. Normally matches the object attribute name
+            mod:        The modifier the buff applies. "add", "mult", "div", and "custom" are the default values
+            value:      The value of the modifier
+            perstack:   How much is added to the base, per stack (including first)."""
+        self.stat = stat
+        self.modifier = modifier
+        self.value = value
+        self.perstack = perstack
+
+
 class BaseBuff:
     key = "template"  # The buff's unique key. Will be used as the buff's key in the handler
     name = "Template"  # The buff's name. Used for user messaging
@@ -187,6 +208,14 @@ class BaseBuff:
 
         This must return True for a buff to apply modifiers, trigger effects, or tick."""
         return True
+
+    def custom_modifier(self, value, *args, **kwargs):
+        """Allows you to write a custom value modification that is applied after additive modifiers.
+
+        Args:
+            value:  The value to modify
+        """
+        return value
 
     # region helper methods
     def remove(self, loud=True, expire=False, context=None):
@@ -298,27 +327,6 @@ class BaseBuff:
         pass
 
     # endregion
-
-
-class Mod:
-    """A single stat mod object. One buff or trait can hold multiple mods, for the same or different stats."""
-
-    stat = "null"  # The stat string that is checked to see if this mod should be applied
-    value = 0  # Buff's value
-    perstack = 0  # How much additional value is added to the buff per stack
-    modifier = "add"  # The modifier the buff applies. 'add' or 'mult'
-
-    def __init__(self, stat: str, modifier: str, value, perstack=0.0) -> None:
-        """
-        Args:
-            stat:       The stat the buff affects. Normally matches the object attribute name
-            mod:        The modifier the buff applies. "add" for add/sub or "mult" for mult/div
-            value:      The value of the modifier
-            perstack:   How much is added to the base, per stack (including first)."""
-        self.stat = stat
-        self.modifier = modifier
-        self.value = value
-        self.perstack = perstack
 
 
 class BuffHandler:
@@ -955,8 +963,9 @@ class BuffHandler:
 
         Args:
             to_filter:  (optional) The dictionary of buffs to iterate over. If none is provided, returns all buffs (default: None)"""
-        if not isinstance(to_filter, dict):
-            raise TypeError
+        if to_filter:
+            if not isinstance(to_filter, dict):
+                raise TypeError
         self.cleanup()
         _cache = self.visible if not to_filter else to_filter
         _flavor = {k: (buff.name, buff.flavor) for k, buff in _cache.items()}
@@ -1041,19 +1050,26 @@ class BuffHandler:
             "add": {"total": 0, "strongest": 0},
             "mult": {"total": 0, "strongest": 0},
             "div": {"total": 0, "strongest": 0},
+            "custom": [],
         }
         if not buffs:
             return calculated
 
+        _customgather: list = []
         for buff in buffs.values():
             for mod in buff.mods:
                 buff: BaseBuff
                 mod: Mod
                 if mod.stat == stat:
-                    _modval = mod.value + ((buff.stacks) * mod.perstack)
-                    calculated[mod.modifier]["total"] += _modval
-                    if _modval > calculated[mod.modifier]["strongest"]:
-                        calculated[mod.modifier]["strongest"] = _modval
+                    if mod.modifier == "custom":
+                        _customgather.append(buff)
+                    else:
+                        _modval = mod.value + ((buff.stacks) * mod.perstack)
+                        calculated[mod.modifier]["total"] += _modval
+                        if _modval > calculated[mod.modifier]["strongest"]:
+                            calculated[mod.modifier]["strongest"] = _modval
+
+        calculated["custom"] = list(_customgather)
         return calculated
 
     def _apply_mods(self, value, calc: dict, strongest=False):
@@ -1078,6 +1094,11 @@ class BuffHandler:
                 / max(1, 1.0 + calc["div"]["total"])
                 * max(0, 1.0 + calc["mult"]["total"])
             )
+
+        for buff in calc["custom"]:
+            buff: BaseBuff
+            final = buff.custom_modifier(final)
+
         return final
 
     def _remove_via_dict(self, buffs: dict, loud=True, dispel=False, expire=False, context=None):

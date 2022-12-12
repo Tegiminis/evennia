@@ -344,6 +344,21 @@ never permanently change a stat modified by a buff. To remove the modification, 
 
 > **Note**: You can add your own modifier types by overloading the `_calculate_mods` method, which contains the basic modifier application logic.
 
+#### Custom Mods (Advanced)
+
+Let's say you want to apply a complex modifier that does not adhere to the standard additive rules of "simple" modifiers. A good example of this
+might be an invulnerability modifier. You can do this by adding a mod with `custom` as the modifier type, and overriding the `custom_modifier` hook method.
+
+```python
+class Invulnerable(BaseBuff):
+    mods = [Mod("injury", "custom", 0)]
+
+    def custom_modifier(self, value, *args, **kwargs):
+        return value * 0
+```
+
+Custom modifiers are applied **after** the standard additive modifiers.
+
 #### Generating Mods (Advanced)
 
 An advanced way to do mods is to generate them when the buff is initialized. This lets you create mods on the fly that are reactive to the game state.
