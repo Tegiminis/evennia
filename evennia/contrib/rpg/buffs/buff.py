@@ -349,6 +349,8 @@ class BuffHandler:
             self._validate_state()
             signals.SIGNAL_OBJECT_POST_UNPUPPET.connect(self._pause_playtime)
             signals.SIGNAL_OBJECT_POST_PUPPET.connect(self._unpause_playtime)
+        if not self.owner.attributes.has(self.dbkey):
+            self.owner.attributes.add(self.dbkey, {})
 
     # region properties
     @property
