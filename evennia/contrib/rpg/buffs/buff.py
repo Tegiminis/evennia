@@ -705,16 +705,78 @@ class BuffHandler:
             return {}
         return {k: buff["ref"](self, k, buff) for k, buff in _cache.items()}
 
-    def get_by_type(self, buff: BaseBuff, to_filter=None):
-        """Finds all buffs matching the given type.
+    def super_get(
+        self,
+        tag: str = None,
+        bufftype: BaseBuff = None,
+        stat: str = None,
+        trigger: str = None,
+        source=None,
+        cachekey: str = None,
+        cachevalue=None,
+        to_filter=None,
+    ):
+        """
+        A combined version of all getters except the base get and get_all.
 
         Args:
-            buff:       The buff class to search for
+            tag:        The string to search for
+            bufftype:   The buff class to search for
+            stat:       The string identifier to find relevant mods
+            trigger:    The string identifier to find relevant buffs
+            source:     The source you want to filter buffs by
+            cachekey:   The key of the cache value to check
+            cachevalue: The value to match to. If None, merely checks to see if the value exists
+            to_filter:  A dictionary you wish to slice. If not provided, uses the whole buffcache.
+
+        Returns a dictionary sliced according to the arguments you provide. Only buffs matching all
+        arguments will be returned.
+        """
+        # either an empty dict, all buffs, or the dictionary to filter
+        buffs = self.get_all() if not to_filter else dict(to_filter)
+
+        # slicing the dictionary
+        if tag:
+            buffs = {k: buff for k, buff in buffs.items() if tag in buff.tags}
+        if bufftype:
+            buffs = {k: buff for k, buff in buffs.items() if isinstance(buff, BaseBuff)}
+        if stat:
+            buffs = {k: buff for k, buff in buffs.items() for m in buff.mods if m.stat == stat}
+        if trigger:
+            buffs = {k: buff for k, buff in buffs.items() if trigger in buff.triggers}
+        if source:
+            buffs = {k: buff for k, buff in buffs.items() if buff.source == source}
+        if cachekey:
+            ck, cv = cachekey, cachevalue
+            if not cv:
+                buffs = {k: buff for k, buff in buffs.items() if ck in buff.cache.keys()}
+            else:
+                buffs = {k: buff for k, buff in buffs.items() if buff.cache.get(ck, None) == cv}
+
+        # return our sliced dictionary (or none, if nothing was found)
+        return buffs
+
+    def get_by_tag(self, tag: str, to_filter=None):
+        """Finds all buffs matching the given tag.
+
+        Args:
+            tag:        The string to search for
             to_filter:  (optional) A dictionary you wish to slice. If not provided, uses the whole buffcache.
 
         Returns a dictionary of instanced buffs of the specified type in the format {buffkey: instance}."""
         _cache = self.get_all() if not to_filter else to_filter
-        return {k: _buff for k, _buff in _cache.items() if isinstance(_buff, buff)}
+        return {k: buff for k, buff in _cache.items() if tag in buff.tags}
+
+    def get_by_type(self, bufftype: BaseBuff, to_filter=None):
+        """Finds all buffs matching the given type.
+
+        Args:
+            bufftype:       The buff class to search for
+            to_filter:  (optional) A dictionary you wish to slice. If not provided, uses the whole buffcache.
+
+        Returns a dictionary of instanced buffs of the specified type in the format {buffkey: instance}."""
+        _cache = self.get_all() if not to_filter else to_filter
+        return {k: _buff for k, _buff in _cache.items() if isinstance(_buff, bufftype)}
 
     def get_by_stat(self, stat: str, to_filter=None):
         """Finds all buffs which contain a Mod object that modifies the specified stat.
