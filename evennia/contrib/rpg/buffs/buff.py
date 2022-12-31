@@ -148,6 +148,7 @@ class BaseBuff:
     stacks = 1  # Used as the default when applying this buff if no or negative stacks were specified (min: 1)
     tickrate = 0  # How frequent does this buff tick, in seconds (cannot be lower than 1)
 
+    tags = []  # List of tag strings, for arbitrary identifiers
     mods = []  # List of mod objects. See Mod class below for more detail
     cache = {}
 
@@ -626,6 +627,28 @@ class BuffHandler:
             context:    (optional) A dictionary you wish to pass to the at_remove/at_dispel/at_expire method as kwargs
         """
         _remove = self.get_by_type(bufftype)
+        if not _remove:
+            return
+        self._remove_via_dict(_remove, loud, dispel, expire, context)
+
+    def remove_by_tag(
+        self,
+        tag: str,
+        loud=True,
+        dispel=False,
+        expire=False,
+        context=None,
+    ):
+        """Removes all buffs of a specified type from this object. Functionally similar to remove, but takes a type instead.
+
+        Args:
+            tag:        The tag string to find
+            loud:       (optional) Calls at_remove when True. (default: True)
+            dispel:     (optional) Calls at_dispel when True. (default: False)
+            expire:     (optional) Calls at_expire when True. (default: False)
+            context:    (optional) A dictionary you wish to pass to the at_remove/at_dispel/at_expire method as kwargs
+        """
+        _remove = self.get_by_tag(tag)
         if not _remove:
             return
         self._remove_via_dict(_remove, loud, dispel, expire, context)
