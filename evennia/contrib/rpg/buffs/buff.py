@@ -550,7 +550,7 @@ class BuffHandler:
         if key not in self.buffcache:
             return
 
-        buff: BaseBuff = self.buffcache[key]
+        buff: dict = self.buffcache[key]
         instance: BaseBuff = buff["ref"](self, key, buff)
 
         if loud:
@@ -686,7 +686,7 @@ class BuffHandler:
         """Removes all buffs with the specified trigger from this object.
 
         Args:
-            trigger:    The stat string to search for
+            trigger:    The trigger string to search for
             loud:       (optional) Calls at_remove when True. (default: True)
             dispel:     (optional) Calls at_dispel when True. (default: False)
             expire:     (optional) Calls at_expire when True. (default: False)
@@ -731,7 +731,7 @@ class BuffHandler:
         """Removes all buffs with the cachevalue from this object. Functionally similar to remove, but checks the buff's cache values instead.
 
         Args:
-            key:         The key of the cache value to check
+            key:        The key of the cache value to check
             value:      (optional) The value to match to. If None, merely checks to see if the value exists
             loud:       (optional) Calls at_remove when True. (default: True)
             dispel:     (optional) Calls at_dispel when True. (default: False)
@@ -1229,7 +1229,9 @@ class BuffHandler:
 
         return final
 
-    def _remove_via_dict(self, buffs: dict, loud=True, dispel=False, expire=False, context=None):
+    def _remove_via_dict(
+        self, buffs: dict[BaseBuff], stacks=0, loud=True, dispel=False, expire=False, context=None
+    ):
         """Removes buffs within the provided dictionary from this handler. Used for remove methods besides the basic remove."""
         if not context:
             context = {}
@@ -1243,8 +1245,11 @@ class BuffHandler:
                 elif expire:
                     instance.at_expire(**context)
                 instance.at_remove(**context)
+            if not stacks or stacks >= instance.stacks:
+                del self.buffcache[k]
+            elif stacks:
+                instance.stacks -= stacks
             del instance
-            del self.buffcache[k]
 
     # endregion
     # endregion
