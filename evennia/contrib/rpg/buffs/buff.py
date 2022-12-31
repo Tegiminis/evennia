@@ -559,13 +559,54 @@ class BuffHandler:
                 instance.at_expire(**context)
             instance.at_remove(**context)
 
-        del instance
-        if not stacks:
+        if not stacks or stacks >= instance.stacks:
             del self.buffcache[key]
         elif stacks:
-            self.buffcache[key]["stacks"] -= stacks
-            if self.buffcache[key]["stacks"] <= 0:
-                del self.buffcache[key]
+            instance.stacks -= stacks
+        del instance
+
+    def super_remove(
+        self,
+        key: str = None,
+        stacks: int = 0,
+        tag: str = None,
+        bufftype: BaseBuff = None,
+        stat: str = None,
+        trigger: str = None,
+        source=None,
+        cachekey: str = None,
+        cachevalue=None,
+        loud=True,
+        dispel=False,
+        expire=False,
+        context=None,
+    ):
+        """
+        Combines the functionality of all removers into one.
+
+        Args:
+            key:        (optional) The buff key. Supersedes all other removers
+            stacks:     (optional) The amount of stacks to remove
+            tag:        (optional) The tag string to search for
+            bufftype:   (optional) The buff class to remove
+            stat:       (optional) The stat string to search for
+            trigger:    (optional) The trigger string to search for
+            source:     (optional) The source to search for
+            key:        (optional) The key of the cache value to check
+            value:      (optional) The value to match to. If None, merely checks to see if the value exists
+            loud:       Calls at_remove when True. (default: True)
+            dispel:     Calls at_dispel when True. (default: False)
+            expire:     Calls at_expire when True. (default: False)
+            context:    A dictionary you wish to pass to the at_remove/at_dispel/at_expire method as kwargs
+        """
+        if not (key or type or tag or stat or trigger or (cachekey and cachevalue)):
+            return
+        if key:
+            self.remove(key, stacks)
+            return
+
+        buffs = self.super_get(tag, bufftype, stat, trigger, source, cachekey, cachevalue)
+        self._remove_via_dict(buffs, loud, dispel, expire, context)
 
     def remove_by_type(
         self,
