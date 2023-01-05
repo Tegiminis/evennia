@@ -352,6 +352,7 @@ class BuffHandler:
             signals.SIGNAL_OBJECT_POST_PUPPET.connect(self._unpause_playtime)
         if not self.owner.attributes.has(self.dbkey):
             self.owner.attributes.add(self.dbkey, {})
+        cleanup_buffs(self)
 
     # region properties
     @property
