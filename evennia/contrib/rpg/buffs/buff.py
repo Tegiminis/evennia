@@ -940,9 +940,6 @@ class BuffHandler:
             to_check:  (optional) Dictionary of instanced buffs to use instead of a new default dictionary
 
         Returns the value modified by relevant buffs."""
-        # Buff cleanup to make sure all buffs are valid before processing
-        self.cleanup()
-
         # Find all buffs and traits related to the specified stat.
         if not context:
             context = {}
@@ -986,7 +983,6 @@ class BuffHandler:
             context:    (optional) A dictionary you wish to pass to the at_trigger method as kwargs
             to_trigger: (optional) Dictionary of instanced buffs to use instead of a new default dictionary
         """
-        self.cleanup()
         _effects = self.get_by_trigger(trigger, to_filter=to_trigger)
         if not _effects:
             return
