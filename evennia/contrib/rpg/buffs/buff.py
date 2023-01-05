@@ -529,7 +529,7 @@ class BuffHandler:
 
         # Clean up the buff at the end of its duration through a delayed cleanup call
         if b["duration"] > -1:
-            utils.delay(b["duration"], self.cleanup, persistent=True)
+            utils.delay(b["duration"], cleanup_buffs, self, persistent=True)
 
     # region removers
     def remove(self, key, stacks=0, loud=True, dispel=False, expire=False, context=None):
@@ -1308,6 +1308,7 @@ class CmdBuff(Command):
 def cleanup_buffs(handler: BuffHandler):
     """Cleans up all expired buffs from a handler."""
     _remove = handler.expired
+    handler._validate_state()
     for v in _remove.values():
         v.remove(expire=True)
 
