@@ -219,7 +219,7 @@ class BaseBuff:
         return value
 
     # region helper methods
-    def remove(self, loud=True, expire=False, context=None):
+    def remove(self, stacks=0, loud=True, expire=False, context=None):
         """Helper method which removes this buff from its handler. Use dispel if you are dispelling it instead.
 
         Args:
@@ -229,7 +229,7 @@ class BaseBuff:
             context:    (optional) A dictionary you wish to pass to the at_remove/at_expire method as kwargs"""
         if not context:
             context = {}
-        self.handler.remove(self.buffkey, loud=loud, expire=expire, context=context)
+        self.handler.remove(self.buffkey, stacks, loud=loud, expire=expire, context=context)
 
     def dispel(self, loud=True, delay=0, context=None):
         """Helper method which dispels this buff (removes and calls at_dispel).
@@ -474,7 +474,7 @@ class BuffHandler:
 
         # Guarantees we stack either at least 1 stack or whatever the class stacks attribute is
         if stacks < 1:
-            stacks = min(1, buff.stacks)
+            stacks = max(1, buff.stacks)
 
         # Create the buff dict that holds a reference and all runtime information.
         b.update(
@@ -956,10 +956,8 @@ class BuffHandler:
         applied = {
             k: buff for k, buff in applied.items() if buff.conditional(**context) if not buff.paused
         }
-
         # The mod totals
         calc = self._calculate_mods(stat, applied)
-
         # The calculated final value
         final = self._apply_mods(value, calc, strongest=strongest)
 
