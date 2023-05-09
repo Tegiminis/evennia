@@ -154,18 +154,12 @@ from string import punctuation
 
 import inflect
 from django.conf import settings
-
 from evennia.commands.cmdset import CmdSet
 from evennia.commands.command import Command
 from evennia.objects.models import ObjectDB
 from evennia.objects.objects import DefaultCharacter, DefaultObject
 from evennia.utils import ansi, logger
-from evennia.utils.utils import (
-    iter_to_str,
-    lazy_property,
-    make_iter,
-    variable_from_module,
-)
+from evennia.utils.utils import iter_to_str, lazy_property, make_iter, variable_from_module
 
 _INFLECT = inflect.engine()
 
@@ -203,7 +197,8 @@ _RE_PREFIX = re.compile(rf"^{_PREFIX}", re.UNICODE)
 # separate multimatches from one another and word is the first word in the
 # marker. So entering "/tall man" will return groups ("", "tall")
 # and "/2-tall man" will return groups ("2", "tall").
-_RE_OBJ_REF_START = re.compile(rf"{_PREFIX}(?:([0-9]+){_NUM_SEP})*(\w+)", _RE_FLAGS)
+# the negative lookbehind for [:/] is to avoid http:// urls being detected as a /sdesc
+_RE_OBJ_REF_START = re.compile(rf"(?<![:/]){_PREFIX}(?:([0-9]+){_NUM_SEP})*(\w+)", _RE_FLAGS)
 
 _RE_LEFT_BRACKETS = re.compile(r"\{+", _RE_FLAGS)
 _RE_RIGHT_BRACKETS = re.compile(r"\}+", _RE_FLAGS)
@@ -730,6 +725,13 @@ class SdescHandler:
 
         return sdesc
 
+    def clear(self):
+        """
+        Clear sdesc.
+
+        """
+        self.obj.attributes.remove("_sdesc")
+
     def get(self):
         """
         Simple getter. The sdesc should never be allowed to
@@ -964,6 +966,8 @@ class CmdSdesc(RPCommand):  # set/look at own sdesc
 
     Usage:
       sdesc <short description>
+      sdesc         - view current sdesc
+      sdesc clear   - remove sdesc
 
     Assigns a short description to yourself.
 
@@ -976,8 +980,18 @@ class CmdSdesc(RPCommand):  # set/look at own sdesc
         "Assign the sdesc"
         caller = self.caller
         if not self.args:
-            caller.msg("Usage: sdesc <sdesc-text>")
-            return
+            sdesc = caller.sdesc.get()
+            if not sdesc:
+                caller.msg("You have no short description set.")
+            else:
+                caller.msg(f'Your short description is "{sdesc}".')
+        elif self.args == "clear":
+            ret = yield "Do you want to clear your sdesc? [Y]/n?"
+            if ret.lower() in ("n", "no"):
+                caller.msg("Aborted.")
+            else:
+                caller.sdesc.clear()
+                caller.msg(f'Cleared sdesc, using name "{caller.key}".')
         else:
             # strip non-alfanum chars from end of sdesc
             sdesc = _RE_CHAREND.sub("", self.args)

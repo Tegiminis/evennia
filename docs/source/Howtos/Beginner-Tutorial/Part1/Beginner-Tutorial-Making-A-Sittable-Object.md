@@ -11,7 +11,7 @@ the current chair in an attribute `is_sitting`. Other systems could check this t
 - A character should be able to stand up and move away from the chair.
 - When you sit down you should not be able to walk to another room without first standing up.
 
-## Make us not able to move while resting
+## Make us not able to move while sitting
 
 When you are sitting in a chair you can't just walk off without first standing up.
 This requires a change to our Character typeclass. Open `mygame/typeclasses/characters.py`:
@@ -24,12 +24,12 @@ This requires a change to our Character typeclass. Open `mygame/typeclasses/char
 class Character(DefaultCharacter):
     # ...
 
-    def at_pre_move(self, destination):
+    def at_pre_move(self, destination, **kwargs):
        """
        Called by self.move_to when trying to move somewhere. If this returns
        False, the move is immediately cancelled.
        """
-       if self.db.is_resting:
+       if self.db.is_sitting:
            self.msg("You need to stand up first.")
            return False
        return True
@@ -71,8 +71,8 @@ class Sittable(Object):
                 sitter.msg(f"You can't sit on {self.key} "
                         f"- {current.key} is already sitting there!")
             return
-        self.db.sitting = sitter
-        sitter.db.is_sitting = self.obj
+        self.db.sitter = sitter
+        sitter.db.is_sitting = self
         sitter.msg(f"You sit on {self.key}")
 ```
 
@@ -164,8 +164,8 @@ class Sittable(DefaultObject):
                     f"You can't sit {adjective} {self.key} "
                     f"- {current.key} is already sitting there!")
             return
-        self.db.sitting = sitter
-        sitter.db.is_sitting = self.obj
+        self.db.sitter = sitter
+        sitter.db.is_sitting = self
         sitter.msg(f"You sit {adjective} {self.key}")
 
     def do_stand(self, stander):
@@ -180,7 +180,7 @@ class Sittable(DefaultObject):
         if not stander == current:
             stander.msg(f"You are not sitting {self.db.adjective} {self.key}.")
         else:
-            self.db.sitting = None
+            self.db.sitter = None
             del stander.db.is_sitting
             stander.msg(f"You stand up from {self.key}")
 ```
@@ -313,7 +313,7 @@ class Sittable(DefaultObject):
     (docstring)
     """
     def at_object_creation(self):
-        self.cmdset.add_default(CmdSetSit)A
+        self.cmdset.add_default(CmdSetSit)
     # ... 
 ```
 
@@ -447,7 +447,7 @@ class CmdStand(Command):
      Stand up.
      """
      key = "stand"
-     lock = "cmd:sitsonthis()"
+     locks = "cmd:sitsonthis()"
 
      def func(self):
          self.obj.do_stand(self.caller)
@@ -471,7 +471,7 @@ def sitsonthis(accessing_obj, accessed_obj, *args, **kwargs):
     """
     True if accessing_obj is sitting on/in the accessed_obj.
     """
-    return accessed_obj.db.sitting == accessing_obj
+    return accessed_obj.obj.db.sitter == accessing_obj
 
 # ...
 ```
@@ -486,7 +486,7 @@ Evennia provides a large number of default lockfuncs, such as checking permissio
 ```
 
 - `accessing_obj` is the one trying to access the lock. So us, in this case.
-- `accessed_obj` is the entity we are trying to gain a particular type of access to. So the chair.
+- `accessed_obj` is the entity we are trying to gain a particular type of access to. Since we define the lock on the `CmdStand` class, this is _the command instance_. We are however not interested in that, but the object the command is assigned to (the chair). The object is available on the Command as `.obj`. So here, `accessed_obj.obj` is the chair. 
 - `args` is a tuple holding any arguments passed to the lockfunc. Since we use `sitsondthis()` this will be empty (and if we add anything, it will be ignored).
 - `kwargs` is a tuple of keyword arguments passed to the lockfuncs. This will be empty as well in our example.
 
@@ -519,7 +519,7 @@ The make the following changes:
 
 This disables the on-object command solution so we can try an alternative. Make sure to `reload` so the changes are known to Evennia.
 
-In this variation we will put the `sit` and `stand` commands on the `Character` instead of on the chair. This makes some things easier, but makes the Commands themselves more complex because they will not know which chair to sit on. We can't just do `sit` anymore. This is how it will work.
+In this variation we will put the `sit` and `stand` commands on the `Character` instead of on the chair. This makes some things easier, but makes the Commands themselves more complex because they will not know which chair to sit on. We can't just do `sit` anymore. This is how it will work:
 
     > sit <chair>
     You sit on chair.
@@ -583,7 +583,7 @@ Raising an exception allows for immediately interrupting the current program flo
 - **Line 32**: We use the parsed command arguments as the target-chair to search for. As discussed in the [search tutorial](./Beginner-Tutorial-Searching-Things.md), `self.caller.search()` will handle error messages itself. So if it returns `None`, we can just `return`. 
 - **Line 35-38**: The `try...except` block 'catches' and exception and handles it. In this case we try to run `do_sit` on the object. If the object we found is _not_ a `Sittable`, it will likely not have a `do_sit` method and an `AttributeError` will be raised. We should handle that case gracefully.
 
-Let's do the `stand` command while we are at it. Since the Command is external to the chair we don't know which object we are sitting on and have to search for it. In this case we really want to find _only_ things we are sitting on.
+Let's do the `stand` command while we are at it. Since the Command is external to the chair we need to figure out if we are sitting down or not. 
 
 ```{code-block} python 
 :linenos:
@@ -613,12 +613,11 @@ class CmdStand2(Command):
 
 ```
 
-- **Line 17**: We didn't need the `is_sitting` Attribute for the first version of these Commands, but we do need it now. Since we have this, we don't need to search and know just which chair we sit on. If we don't have this set, we are not sitting anywhere. 
+- **Line 17**: We didn't need the `is_sitting` Attribute for the first version of these Commands, but we do need it now. Since we have this, we don't need to search and know just which chair we sit on. If we don't have this Attribute set, we are not sitting anywhere. 
 - **Line 21**: We stand up using the sittable we found.
 
 
-
-All that is left now is to make this available to us. This type of Command should be available to us all the time so we can put it in the default Cmdset on the Character. Open `mygame/commands/default_cmdsets.py`.
+All that is left now is to make `sit` and `stand` available to us. This type of Command should be available to us all the time so we can put it in the default Cmdset on the Character. Open `mygame/commands/default_cmdsets.py`.
 
 
 ```python

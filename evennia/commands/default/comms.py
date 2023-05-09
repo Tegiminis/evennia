@@ -8,7 +8,6 @@ Communication commands:
 """
 
 from django.conf import settings
-
 from evennia.accounts import bots
 from evennia.accounts.models import AccountDB
 from evennia.comms.comms import DefaultChannel
@@ -312,7 +311,7 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
 
         """
         if not channel.access(self.caller, "send"):
-            caller.msg(f"You are not allowed to send messages to channel {channel}")
+            self.caller.msg(f"You are not allowed to send messages to channel {channel}")
             return
 
         # avoid unsafe tokens in message
@@ -489,9 +488,8 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
 
     def create_channel(self, name, description, typeclass=None, aliases=None):
         """
-        Create a new channel. Its name must not previously exist
-        (users can alias as needed). Will also connect to the
-        new channel.
+        Create a new channel. Its name must not previously exist (case agnostic)
+        (users can alias as needed). Will also connect to the new channel.
 
         Args:
             name (str): The new channel name/key.
@@ -778,7 +776,6 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
             maxwidth=_DEFAULT_WIDTH,
         )
         for chan in subscribed:
-
             locks = "-"
             chanid = "-"
             if chan.access(self.caller, "control"):
@@ -880,7 +877,6 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
 
         if "create" in switches:
             # create a new channel
-
             if not self.access(caller, "manage"):
                 self.msg("You don't have access to use channel/create.")
                 return
@@ -937,7 +933,7 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
                 )
             elif len(found_channels) > 1:
                 errors.append(
-                    "Multiple possible channel matches/alias for '{channel_name}':\n"
+                    f"Multiple possible channel matches/alias for '{channel_name}':\n"
                     + ", ".join(chan.key for chan in found_channels)
                 )
             else:
@@ -1160,7 +1156,6 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
             reason = reason[0].strip() if reason else ""
 
             for chan in channels:
-
                 if not chan.access(caller, "control"):
                     self.msg(f"You need 'control'-access to boot a user from {chan.key}.")
                     return
@@ -1247,9 +1242,11 @@ class CmdChannel(COMMAND_DEFAULT_CLASS):
             )
             ask_yes_no(
                 caller,
-                f"Are you sure you want to ban user {target.key} from "
-                f"channel(s) {channames} (make sure name/channels are correct{reasonwarn}) "
-                "{options}?",
+                (
+                    f"Are you sure you want to ban user {target.key} from "
+                    f"channel(s) {channames} (make sure name/channels are correct{reasonwarn}) "
+                    "{options}?"
+                ),
                 _ban_user,
                 "Aborted.",
             )
@@ -1362,7 +1359,7 @@ class CmdPage(COMMAND_DEFAULT_CLASS):
                     targets.append(target_obj)
                 message = self.rhs.strip()
             else:
-                target, *message = self.args.split(" ", 4)
+                target, *message = self.args.split(" ", 1)
                 if target and target.isnumeric():
                     # a number to specify a historic page
                     number = int(target)
@@ -1925,6 +1922,7 @@ class CmdDiscord2Chan(COMMAND_DEFAULT_CLASS):
         /delete  - alias to remove
         /guild   - toggle the Discord server tag on/off
         /channel - toggle the Evennia/Discord channel tags on/off
+        /start   - tell the bot to start, in case it lost its connection
 
     Example:
         discord2chan mydiscord = 555555555555555
@@ -1943,6 +1941,7 @@ class CmdDiscord2Chan(COMMAND_DEFAULT_CLASS):
         "guild",
         "list",
         "remove",
+        "start",
     )
     locks = "cmd:serversetting(DISCORD_ENABLED) and pperm(Developer)"
     help_category = "Comms"
@@ -1970,19 +1969,30 @@ class CmdDiscord2Chan(COMMAND_DEFAULT_CLASS):
 
         if not discord_bot.is_typeclass(settings.DISCORD_BOT_CLASS, exact=True):
             self.msg(
-                f"WARNING: The Discord bot's typeclass is '{discord_bot.typeclass_path}'. This does not match {settings.DISCORD_BOT_CLASS} in settings!"
+                f"WARNING: The Discord bot's typeclass is '{discord_bot.typeclass_path}'. This does"
+                f" not match {settings.DISCORD_BOT_CLASS} in settings!"
             )
+
+        if "start" in self.switches:
+            if discord_bot.sessions.all():
+                self.msg("The Discord bot is already running.")
+            else:
+                discord_bot.start()
+                self.msg("Starting the Discord bot session.")
+            return
 
         if "guild" in self.switches:
             discord_bot.db.tag_guild = not discord_bot.db.tag_guild
             self.msg(
-                f"Messages to Evennia |wwill {'' if discord_bot.db.tag_guild else 'not '}|ninclude the Discord server."
+                f"Messages to Evennia |wwill {'' if discord_bot.db.tag_guild else 'not '}|ninclude"
+                " the Discord server."
             )
             return
         if "channel" in self.switches:
             discord_bot.db.tag_channel = not discord_bot.db.tag_channel
             self.msg(
-                f"Relayed messages |wwill {'' if discord_bot.db.tag_channel else 'not '}|ninclude the originating channel."
+                f"Relayed messages |wwill {'' if discord_bot.db.tag_channel else 'not '}|ninclude"
+                " the originating channel."
             )
             return
 
@@ -2021,7 +2031,8 @@ class CmdDiscord2Chan(COMMAND_DEFAULT_CLASS):
                     dc_chan_names = discord_bot.attributes.get("discord_channels", {})
                     dc_info = dc_chan_names.get(dc_chan, {"name": "unknown", "guild": "unknown"})
                     self.msg(
-                        f"Removed link between {ev_chan} and #{dc_info.get('name','?')}@{dc_info.get('guild','?')}"
+                        f"Removed link between {ev_chan} and"
+                        f" #{dc_info.get('name','?')}@{dc_info.get('guild','?')}"
                     )
                     return
             else:

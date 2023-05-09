@@ -1,11 +1,102 @@
 # Changelog
 
-### Evennia 1.0
+## Evennia 1.3.0
 
-2019-2022 develop branch
+Apr 29, 2023
 
-Changed to using `main` branch to follow github standard. Old `master` branch remains
-for now but will not be used anymore, so as to not break installs during transition.
+- Feature: Better ANSI color fallbacks (InspectorCaracal).
+- Feature: Add support for saving `deque` with `maxlen` to Attributes (before
+  `maxlen` was ignored).
+- Fix: The username validator did not display errors correctly in web
+  registration form.
+- Fix: Components contrib had issues with inherited typeclasses (ChrisLR)
+- Fix: f-string fix in clothing contrib (aMiss-aWry)
+- Fix: Have `EvenniaTestCase` properly flush idmapper cache (bradleymarques)
+- Tools: More unit tests for scripts (Storsorken)
+- Docs: Made separate doc pages for Exits, Characters and Rooms. Expanded on how
+  to change the description of an in-game object with templating.
+- Docs: A multitude of doc issues and typos fixed.
+
+## Evennia 1.2.1
+
+Feb 26, 2023
+
+- Bug fix: Make sure command parser gives precedence to longer cmd-aliases. So
+  if sending `smile at` and the cmd `smile` has alias `smile at`, the match is
+  ordered so the result is never interpreted as `smile` with an argument `at`.
+- Bug fix: || (escaped color tags) were parsed too early in help entries,
+  leading to colors when wanting a | separator
+- Bug fix: Make sure spawned objects get `typeclass_path` pointing to the true
+  location rather than alias (in line with `create_object`).
+- Bug fix: Building Menu contrib menu no using Replace over Union mergetype to
+  avoid clashing with in-game commands while building
+- Feature: RPSystem contrib `sdesc` command can now view/delete your sdesc.
+- Bug fix: Change so `script obj = [scriptname|id]` is required to manipulate
+  scripts on objects; `script scriptname|id` only works on global scripts.
+- Doc: Add warning about `Django-wiki` (in wiki tutorial) only supporting
+  Django <4.0.
+- Doc: Expanded `XYZGrid` docstring to clarify `MapLink` class will not itself
+  spawn anything, children must define their prototypes explicitly.
+- Doc: Explained why `AttributeProperty.at_get/set` will not be called if
+  accessing the Attribute from the `AttributeHandler` (bypassing the property)
+- Bug fix: Evtable options showed spurious empty lines if set without desc
+- Usage fix: The `teleport:` and `teleport_here:` locks where checked in
+  `CmdTeleport`, but not actually set on any entities. These locks are now
+  set with defaults on all objects,characters,rooms and exits.
+
+## Evennia 1.2.0
+
+Feb 25, 2023
+
+- Bug fix: `TagHandler.get` did not consistently cast to string (aMiss-aWry)
+- Bug fix: Channels hard to manage if given in different case (aMiss-aWry)
+- Feature: `logger.delete_log` function for deleting custom logs from inside the
+  server (aMiss-aWry)
+- Doc: Nginx setup (InspectorCaracal)
+- Feature: Add `fly/dive` commands to `XYZGrid` contrib to showcase treating its
+  Z-axis as a full 3D grid. Also fixed minor bug in `XYZGrid` contrib when using
+  a Z axis named using an integer rather than a string.
+- Bug fix: `$an()` inlinefunc didn't understand to use 'an' words starting with a
+  capital vowel
+- Bug fix: Another case of the 'duplicate Discord bot connections' bug
+  (InspectorCaracal)
+- Fix: Make XYZGrid contrib's MapParserErrors more succinct
+
+## Evennia 1.1.1
+
+Jan 15, 2023
+
+- Bug fix: Better handler malformed alias-regex given to nickhandler. A
+  regex-relevant character in a channel alias could cause server to not restart.
+- Feature: Add `attr` keyword to `create_channel`. This allows setting
+  attributes on channels at creation, also from `DEFAULT_CHANNELS` definitions.
+
+## Evennia 1.1.0
+Jan 7, 2023
+
+- Stop new registrations with `settings.NEW_ACCOUNT_REGISTRATION_ENABLED`
+  (inspectorcaracal)
+- Bug fixes.
+
+## Evennia 1.0.2
+Dec 21, 2022
+
+- Bug fix release. Fix more issues with discord bot reconnecting. Some doc
+updates.
+
+## Evennia 1.0.1
+Dec 7, 2022
+
+- Bug fix release. Main issue was reconnect bug for discord bot.
+
+## Evennia 1.0.0
+
+2019-2022
+
+_Changed to using `main` branch to follow github standard. Old `master` branch remains
+for now but will not be used anymore, so as to not break installs during transition._
+
+Also changing to using semantic versioning with this version.
 
 Increase requirements: Django 4.1+, Twisted 22.10+ Python 3.10, 3.11.  PostgreSQL 11+.
 

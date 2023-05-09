@@ -38,7 +38,7 @@ def _log(msg, logfunc, prefix="", **kwargs):
     try:
         msg = str(msg)
     except Exception as err:
-        msg = str(e)
+        msg = str(err)
     if kwargs:
         logfunc(msg, **kwargs)
     else:
@@ -553,6 +553,24 @@ def rotate_log_file(filename="game.log", num_lines_to_append=None):
         file_handle = _open_log_file(filename)
         if file_handle:
             file_handle.rotate(num_lines_to_append=num_lines_to_append)
+
+
+def delete_log_file(filename):
+    """
+    Delete a log file
+
+    Args:
+       filename(str): The name of the log file, located in settings.LOG_DIR
+    """
+    if log_file_exists(filename):
+        global _LOGDIR
+        if not _LOGDIR:
+            from django.conf import settings
+
+            _LOGDIR = settings.LOG_DIR
+
+        filename = os.path.join(_LOGDIR, filename)
+        os.remove(filename)
 
 
 def tail_log_file(filename, offset, nlines, callback=None):

@@ -41,7 +41,7 @@ image uploaded by a user), the save (or load) communication follows the path:
     Django -> Storage backend
     Storage backend -> file storage location (e.g. hard drive)
 
-[django docs](https://docs.djangoproject.com/en/3.0/ref/settings/#std:setting-STATICFILES_STORAGE)
+[django docs](https://docs.djangoproject.com/en/4.1/ref/settings/#std:setting-STATICFILES_STORAGE)
 
 This plugin, when enabled, overrides the default storage backend,
 which defaults to saving files at mygame/website/, instead,
@@ -117,10 +117,12 @@ This package requires the dependency "boto3 >= 1.4.4", the official
 AWS python package. To install, it's easiest to just install Evennia's
 extra requirements;
 
-- Activate your `virtualenv`
-- `cd` to the root of the Evennia repository. There should be an `requirements_extra.txt`
-file here.
-- `pip install -r requirements_extra.txt`
+    pip install evennia[extra]
+
+If you installed Evennia with `git`, you can also
+
+- `cd` to the root of the Evennia repository.
+- `pip install --upgrade -e .[extra]`
 
 ## Configure Evennia
 

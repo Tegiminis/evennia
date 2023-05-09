@@ -17,9 +17,6 @@ from unittest.mock import MagicMock, Mock, patch
 from anything import Anything
 from django.conf import settings
 from django.test import override_settings
-from parameterized import parameterized
-from twisted.internet import task
-
 from evennia import (
     DefaultCharacter,
     DefaultExit,
@@ -31,14 +28,7 @@ from evennia import (
 from evennia.commands import cmdparser
 from evennia.commands.cmdset import CmdSet
 from evennia.commands.command import Command, InterruptCommand
-from evennia.commands.default import (
-    account,
-    admin,
-    batchprocess,
-    building,
-    comms,
-    general,
-)
+from evennia.commands.default import account, admin, batchprocess, building, comms, general
 from evennia.commands.default import help as help_module
 from evennia.commands.default import syscommands, system, unloggedin
 from evennia.commands.default.cmdset_character import CharacterCmdSet
@@ -48,6 +38,8 @@ from evennia.server.sessionhandler import SESSIONS
 from evennia.utils import create, gametime, utils
 from evennia.utils.test_resources import BaseEvenniaCommandTest  # noqa
 from evennia.utils.test_resources import BaseEvenniaTest, EvenniaCommandTest
+from parameterized import parameterized
+from twisted.internet import task
 
 # ------------------------------------------------------------
 # Command testing
@@ -81,7 +73,11 @@ class TestGeneral(BaseEvenniaCommandTest):
         self.call(general.CmdInventory(), "", "You are not carrying anything.")
 
     def test_pose(self):
+        self.char2.msg = Mock()
         self.call(general.CmdPose(), "looks around", "Char looks around")
+        self.char2.msg.assert_called_with(
+            text=("Char looks around", {"type": "pose"}), from_obj=self.char1
+        )
 
     def test_nick(self):
         self.call(
@@ -112,13 +108,13 @@ class TestGeneral(BaseEvenniaCommandTest):
         self.call(general.CmdNick(), "/list", "Defined Nicks:")
 
     def test_get_and_drop(self):
-        self.call(general.CmdGet(), "Obj", "You pick up Obj.")
-        self.call(general.CmdDrop(), "Obj", "You drop Obj.")
+        self.call(general.CmdGet(), "Obj", "You pick up an Obj.")
+        self.call(general.CmdDrop(), "Obj", "You drop an Obj.")
 
     def test_give(self):
         self.call(general.CmdGive(), "Obj to Char2", "You aren't carrying Obj.")
         self.call(general.CmdGive(), "Obj = Char2", "You aren't carrying Obj.")
-        self.call(general.CmdGet(), "Obj", "You pick up Obj.")
+        self.call(general.CmdGet(), "Obj", "You pick up an Obj.")
         self.call(general.CmdGive(), "Obj to Char2", "You give")
         self.call(general.CmdGive(), "Obj = Char", "You give", caller=self.char2)
 
@@ -171,7 +167,6 @@ class TestGeneral(BaseEvenniaCommandTest):
 
 
 class TestHelp(BaseEvenniaCommandTest):
-
     maxDiff = None
 
     def setUp(self):
@@ -203,33 +198,41 @@ class TestHelp(BaseEvenniaCommandTest):
         [
             (
                 "test",  # main help entry
-                "Help for test\n\n"
-                "Main help text\n\n"
-                "Subtopics:\n"
-                "  test/creating extra stuff"
-                "  test/something else"
-                "  test/more",
+                (
+                    "Help for test\n\n"
+                    "Main help text\n\n"
+                    "Subtopics:\n"
+                    "  test/creating extra stuff"
+                    "  test/something else"
+                    "  test/more"
+                ),
             ),
             (
                 "test/creating extra stuff",  # subtopic, full match
-                "Help for test/creating extra stuff\n\n"
-                "Help on creating extra stuff.\n\n"
-                "Subtopics:\n"
-                "  test/creating extra stuff/subsubtopic\n",
+                (
+                    "Help for test/creating extra stuff\n\n"
+                    "Help on creating extra stuff.\n\n"
+                    "Subtopics:\n"
+                    "  test/creating extra stuff/subsubtopic\n"
+                ),
             ),
             (
                 "test/creating",  # startswith-match
-                "Help for test/creating extra stuff\n\n"
-                "Help on creating extra stuff.\n\n"
-                "Subtopics:\n"
-                "  test/creating extra stuff/subsubtopic\n",
+                (
+                    "Help for test/creating extra stuff\n\n"
+                    "Help on creating extra stuff.\n\n"
+                    "Subtopics:\n"
+                    "  test/creating extra stuff/subsubtopic\n"
+                ),
             ),
             (
                 "test/extra",  # partial match
-                "Help for test/creating extra stuff\n\n"
-                "Help on creating extra stuff.\n\n"
-                "Subtopics:\n"
-                "  test/creating extra stuff/subsubtopic\n",
+                (
+                    "Help for test/creating extra stuff\n\n"
+                    "Help on creating extra stuff.\n\n"
+                    "Subtopics:\n"
+                    "  test/creating extra stuff/subsubtopic\n"
+                ),
             ),
             (
                 "test/extra/subsubtopic",  # partial subsub-match
@@ -246,19 +249,23 @@ class TestHelp(BaseEvenniaCommandTest):
             ),
             (
                 "test/More/Second-more",
-                "Help for test/more/second-more\n\n"
-                "The Second More text.\n\n"
-                "Subtopics:\n"
-                "  test/more/second-more/more again"
-                "  test/more/second-more/third more",
+                (
+                    "Help for test/more/second-more\n\n"
+                    "The Second More text.\n\n"
+                    "Subtopics:\n"
+                    "  test/more/second-more/more again"
+                    "  test/more/second-more/third more"
+                ),
             ),
             (
                 "test/More/-more",  # partial match
-                "Help for test/more/second-more\n\n"
-                "The Second More text.\n\n"
-                "Subtopics:\n"
-                "  test/more/second-more/more again"
-                "  test/more/second-more/third more",
+                (
+                    "Help for test/more/second-more\n\n"
+                    "The Second More text.\n\n"
+                    "Subtopics:\n"
+                    "  test/more/second-more/more again"
+                    "  test/more/second-more/third more"
+                ),
             ),
             (
                 "test/more/second/more again",
@@ -582,7 +589,6 @@ class TestAccount(BaseEvenniaCommandTest):
         ]
     )
     def test_ooc_look(self, multisession_mode, auto_puppet, max_nr_chars, expected_result):
-
         self.account.db._playable_characters = [self.char1]
         self.account.unpuppet_all()
 
@@ -1511,7 +1517,7 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(building.CmdFind(), f"=#{id1}-{id2}", f"{mdiff} Matches(#{id1}-#{id2}):")
 
     def test_script(self):
-        self.call(building.CmdScripts(), "Obj", "No scripts defined on Obj")
+        self.call(building.CmdScripts(), "Obj =", "No scripts defined on Obj")
         self.call(
             building.CmdScripts(),
             "Obj = scripts.scripts.DefaultScript",
@@ -1523,12 +1529,12 @@ class TestBuilding(BaseEvenniaCommandTest):
             "evennia.scripts.scripts.DoNothing",
             "Global Script Created - sys_do_nothing ",
         )
-        self.call(building.CmdScripts(), "Obj ", "dbref ")
+        self.call(building.CmdScripts(), "Obj =", "dbref ")
 
         self.call(
-            building.CmdScripts(), "/start Obj", "Script on Obj Started "
+            building.CmdScripts(), "/start Obj = ", "Script on Obj Started "
         )  # we allow running start again; this should still happen
-        self.call(building.CmdScripts(), "/stop Obj", "Script on Obj Stopped - ")
+        self.call(building.CmdScripts(), "/stop Obj =", "Script on Obj Stopped - ")
 
         self.call(
             building.CmdScripts(),
@@ -1561,7 +1567,6 @@ class TestBuilding(BaseEvenniaCommandTest):
         )
 
     def test_script_multi_delete(self):
-
         script1 = create.create_script()
         script2 = create.create_script()
         script3 = create.create_script()
@@ -1592,9 +1597,8 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(
             building.CmdTeleport(),
             "Obj = Room2",
-            "Obj(#{}) is leaving Room(#{}), heading for Room2(#{}).|Teleported Obj -> Room2.".format(
-                oid, rid, rid2
-            ),
+            "Obj(#{}) is leaving Room(#{}), heading for Room2(#{}).|Teleported Obj -> Room2."
+            .format(oid, rid, rid2),
         )
         self.call(building.CmdTeleport(), "NotFound = Room", "Could not find 'NotFound'.")
         self.call(
@@ -1710,7 +1714,8 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(
             building.CmdSpawn(),
             "{'prototype_key':'GOBLIN', 'typeclass':'evennia.objects.objects.DefaultCharacter', "
-            "'key':'goblin', 'location':'%s'}" % spawnLoc.dbref,
+            "'key':'goblin', 'location':'%s'}"
+            % spawnLoc.dbref,
             "Spawned goblin",
         )
         goblin = get_object(self, "goblin")
@@ -1758,7 +1763,8 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(
             building.CmdSpawn(),
             "/noloc {'prototype_parent':'TESTBALL', 'key': 'Ball', 'prototype_key': 'foo',"
-            " 'location':'%s'}" % spawnLoc.dbref,
+            " 'location':'%s'}"
+            % spawnLoc.dbref,
             "Spawned Ball",
         )
         ball = get_object(self, "Ball")
@@ -1865,7 +1871,7 @@ class TestCommsChannel(BaseEvenniaCommandTest):
         self.call(self.cmdchannel(), "/sub testchannel", "You are now subscribed")
         self.assertTrue(self.char1 in self.channel.subscriptions.all())
         self.assertEqual(
-            self.char1.nicks.nickreplace("testchannel Hello"), "channel testchannel = Hello"
+            self.char1.nicks.nickreplace("testchannel Hello"), "@channel testchannel = Hello"
         )
 
     def test_channel__unsub(self):
@@ -1881,7 +1887,7 @@ class TestCommsChannel(BaseEvenniaCommandTest):
             "/alias testchannel = foo",
             "Added/updated your alias 'foo' for channel testchannel.",
         )
-        self.assertEqual(self.char1.nicks.nickreplace("foo Hello"), "channel testchannel = Hello")
+        self.assertEqual(self.char1.nicks.nickreplace("foo Hello"), "@channel testchannel = Hello")
 
         # use alias
         self.channel.msg = Mock()
@@ -2082,7 +2088,6 @@ class TestBatchProcess(BaseEvenniaCommandTest):
 
 
 class CmdInterrupt(Command):
-
     key = "interrupt"
 
     def parse(self):
@@ -2114,6 +2119,14 @@ class TestUnconnectedCommand(BaseEvenniaCommandTest):
         )
         self.call(unloggedin.CmdUnconnectedInfo(), "", expected)
         del gametime.SERVER_START_TIME
+
+    @override_settings(NEW_ACCOUNT_REGISTRATION_ENABLED=False)
+    def test_disabled_registration(self):
+        self.call(
+            unloggedin.CmdUnconnectedCreate(),
+            "testacct testpass",
+            "Registration is currently disabled.",
+        )
 
 
 # Test syscommands

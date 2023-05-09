@@ -15,7 +15,6 @@ from collections import defaultdict
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import smart_str
-
 from evennia.locks.lockhandler import LockHandler
 from evennia.utils.dbserialize import from_pickle, to_pickle
 from evennia.utils.idmapper.models import SharedMemoryModel
@@ -163,7 +162,9 @@ class AttributeProperty:
     Attribute property descriptor. Allows for specifying Attributes as Django-like 'fields'
     on the class level. Note that while one can set a lock on the Attribute,
     there is no way to *check* said lock when accessing via the property - use
-    the full AttributeHandler if you need to do access checks.
+    the full `AttributeHandler` if you need to do access checks. Note however that if you use the
+    full `AttributeHandler` to access this Attribute, the `at_get/at_set` methods on this class will
+    _not_ fire (because you are bypassing the `AttributeProperty` entirely in that case).
 
     Example:
     ::
@@ -289,6 +290,11 @@ class AttributeProperty:
         Raises:
             AttributeError: If the value is invalid to store.
 
+        Notes:
+            This is will only fire if you actually set the Attribute via this `AttributeProperty`.
+            That is, if you instead set it via the `AttributeHandler` (or via `.db`), you are
+            bypassing this `AttributeProperty` entirely and this method is never reached.
+
         """
         return value
 
@@ -303,6 +309,11 @@ class AttributeProperty:
 
         Returns:
             any: The value to return to the caller.
+
+        Notes:
+            This is will only fire if you actually get the Attribute via this `AttributeProperty`.
+            That is, if you instead get it via the `AttributeHandler` (or via `.db`), you are
+            bypassing this `AttributeProperty` entirely and this method is never reached.
 
         """
         return value
@@ -339,10 +350,12 @@ class Attribute(IAttribute, SharedMemoryModel):
     db_value = PickledObjectField(
         "value",
         null=True,
-        help_text="The data returned when the attribute is accessed. Must be "
-        "written as a Python literal if editing through the admin "
-        "interface. Attribute values which are not Python literals "
-        "cannot be edited through the admin interface.",
+        help_text=(
+            "The data returned when the attribute is accessed. Must be "
+            "written as a Python literal if editing through the admin "
+            "interface. Attribute values which are not Python literals "
+            "cannot be edited through the admin interface."
+        ),
     )
     db_strvalue = models.TextField(
         "strvalue", null=True, blank=True, help_text="String-specific storage for quick look-up"
@@ -365,9 +378,11 @@ class Attribute(IAttribute, SharedMemoryModel):
         db_index=True,
         blank=True,
         null=True,
-        help_text="Which model of object this attribute is attached to (A "
-        "natural key like 'objects.objectdb'). You should not change "
-        "this value unless you know what you are doing.",
+        help_text=(
+            "Which model of object this attribute is attached to (A "
+            "natural key like 'objects.objectdb'). You should not change "
+            "this value unless you know what you are doing."
+        ),
     )
     # subclass of Attribute (None or nick)
     db_attrtype = models.CharField(
@@ -1375,11 +1390,12 @@ class AttributeHandler:
         """
         self.backend.clear_attributes(category, accessing_obj, default_access)
 
-    def all(self, accessing_obj=None, default_access=True):
+    def all(self, category=None, accessing_obj=None, default_access=True):
         """
         Return all Attribute objects on this object, regardless of category.
 
         Args:
+            category (str, optional): A given category to limit results to.
             accessing_obj (object, optional): Check the `attrread`
                 lock on each attribute before returning them. If not
                 given, this check is skipped.
@@ -1393,6 +1409,8 @@ class AttributeHandler:
 
         """
         attrs = self.backend.get_all_attributes()
+        if category:
+            attrs = [attr for attr in attrs if attr.category == category]
 
         if accessing_obj:
             return [
@@ -1734,10 +1752,16 @@ class NickHandler(AttributeHandler):
             nick_regex, template, _, _ = nick.value
             regex = self._regex_cache.get(nick_regex)
             if not regex:
-                regex = re.compile(nick_regex, re.I + re.DOTALL + re.U)
+                try:
+                    regex = re.compile(nick_regex, re.I + re.DOTALL + re.U)
+                except re.error:
+                    from evennia.utils import logger
+
+                    logger.log_trace("Probably nick being created with unvalidated regex mapping.")
+                    continue
                 self._regex_cache[nick_regex] = regex
 
-            is_match, raw_string = parse_nick_template(raw_string.strip(), regex, template)
+            is_match, raw_string = parse_nick_template(raw_string, regex, template)
             if is_match:
                 break
         return raw_string

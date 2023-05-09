@@ -34,6 +34,9 @@ SERVER_HOSTNAME = "localhost"
 # Lockdown mode will cut off the game from any external connections
 # and only allow connections from localhost. Requires a cold reboot.
 LOCKDOWN_MODE = False
+# Controls whether new account registration is available.
+# Set to False to lock down the registration page and the create account command.
+NEW_ACCOUNT_REGISTRATION_ENABLED = True
 # Activate telnet service
 TELNET_ENABLED = True
 # A list of ports the Evennia telnet server listens on Can be one or many.
@@ -995,7 +998,7 @@ TEMPLATES = [
     }
 ]
 # Django cache settings
-# https://docs.djangoproject.com/en/dev/topics/cache/#setting-up-the-cache
+# https://docs.djangoproject.com/en/4.1/topics/cache/#setting-up-the-cache
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
@@ -1054,7 +1057,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "accounts.AccountDB"
 
 # Password validation plugins
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {

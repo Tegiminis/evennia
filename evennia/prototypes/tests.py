@@ -10,13 +10,15 @@ from time import time
 import mock
 from anything import Something
 from django.test.utils import override_settings
-
+from evennia.commands.default import building
+from evennia.objects.models import ObjectDB
 from evennia.prototypes import menus as olc_menus
 from evennia.prototypes import protfuncs as protofuncs
 from evennia.prototypes import prototypes as protlib
 from evennia.prototypes import spawner
 from evennia.prototypes.prototypes import _PROTOTYPE_TAG_META_CATEGORY
-from evennia.utils.test_resources import BaseEvenniaTest
+from evennia.utils.create import create_object
+from evennia.utils.test_resources import BaseEvenniaTest, EvenniaCommandTest
 from evennia.utils.tests.test_evmenu import TestEvMenu
 
 _PROTPARENTS = {
@@ -116,6 +118,8 @@ class TestUtils(BaseEvenniaTest):
                         "examine:perm(Builder)",
                         "get:all()",
                         "puppet:pperm(Developer)",
+                        "teleport:true()",
+                        "teleport_here:true()",
                         "tell:perm(Admin)",
                         "view:all()",
                     ]
@@ -170,11 +174,21 @@ class TestUtils(BaseEvenniaTest):
                 "key": "Obj",
                 "home": Something,
                 "location": Something,
-                "locks": (
-                    "call:true();control:perm(Developer);delete:perm(Admin);"
-                    "drop:holds();"
-                    "edit:perm(Admin);examine:perm(Builder);get:all();"
-                    "puppet:pperm(Developer);tell:perm(Admin);view:all()"
+                "locks": ";".join(
+                    [
+                        "call:true()",
+                        "control:perm(Developer)",
+                        "delete:perm(Admin)",
+                        "drop:holds()",
+                        "edit:perm(Admin)",
+                        "examine:perm(Builder)",
+                        "get:all()",
+                        "puppet:pperm(Developer)",
+                        "teleport:true()",
+                        "teleport_here:true()",
+                        "tell:perm(Admin)",
+                        "view:all()",
+                    ]
                 ),
                 "prototype_desc": "Built from Obj",
                 "prototype_key": Something,
@@ -192,11 +206,21 @@ class TestUtils(BaseEvenniaTest):
                 "home": Something,
                 "key": "Obj",
                 "location": Something,
-                "locks": (
-                    "call:true();control:perm(Developer);delete:perm(Admin);"
-                    "drop:holds();"
-                    "edit:perm(Admin);examine:perm(Builder);get:all();"
-                    "puppet:pperm(Developer);tell:perm(Admin);view:all()"
+                "locks": ";".join(
+                    [
+                        "call:true()",
+                        "control:perm(Developer)",
+                        "delete:perm(Admin)",
+                        "drop:holds()",
+                        "edit:perm(Admin)",
+                        "examine:perm(Builder)",
+                        "get:all()",
+                        "puppet:pperm(Developer)",
+                        "teleport:true()",
+                        "teleport_here:true()",
+                        "tell:perm(Admin)",
+                        "view:all()",
+                    ]
                 ),
                 "new": "new_val",
                 "permissions": ["Builder"],
@@ -217,12 +241,38 @@ class TestUtils(BaseEvenniaTest):
                 "prototype_key": (Something, Something, "UPDATE"),
                 "location": (Something, Something, "KEEP"),
                 "locks": (
-                    "call:true();control:perm(Developer);delete:perm(Admin);"
-                    "drop:holds();edit:perm(Admin);examine:perm(Builder);"
-                    "get:all();puppet:pperm(Developer);tell:perm(Admin);view:all()",
-                    "call:true();control:perm(Developer);delete:perm(Admin);drop:holds();"
-                    "edit:perm(Admin);examine:perm(Builder);get:all();"
-                    "puppet:pperm(Developer);tell:perm(Admin);view:all()",
+                    ";".join(
+                        [
+                            "call:true()",
+                            "control:perm(Developer)",
+                            "delete:perm(Admin)",
+                            "drop:holds()",
+                            "edit:perm(Admin)",
+                            "examine:perm(Builder)",
+                            "get:all()",
+                            "puppet:pperm(Developer)",
+                            "teleport:true()",
+                            "teleport_here:true()",
+                            "tell:perm(Admin)",
+                            "view:all()",
+                        ]
+                    ),
+                    ";".join(
+                        [
+                            "call:true()",
+                            "control:perm(Developer)",
+                            "delete:perm(Admin)",
+                            "drop:holds()",
+                            "edit:perm(Admin)",
+                            "examine:perm(Builder)",
+                            "get:all()",
+                            "puppet:pperm(Developer)",
+                            "teleport:true()",
+                            "teleport_here:true()",
+                            "tell:perm(Admin)",
+                            "view:all()",
+                        ]
+                    ),
                     "KEEP",
                 ),
                 "prototype_tags": (None, None, "KEEP"),
@@ -303,6 +353,8 @@ class TestUtils(BaseEvenniaTest):
                         "examine:perm(Builder)",
                         "get:all()",
                         "puppet:pperm(Developer)",
+                        "teleport:true()",
+                        "teleport_here:true()",
                         "tell:perm(Admin)",
                         "view:all()",
                     ]
@@ -700,12 +752,16 @@ class TestMenuModule(BaseEvenniaTest):
             "home": ("#2", "#2", "KEEP"),
             "key": ("TestChar", "TestChar", "KEEP"),
             "locks": (
-                "boot:false();call:false();control:perm(Developer);delete:false();"
-                "edit:false();examine:perm(Developer);get:false();msg:all();"
-                "puppet:false();tell:perm(Admin);view:all()",
-                "boot:false();call:false();control:perm(Developer);delete:false();"
-                "edit:false();examine:perm(Developer);get:false();msg:all();"
-                "puppet:false();tell:perm(Admin);view:all()",
+                (
+                    "boot:false();call:false();control:perm(Developer);delete:false();"
+                    "edit:false();examine:perm(Developer);get:false();msg:all();"
+                    "puppet:false();tell:perm(Admin);view:all()"
+                ),
+                (
+                    "boot:false();call:false();control:perm(Developer);delete:false();"
+                    "edit:false();examine:perm(Developer);get:false();msg:all();"
+                    "puppet:false();tell:perm(Admin);view:all()"
+                ),
                 "KEEP",
             ),
             "permissions": {"developer": ("developer", "developer", "KEEP")},
@@ -994,3 +1050,28 @@ class TestIssue2908(BaseEvenniaTest):
 
         obj = spawner.spawn(prot, caller=self.char1)
         self.assertEqual(obj[0].location, self.room1)
+
+
+class TestIssue3101(EvenniaCommandTest):
+    """
+    Spawning and using create_object should store the same `typeclass_path` if using
+    the same actual typeclass.
+
+    """
+
+    def test_spawn_vs_create_paths(self):
+        self.call(
+            building.CmdSpawn(),
+            '{"key": "first thing", "typeclass": "evennia.DefaultObject"}',
+            "Spawned first thing",
+        )
+        self.call(
+            building.CmdCreate(),
+            "second thing:evennia.DefaultObject",
+            "You create a new DefaultObject: second thing",
+        )
+
+        obj1 = ObjectDB.objects.get(db_key="first thing")
+        obj2 = ObjectDB.objects.get(db_key="second thing")
+
+        self.assertEqual(obj1.typeclass_path, obj2.typeclass_path)

@@ -111,9 +111,9 @@ Additional color markup styles for Evennia (extending or replacing the default
 
 ### `components`
 
-__Contrib by ChrisLR 2021__
+_Contrib by ChrisLR, 2021_
 
-# The Components Contrib
+Expand typeclasses using a components/composition approach.
 
 [Read the documentation](./Contrib-Components.md) - [Browse the Code](evennia.contrib.base_systems.components)
 
@@ -494,7 +494,7 @@ and abort an ongoing traversal, respectively.
 _Contribution by titeuf87, 2017_
 
 This contrib provides a wilderness map without actually creating a large number
-of rooms - as you move, you instead end up back in the same room but its description 
+of rooms - as you move, you instead end up back in the same room but its description
 changes. This means you can make huge areas with little database use as
 long as the rooms are relatively similar (e.g. only the names/descs changing).
 
@@ -791,7 +791,7 @@ to any callable of your choice.
 
 _Contribution by helpme (2022)_
 
-A module to integrate a stripped-down version of git within the game, allowing developers to view their git status, change branches, and pull updated code of both their local mygame repo and Evennia core. After a successful pull or checkout, the git command will reload the game: Manual restarts may be required to to apply certain changes that would impact persistent scripts etc. 
+A module to integrate a stripped-down version of git within the game, allowing developers to view their git status, change branches, and pull updated code of both their local mygame repo and Evennia core. After a successful pull or checkout, the git command will reload the game: Manual restarts may be required to to apply certain changes that would impact persistent scripts etc.
 
 [Read the documentation](./Contrib-Git-Integration.md) - [Browse the Code](evennia.contrib.utils.git_integration)
 

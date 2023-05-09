@@ -4,11 +4,10 @@ Unit tests for typeclass base system
 """
 
 from django.test import override_settings
-from mock import patch
-from parameterized import parameterized
-
 from evennia.objects.objects import DefaultObject
 from evennia.utils.test_resources import BaseEvenniaTest, EvenniaTestCase
+from mock import patch
+from parameterized import parameterized
 
 # ------------------------------------------------------------
 # Manager tests
@@ -315,6 +314,18 @@ class TestTags(BaseEvenniaTest):
         self.obj1.tags.add("tagC", "categoryC")
         self.assertFalse(self.obj1.tags.has(category="categoryD"))
 
+    def test_integer_tag(self):
+        self.obj1.tags.add(1)
+        self.assertTrue(self.obj1.tags.has(1))
+        self.assertTrue(self.obj1.tags.get(1))
+        self.assertTrue(self.obj1.tags.has("1"))
+        self.assertTrue(self.obj1.tags.get("1"))
+        self.obj1.tags.remove(1)
+        self.assertFalse(self.obj1.tags.has(1))
+        self.assertFalse(self.obj1.tags.get(1))
+        self.assertFalse(self.obj1.tags.has("1"))
+        self.assertFalse(self.obj1.tags.get("1"))
+
     def test_tag_add_no_category__issue_2688(self):
         """
         Adding a tag without a category should create a new tag:None tag
@@ -432,3 +443,17 @@ class TestNickHandler(BaseEvenniaTest):
 
         self.assertEqual(expected_replaced, actual_replaced)
         self.char1.nicks.clear()
+
+    def test_nick_with_parenthesis(self):
+        """
+        Test case where input has a special character
+
+        """
+        import re
+
+        from evennia.typeclasses.attributes import initialize_nick_templates
+
+        nick_regex, replacement_string = initialize_nick_templates(
+            re.escape("OOC["), "ooc", pattern_is_regex=True
+        )
+        re.compile(nick_regex, re.I + re.DOTALL + re.U)

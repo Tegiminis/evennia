@@ -19,7 +19,7 @@ updated after Sept 2022 will be missing some translations.
 +---------------+----------------------+--------------+
 | es            | Spanish              | Aug 2019     |
 +---------------+----------------------+--------------+
-| fr            | French               | Mar 2022     |
+| fr            | French               | Dec 2022     |
 +---------------+----------------------+--------------+
 | it            | Italian              | Oct 2022     |
 +---------------+----------------------+--------------+
@@ -72,7 +72,7 @@ Typeclasses are generally *not* translated, nor are console/log outputs.
 ```{sidebar} Windows users
 
 If you get errors concerning `gettext` or `xgettext` on Windows,
-see the [Django documentation](https://docs.djangoproject.com/en/3.2/topics/i18n/translation/#gettext-on-windows).
+see the [Django documentation](https://docs.djangoproject.com/en/4.1/topics/i18n/translation/#gettext-on-windows).
 A self-installing and up-to-date version of gettext for Windows (32/64-bit) is
 available on Github as [gettext-iconv-windows](https://github.com/mlocati/gettext-iconv-windows).
 
@@ -84,11 +84,11 @@ Translations are found in the core `evennia/` library, under
 `evennia/evennia/locale/`. You must make sure to have cloned this repository
 from [Evennia's github](github:evennia) before you can proceed.
 
-If you cannot find your language in `evennia/evennia/locale/` it's because noone
+If you cannot find your language in `evennia/evennia/locale/` it's because no one
 has translated it yet.  Alternatively you might have the language but find the
 translation bad ... You are welcome to help improve the situation!
 
-To start a new translation you need to first have cloned the Evennia repositry
+To start a new translation you need to first have cloned the Evennia repository
 with GIT and activated a python virtualenv as described on the
 [Setup Quickstart](../Setup/Installation.md) page.
 
