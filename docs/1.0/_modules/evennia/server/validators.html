@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="validators.html">1.0 (develop branch)</a></li>
+  <li><a href="validators.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -80,17 +81,16 @@
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
 <span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
-
 <span class="kn">from</span> <span class="nn">evennia.accounts.models</span> <span class="kn">import</span> <span class="n">AccountDB</span>
 
 
 <div class="viewcode-block" id="EvenniaUsernameAvailabilityValidator"><a class="viewcode-back" href="../../../api/evennia.server.validators.html#evennia.server.validators.EvenniaUsernameAvailabilityValidator">[docs]</a><span class="k">class</span> <span class="nc">EvenniaUsernameAvailabilityValidator</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks to make sure a given username is not taken or otherwise reserved.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validates a username to make sure it is not in use or reserved.</span>
 
 <span class="sd">        Args:</span>
@@ -101,7 +101,6 @@
 <span class="sd">                raises ValidationError otherwise.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Check guest list</span>
         <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">GUEST_LIST</span> <span class="ow">and</span> <span class="n">username</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="n">guest</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">guest</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">GUEST_LIST</span>
@@ -122,10 +121,9 @@
 <div class="viewcode-block" id="EvenniaPasswordValidator.__init__"><a class="viewcode-back" href="../../../api/evennia.server.validators.html#evennia.server.validators.EvenniaPasswordValidator.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^[\w. @+\-&#39;,]+$&quot;</span><span class="p">,</span>
-        <span class="n">policy</span><span class="o">=</span><span class="s2">&quot;Password should contain a mix of letters, &quot;</span>
-        <span class="s2">&quot;spaces, digits and @/./+/-/_/&#39;/, only.&quot;</span><span class="p">,</span>
+        <span class="n">policy</span><span class="o">=</span><span class="s2">&quot;Password should contain a mix of letters, spaces, digits and @/./+/-/_/&#39;/, only.&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructs a standard Django password validator.</span>
 
 <span class="sd">        Args:</span>
@@ -137,7 +135,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="n">policy</span></div>
 
 <div class="viewcode-block" id="EvenniaPasswordValidator.validate"><a class="viewcode-back" href="../../../api/evennia.server.validators.html#evennia.server.validators.EvenniaPasswordValidator.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validates a password string to make sure it meets predefined Evennia</span>
 <span class="sd">        acceptable character policy.</span>
 
@@ -155,7 +153,7 @@
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="p">),</span> <span class="n">code</span><span class="o">=</span><span class="s2">&quot;evennia_password_policy&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="EvenniaPasswordValidator.get_help_text"><a class="viewcode-back" href="../../../api/evennia.server.validators.html#evennia.server.validators.EvenniaPasswordValidator.get_help_text">[docs]</a>    <span class="k">def</span> <span class="nf">get_help_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a user-facing explanation of the password policy defined</span>
 <span class="sd">        by this validator.</span>
 
@@ -190,7 +188,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

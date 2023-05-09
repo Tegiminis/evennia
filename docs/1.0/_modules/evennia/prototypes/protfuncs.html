@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="protfuncs.html">1.0 (develop branch)</a></li>
+  <li><a href="protfuncs.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -76,30 +77,37 @@
             
   <h1>Source code for evennia.prototypes.protfuncs</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Protfuncs are FuncParser-callables that can be embedded in a prototype to</span>
-<span class="sd">provide custom logic without having access to Python. The protfunc is parsed at</span>
-<span class="sd">the time of spawning, using the creating object&#39;s session as input. If the</span>
-<span class="sd">protfunc returns a non-string, this is what will be added to the prototype.</span>
+<span class="sd">Protfuncs are FuncParser-callables that can be embedded in a prototype to provide custom logic</span>
+<span class="sd">without having access to Python. The protfunc is parsed at the time of spawning, using the creating</span>
+<span class="sd">object&#39;s session as input. If the protfunc returns a non-string, this is what will be added to the</span>
+<span class="sd">prototype.</span>
 
 <span class="sd">In the prototype dict, the protfunc is specified as a string inside the prototype, e.g.:</span>
 
-<span class="sd">    { ...</span>
+<span class="sd">```python</span>
+<span class="sd">{ ...</span>
 
-<span class="sd">    &quot;key&quot;: &quot;$funcname(args, kwargs)&quot;</span>
+<span class="sd">&quot;key&quot;: &quot;$funcname(args, kwargs)&quot;</span>
 
-<span class="sd">    ...  }</span>
+<span class="sd">...  }</span>
+<span class="sd">```</span>
 
 <span class="sd">Available protfuncs are either all callables in one of the modules of `settings.PROT_FUNC_MODULES`</span>
-<span class="sd">or all callables added to a dict FUNCPARSER_CALLABLES in such a module.</span>
+<span class="sd">or all callables added to a dict FUNCPARSER_CALLABLES in such a module. By default, base inlinefuncs</span>
+<span class="sd">for text manipulation and searching are included, as well as the special `$protkey` function.</span>
+<span class="sd">See the Prototypes and Spawner documentation for more info.</span>
 
-<span class="sd">    def funcname (*args, **kwargs)</span>
+<span class="sd">```python</span>
+<span class="sd">def funcname (*args, **kwargs):</span>
+<span class="sd">    return &quot;replacement text&quot;</span>
+<span class="sd">```</span>
 
 <span class="sd">At spawn-time the spawner passes the following extra kwargs into each callable (in addition to</span>
 <span class="sd">what is added in the call itself):</span>
 
-<span class="sd">    - session (Session): The Session of the entity spawning using this prototype.</span>
-<span class="sd">    - prototype (dict): The dict this protfunc is a part of.</span>
-<span class="sd">    - current_key (str): The active key this value belongs to in the prototype.</span>
+<span class="sd">- `session` (Session): The Session of the entity spawning using this prototype.</span>
+<span class="sd">- `prototype` (dict): The dict this protfunc is a part of.</span>
+<span class="sd">- `current_key` (str): The active key this value belongs to in the prototype.</span>
 
 <span class="sd">Any traceback raised by this function will be handled at the time of spawning and abort the spawn</span>
 <span class="sd">before any object is created/updated. It must otherwise return the value to store for the specified</span>
@@ -111,10 +119,11 @@
 
 
 <div class="viewcode-block" id="protfunc_callable_protkey"><a class="viewcode-back" href="../../../api/evennia.prototypes.protfuncs.html#evennia.prototypes.protfuncs.protfunc_callable_protkey">[docs]</a><span class="k">def</span> <span class="nf">protfunc_callable_protkey</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Usage: $protkey(keyname)</span>
+
 <span class="sd">    Returns the value of another key in this prototoype. Will raise an error if</span>
-<span class="sd">        the key is not found in this prototype.</span>
+<span class="sd">    the key is not found in this prototype.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
@@ -136,7 +145,7 @@
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fieldname</span><span class="si">}</span><span class="s2"> not found in prototype</span><span class="se">\n</span><span class="si">{</span><span class="n">prototype</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="s2">&quot;(neither as prototype-field or as an Attribute&quot;</span>
             <span class="p">)</span>
-    <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">prot_value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">prot_value</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Error in prototype</span><span class="se">\n</span><span class="si">{</span><span class="n">prototype</span><span class="si">}</span><span class="se">\n</span><span class="s2">$protkey can only reference static &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;values/attributes (found </span><span class="si">{</span><span class="n">prot_value</span><span class="si">}</span><span class="s2">)&quot;</span>
@@ -176,7 +185,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

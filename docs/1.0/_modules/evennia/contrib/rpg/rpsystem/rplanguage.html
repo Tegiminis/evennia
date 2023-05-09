@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="rplanguage.html">1.0 (develop branch)</a></li>
+  <li><a href="rplanguage.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -254,7 +255,7 @@
 
 
 <div class="viewcode-block" id="LanguageHandler"><a class="viewcode-back" href="../../../../../api/evennia.contrib.rpg.rpsystem.rplanguage.html#evennia.contrib.rpg.rpsystem.rplanguage.LanguageHandler">[docs]</a><span class="k">class</span> <span class="nc">LanguageHandler</span><span class="p">(</span><span class="n">DefaultScript</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is a storage class that should usually not be created on its</span>
 <span class="sd">    own. It&#39;s automatically created by a call to `obfuscate_language`</span>
 <span class="sd">    or `add_language` below.</span>
@@ -300,7 +301,7 @@
         <span class="n">auto_translations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a new language. Note that you generally only need to do</span>
 <span class="sd">        this once per language and that adding an existing language</span>
 <span class="sd">        will re-initialize all the random components to new permanent</span>
@@ -438,7 +439,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">language_storage</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">storage</span></div>
 
     <span class="k">def</span> <span class="nf">_translate_sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Replacer method called by re.sub when</span>
 <span class="sd">        traversing the language string.</span>
 
@@ -530,7 +531,7 @@
         <span class="k">return</span> <span class="n">new_word</span>
 
 <div class="viewcode-block" id="LanguageHandler.translate"><a class="viewcode-back" href="../../../../../api/evennia.contrib.rpg.rpsystem.rplanguage.html#evennia.contrib.rpg.rpsystem.rplanguage.LanguageHandler.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Translate the text according to the given level.</span>
 
 <span class="sd">        Args:</span>
@@ -566,7 +567,7 @@
 
 
 <div class="viewcode-block" id="obfuscate_language"><a class="viewcode-back" href="../../../../../api/evennia.contrib.rpg.rpsystem.rplanguage.html#evennia.contrib.rpg.rpsystem.rplanguage.obfuscate_language">[docs]</a><span class="k">def</span> <span class="nf">obfuscate_language</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Main access method for the language parser.</span>
 
 <span class="sd">    Args:</span>
@@ -596,7 +597,7 @@
 
 
 <div class="viewcode-block" id="add_language"><a class="viewcode-back" href="../../../../../api/evennia.contrib.rpg.rpsystem.rplanguage.html#evennia.contrib.rpg.rpsystem.rplanguage.add_language">[docs]</a><span class="k">def</span> <span class="nf">add_language</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Access function to creating a new language. See the docstring of</span>
 <span class="sd">    `LanguageHandler.add` for list of keyword arguments.</span>
 
@@ -614,7 +615,7 @@
 
 
 <div class="viewcode-block" id="available_languages"><a class="viewcode-back" href="../../../../../api/evennia.contrib.rpg.rpsystem.rplanguage.html#evennia.contrib.rpg.rpsystem.rplanguage.available_languages">[docs]</a><span class="k">def</span> <span class="nf">available_languages</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns all available language keys.</span>
 
 <span class="sd">    Returns:</span>
@@ -666,7 +667,7 @@
 
 
 <div class="viewcode-block" id="obfuscate_whisper"><a class="viewcode-back" href="../../../../../api/evennia.contrib.rpg.rpsystem.rplanguage.html#evennia.contrib.rpg.rpsystem.rplanguage.obfuscate_whisper">[docs]</a><span class="k">def</span> <span class="nf">obfuscate_whisper</span><span class="p">(</span><span class="n">whisper</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Obfuscate whisper depending on a pre-calculated level</span>
 <span class="sd">    (that may depend on distance, listening skill etc)</span>
 
@@ -707,7 +708,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

@@ -117,8 +117,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -128,7 +129,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Contributing-Docs.html">1.0 (develop branch)</a></li>
+  <li><a href="Contributing-Docs.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -406,7 +407,7 @@ class CmdEcho(Command):
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia</span> <span class="kn">import</span> <span class="n">Command</span>
 <span class="k">class</span> <span class="nc">CmdEcho</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  Usage: echo &lt;arg&gt;</span>
 <span class="sd">  &quot;&quot;&quot;</span>
   <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;echo&quot;</span>
@@ -434,9 +435,9 @@ Indent returns from the game.</p>
 ```
 </pre></div>
 </div>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; look at flower
-  Red Flower<span class="o">(</span><span class="c1">#34)</span>
-  A flower with red petals.
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>look<span class="w"> </span>at<span class="w"> </span>flower
+<span class="w">  </span>Red<span class="w"> </span>Flower<span class="o">(</span><span class="c1">#34)</span>
+<span class="w">  </span>A<span class="w"> </span>flower<span class="w"> </span>with<span class="w"> </span>red<span class="w"> </span>petals.
 </pre></div>
 </div>
 <p>For actual shell prompts you can either use <code class="docutils literal notranslate"><span class="pre">bash</span></code> language type or just indent the line.
@@ -449,8 +450,8 @@ evennia/ mygame/
     evennia start --log
 </pre></div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ls
-evennia/ mygame/
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ls
+evennia/<span class="w"> </span>mygame/
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>evennia start --log
@@ -604,7 +605,7 @@ class CmdEcho(Command):
 <span class="normal">7</span>
 <span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><span class="hll"><span class="kn">from</span> <span class="nn">evennia</span> <span class="kn">import</span> <span class="n">Command</span>
 </span><span class="hll"><span class="k">class</span> <span class="nc">CmdEcho</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-</span>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Usage: echo &lt;arg&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;echo&quot;</span>
@@ -782,7 +783,7 @@ same as Markdown.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

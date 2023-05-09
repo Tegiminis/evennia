@@ -76,8 +76,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -87,7 +88,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="evennia.utils.test_resources.html">1.0 (develop branch)</a></li>
+  <li><a href="evennia.utils.test_resources.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -268,7 +269,7 @@ for every test, which is more controlled.</p>
 <span class="k">class</span> <span class="nc">MyCommandTest</span><span class="p">(</span><span class="n">EvenniaTest</span><span class="p">,</span> <span class="n">CommandTestMixin</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">test_echo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Test that the echo command really returns</span>
 <span class="sd">        what you pass into it.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -377,6 +378,21 @@ the proper order:</p>
 <em class="property">class </em><code class="sig-prename descclassname">evennia.utils.test_resources.</code><code class="sig-name descname">EvenniaTestCase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/utils/test_resources.html#EvenniaTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.utils.test_resources.EvenniaTestCase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.test.testcases.TestCase</span></code></p>
 <p>For use with gamedir settings; Just like the normal test case, only for naming consistency.</p>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Inheriting from this class will bypass EvenniaTestMixin, and therefore
+not setup some default objects. This can result in faster tests.</p></li>
+<li><p>If you do inherit from this class for your unit tests, and have
+overridden the tearDown() method, please also call flush_cache(). Not
+doing so will result in flakey and order-dependent tests due to the
+Django ID cache not being flushed.</p></li>
+</ul>
+<dl class="py method">
+<dt id="evennia.utils.test_resources.EvenniaTestCase.tearDown">
+<code class="sig-name descname">tearDown</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/evennia/utils/test_resources.html#EvenniaTestCase.tearDown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.utils.test_resources.EvenniaTestCase.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for deconstructing the test fixture after testing it.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -472,7 +488,7 @@ classes and settings in mygame.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

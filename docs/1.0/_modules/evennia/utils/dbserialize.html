@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="dbserialize.html">1.0 (develop branch)</a></li>
+  <li><a href="dbserialize.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -123,7 +124,7 @@
 
 
 <span class="k">def</span> <span class="nf">_get_mysql_db_version</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is a helper method for specifically getting the version</span>
 <span class="sd">    string of a MySQL database.</span>
 
@@ -167,7 +168,7 @@
 
 
 <span class="k">def</span> <span class="nf">_TO_DATESTRING</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates datestring hash.</span>
 
 <span class="sd">    Args:</span>
@@ -190,7 +191,7 @@
 
 
 <span class="k">def</span> <span class="nf">_init_globals</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Lazy importing to avoid circular import issues&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lazy importing to avoid circular import issues&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">_FROM_MODEL_MAP</span><span class="p">,</span> <span class="n">_TO_MODEL_MAP</span><span class="p">,</span> <span class="n">_SESSION_HANDLER</span><span class="p">,</span> <span class="n">_IGNORE_DATETIME_MODELS</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_FROM_MODEL_MAP</span><span class="p">:</span>
         <span class="n">_FROM_MODEL_MAP</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
@@ -216,7 +217,7 @@
 
 
 <span class="k">def</span> <span class="nf">_save</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;method decorator that saves data to Attribute&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;method decorator that saves data to Attribute&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">save_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__doc__</span>
@@ -228,7 +229,7 @@
 
 
 <span class="k">class</span> <span class="nc">_SaverMutable</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parent class for properly handling  of nested mutables in</span>
 <span class="sd">    an Attribute. If not used something like</span>
 <span class="sd">     obj.db.mylist[1][2] = &quot;test&quot; (allocation to a nested list)</span>
@@ -236,17 +237,17 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;store all properties for tracking the tree&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;store all properties for tracking the tree&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_parent&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_db_obj</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_db_obj&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make sure to evaluate as False if empty&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make sure to evaluate as False if empty&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_save_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;recursively traverse back up the tree, save when we reach the root&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;recursively traverse back up the tree, save when we reach the root&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_save_tree</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_obj</span><span class="p">:</span>
@@ -266,10 +267,10 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">log_err</span><span class="p">(</span><span class="s2">&quot;_SaverMutable </span><span class="si">%s</span><span class="s2"> has no root Attribute to save to.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_convert_mutables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;converts mutables to Saver* variants and assigns ._parent property&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;converts mutables to Saver* variants and assigns ._parent property&quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">process_tree</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;recursively populate the tree, storing parents&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;recursively populate the tree, storing parents&quot;&quot;&quot;</span>
             <span class="n">dtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">item</span>
@@ -285,6 +286,8 @@
                 <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDefaultDict</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">default_factory</span><span class="p">,</span> <span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
                 <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">process_tree</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dat</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
                 <span class="k">return</span> <span class="n">dat</span>
+            <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">deque</span><span class="p">:</span>
+                <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDeque</span><span class="p">(</span><span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">maxlen</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">set</span><span class="p">:</span>
                 <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverSet</span><span class="p">(</span><span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
                 <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">process_tree</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
@@ -332,12 +335,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Deserializes this mutable into its corresponding non-Saver type.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Deserializes this mutable into its corresponding non-Saver type.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">_SaverList</span><span class="p">(</span><span class="n">_SaverMutable</span><span class="p">,</span> <span class="n">MutableSequence</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A list that saves itself to an Attribute when updated.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -381,7 +384,7 @@
 
 
 <span class="k">class</span> <span class="nc">_SaverDict</span><span class="p">(</span><span class="n">_SaverMutable</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A dict that stores changes to an Attribute when updated</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -398,7 +401,7 @@
 
 
 <span class="k">class</span> <span class="nc">_SaverDefaultDict</span><span class="p">(</span><span class="n">_SaverDict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A defaultdict that stores changes to an attribute when updated</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -417,7 +420,7 @@
 
 
 <span class="k">class</span> <span class="nc">_SaverSet</span><span class="p">(</span><span class="n">_SaverMutable</span><span class="p">,</span> <span class="n">MutableSet</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A set that saves to an Attribute when updated</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -490,7 +493,7 @@
 
 
 <span class="k">class</span> <span class="nc">_SaverOrderedDict</span><span class="p">(</span><span class="n">_SaverMutable</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An ordereddict that can be saved and operated on.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -503,13 +506,13 @@
 
 
 <span class="k">class</span> <span class="nc">_SaverDeque</span><span class="p">(</span><span class="n">_SaverMutable</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A deque that can be saved and operated on.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">deque</span><span class="p">((),</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span><span class="p">)</span>
 
     <span class="nd">@_save</span>
     <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -571,7 +574,7 @@
 
 
 <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Make sure to *fully* decouple a structure from the database, by turning all _Saver*-mutables</span>
 <span class="sd">    inside it back into their normal Python forms.</span>
 
@@ -589,6 +592,8 @@
             <span class="k">return</span> <span class="n">defaultdict</span><span class="p">(</span>
                 <span class="n">obj</span><span class="o">.</span><span class="n">default_factory</span><span class="p">,</span> <span class="p">{</span><span class="n">_iter</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">_iter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
             <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tname</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;_SaverDeque&quot;</span><span class="p">,</span> <span class="n">deque</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">deque</span><span class="p">((</span><span class="n">_iter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">),</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">maxlen</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">tname</span> <span class="ow">in</span> <span class="n">_DESERIALIZE_MAPPING</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_DESERIALIZE_MAPPING</span><span class="p">[</span><span class="n">tname</span><span class="p">](</span><span class="n">_iter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">is_iter</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
@@ -603,7 +608,7 @@
 
 
 <span class="k">def</span> <span class="nf">pack_dbobj</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check and convert django database objects to an internal representation.</span>
 
 <span class="sd">    Args:</span>
@@ -632,7 +637,7 @@
 
 
 <span class="k">def</span> <span class="nf">unpack_dbobj</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check and convert internal representations back to Django database</span>
 <span class="sd">    models.</span>
 
@@ -666,7 +671,7 @@
 
 
 <span class="k">def</span> <span class="nf">pack_session</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handle the safe serializion of Sessions objects (these contain</span>
 <span class="sd">    hidden references to database objects (accounts, puppets) so they</span>
 <span class="sd">    can&#39;t be safely serialized).</span>
@@ -696,7 +701,7 @@
 
 
 <span class="k">def</span> <span class="nf">unpack_session</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check and convert internal representations back to Sessions.</span>
 
 <span class="sd">    Args:</span>
@@ -723,7 +728,7 @@
 
 
 <div class="viewcode-block" id="to_pickle"><a class="viewcode-back" href="../../../api/evennia.utils.dbserialize.html#evennia.utils.dbserialize.to_pickle">[docs]</a><span class="k">def</span> <span class="nf">to_pickle</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This prepares data on arbitrary form to be pickled. It handles any</span>
 <span class="sd">    nested structure and returns data on a form that is safe to pickle</span>
 <span class="sd">    (including having converted any database models to their internal</span>
@@ -739,7 +744,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Recursive processor and identification of data&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursive processor and identification of data&quot;&quot;&quot;</span>
 
         <span class="n">dtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
@@ -756,6 +761,8 @@
                 <span class="n">item</span><span class="o">.</span><span class="n">default_factory</span><span class="p">,</span>
                 <span class="p">((</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span>
             <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">deque</span><span class="p">,</span> <span class="n">_SaverDeque</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">deque</span><span class="p">((</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">),</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">maxlen</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="n">_SaverSet</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">OrderedDict</span><span class="p">,</span> <span class="n">_SaverOrderedDict</span><span class="p">):</span>
@@ -806,7 +813,7 @@
 
 <span class="c1"># @transaction.autocommit</span>
 <div class="viewcode-block" id="from_pickle"><a class="viewcode-back" href="../../../api/evennia.utils.dbserialize.html#evennia.utils.dbserialize.from_pickle">[docs]</a><span class="k">def</span> <span class="nf">from_pickle</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">db_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This should be fed a just de-pickled data object. It will be converted back</span>
 <span class="sd">    to a form that may contain database objects again. Note that if a database</span>
 <span class="sd">    object was removed (or changed in-place) in the database, None will be</span>
@@ -828,7 +835,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Recursive processor and identification of data&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursive processor and identification of data&quot;&quot;&quot;</span>
         <span class="c1"># breakpoint()</span>
         <span class="n">dtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">SafeString</span><span class="p">):</span>
@@ -852,7 +859,7 @@
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">OrderedDict</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">((</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">deque</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">deque</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">deque</span><span class="p">((</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">),</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">maxlen</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># we try to conserve the iterable class, if not convert to dict</span>
@@ -888,7 +895,7 @@
         <span class="k">return</span> <span class="n">item</span>
 
     <span class="k">def</span> <span class="nf">process_tree</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Recursive processor, building a parent-tree from iterable data&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursive processor, building a parent-tree from iterable data&quot;&quot;&quot;</span>
         <span class="c1"># breakpoint()</span>
         <span class="n">dtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">SafeString</span><span class="p">):</span>
@@ -925,7 +932,7 @@
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">dat</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">deque</span><span class="p">:</span>
-            <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDeque</span><span class="p">(</span><span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+            <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDeque</span><span class="p">(</span><span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">item</span><span class="o">.</span><span class="n">maxlen</span><span class="p">)</span>
             <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">dat</span>
         <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
@@ -996,7 +1003,7 @@
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">dat</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">deque</span><span class="p">:</span>
-            <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDeque</span><span class="p">(</span><span class="n">_db_obj</span><span class="o">=</span><span class="n">db_obj</span><span class="p">)</span>
+            <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDeque</span><span class="p">(</span><span class="n">_db_obj</span><span class="o">=</span><span class="n">db_obj</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">maxlen</span><span class="p">)</span>
             <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">dat</span>
         <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
@@ -1031,7 +1038,7 @@
 
 
 <div class="viewcode-block" id="do_pickle"><a class="viewcode-back" href="../../../api/evennia.utils.dbserialize.html#evennia.utils.dbserialize.do_pickle">[docs]</a><span class="k">def</span> <span class="nf">do_pickle</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Perform pickle to string&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform pickle to string&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">PICKLE_PROTOCOL</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -1040,7 +1047,7 @@
 
 
 <div class="viewcode-block" id="do_unpickle"><a class="viewcode-back" href="../../../api/evennia.utils.dbserialize.html#evennia.utils.dbserialize.do_unpickle">[docs]</a><span class="k">def</span> <span class="nf">do_unpickle</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Retrieve pickle from pickled string&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve pickle from pickled string&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">loads</span><span class="p">(</span><span class="n">to_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -1049,12 +1056,12 @@
 
 
 <div class="viewcode-block" id="dbserialize"><a class="viewcode-back" href="../../../api/evennia.utils.dbserialize.html#evennia.utils.dbserialize.dbserialize">[docs]</a><span class="k">def</span> <span class="nf">dbserialize</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Serialize to pickled form in one step&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Serialize to pickled form in one step&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">do_pickle</span><span class="p">(</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">data</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="dbunserialize"><a class="viewcode-back" href="../../../api/evennia.utils.dbserialize.html#evennia.utils.dbserialize.dbunserialize">[docs]</a><span class="k">def</span> <span class="nf">dbunserialize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">db_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Un-serialize in one step. See from_pickle for help db_obj.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Un-serialize in one step. See from_pickle for help db_obj.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">from_pickle</span><span class="p">(</span><span class="n">do_unpickle</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">db_obj</span><span class="o">=</span><span class="n">db_obj</span><span class="p">)</span></div>
 </pre></div>
 
@@ -1079,7 +1086,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

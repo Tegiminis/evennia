@@ -92,8 +92,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -103,7 +104,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Unit-Testing.html">1.0 (develop branch)</a></li>
+  <li><a href="Unit-Testing.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -153,7 +154,7 @@ To run the tests with your own settings file you must use the <code class="docut
 normally used to swap settings files for testing and development. In combination with <code class="docutils literal notranslate"><span class="pre">test</span></code>, it
 forces Evennia to use this settings file over the default one.</p>
 <p>You can also test specific things by giving their path</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>evennia test --settings settings.py .world.tests.YourTest
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>evennia test --settings settings.py world.tests.YourTest
 </pre></div>
 </div>
 </section>
@@ -184,21 +185,21 @@ and want to test a function in <code class="docutils literal notranslate"><span 
        <span class="s2">&quot;This tests a function myfunc.&quot;</span>
 
        <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-           <span class="sd">&quot;&quot;&quot;done before every of the test_ * methods below&quot;&quot;&quot;</span>
+<span class="w">           </span><span class="sd">&quot;&quot;&quot;done before every of the test_ * methods below&quot;&quot;&quot;</span>
            <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">create_object</span><span class="p">(</span><span class="s2">&quot;mytestobject&quot;</span><span class="p">)</span>
            
        <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-           <span class="sd">&quot;&quot;&quot;done after every test_* method below &quot;&quot;&quot;</span>
+<span class="w">           </span><span class="sd">&quot;&quot;&quot;done after every test_* method below &quot;&quot;&quot;</span>
            <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
        
        <span class="k">def</span> <span class="nf">test_return_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-           <span class="sd">&quot;&quot;&quot;test method. Makes sure return value is as expected.&quot;&quot;&quot;</span>
+<span class="w">           </span><span class="sd">&quot;&quot;&quot;test method. Makes sure return value is as expected.&quot;&quot;&quot;</span>
            <span class="n">actual_return</span> <span class="o">=</span> <span class="n">myfunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
            <span class="n">expected_return</span> <span class="o">=</span> <span class="s2">&quot;This is the good object &#39;mytestobject&#39;.&quot;</span>
            <span class="c1"># test</span>
            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_return</span><span class="p">,</span> <span class="n">actual_return</span><span class="p">)</span>
        <span class="k">def</span> <span class="nf">test_alternative_call</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-           <span class="sd">&quot;&quot;&quot;test method. Calls with a keyword argument.&quot;&quot;&quot;</span>
+<span class="w">           </span><span class="sd">&quot;&quot;&quot;test method. Calls with a keyword argument.&quot;&quot;&quot;</span>
            <span class="n">actual_return</span> <span class="o">=</span> <span class="n">myfunc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">bad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
            <span class="n">expected_return</span> <span class="o">=</span> <span class="s2">&quot;This is the baaad object &#39;mytestobject&#39;.&quot;</span>
            <span class="c1"># test</span>
@@ -210,15 +211,15 @@ and want to test a function in <code class="docutils literal notranslate"><span 
 </pre></div>
 </div>
 <p>to run the entire test module</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>evennia test --settings setings.py .world.tests
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>evennia test --settings settings.py world.tests
 </pre></div>
 </div>
 <p>or a specific class:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>evennia test --settings settings.py .world.tests.TestObj 
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>evennia test --settings settings.py world.tests.TestObj 
 </pre></div>
 </div>
 <p>You can also run a specific test:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>evennia test --settings settings.py .world.tests.TestObj.test_alternative_call
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>evennia test --settings settings.py world.tests.TestObj.test_alternative_call
 </pre></div>
 </div>
 <p>You might also want to read the <a class="reference external" href="https://docs.python.org/library/unittest.html">Python documentation for the unittest module</a>.</p>
@@ -265,13 +266,13 @@ just there for naming symmetry with <code class="docutils literal notranslate"><
 <span class="kn">from</span> <span class="nn">evennia.utils.test_resources</span> <span class="kn">import</span> <span class="n">EvenniaTest</span>
 
 <span class="k">class</span> <span class="nc">TestObject</span><span class="p">(</span><span class="n">EvenniaTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remember that the testing class creates char1 and char2 inside room1 ...&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remember that the testing class creates char1 and char2 inside room1 ...&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">test_object_search_character</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check that char1 can search for char2 by name&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that char1 can search for char2 by name&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char1</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char2</span><span class="o">.</span><span class="n">key</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">char2</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">test_location_search</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check so that char1 can find the current location by name&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check so that char1 can find the current location by name&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char1</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char1</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">key</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">char1</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
         <span class="c1"># ...</span>
 </pre></div>
@@ -431,7 +432,7 @@ django-test-without-migrations package. To install it, simply:</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

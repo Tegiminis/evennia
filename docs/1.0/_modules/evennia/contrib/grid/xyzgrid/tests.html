@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="tests.html">1.0 (develop branch)</a></li>
+  <li><a href="tests.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -84,11 +85,10 @@
 <span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">mock</span>
 
 <span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">evennia.utils.test_resources</span> <span class="kn">import</span> <span class="n">BaseEvenniaCommandTest</span><span class="p">,</span> <span class="n">BaseEvenniaTest</span>
 <span class="kn">from</span> <span class="nn">parameterized</span> <span class="kn">import</span> <span class="n">parameterized</span>
 
-<span class="kn">from</span> <span class="nn">evennia.utils.test_resources</span> <span class="kn">import</span> <span class="n">BaseEvenniaTest</span>
-
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">xymap</span><span class="p">,</span> <span class="n">xymap_legend</span><span class="p">,</span> <span class="n">xyzgrid</span><span class="p">,</span> <span class="n">xyzroom</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">commands</span><span class="p">,</span> <span class="n">xymap</span><span class="p">,</span> <span class="n">xymap_legend</span><span class="p">,</span> <span class="n">xyzgrid</span><span class="p">,</span> <span class="n">xyzroom</span>
 
 <span class="n">MAP1</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 
@@ -418,9 +418,57 @@
 
 <span class="s2">&quot;&quot;&quot;</span>
 
+<span class="n">MAP13a</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">+ 0 1</span>
+
+<span class="s2">1 #-#</span>
+<span class="s2">  |</span>
+<span class="s2">0 #</span>
+
+<span class="s2">+ 0 1</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">MAP13b</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">+ 0 1</span>
+
+<span class="s2">1   #</span>
+
+<span class="s2">0</span>
+
+<span class="s2">+ 0 1</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">MAP13c</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">+ 0 1</span>
+
+<span class="s2">1   #</span>
+
+<span class="s2">0</span>
+
+<span class="s2">+ 0 1</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">MAP13d</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">+ 0 1</span>
+
+<span class="s2">1 #-#</span>
+<span class="s2">  |</span>
+<span class="s2">0 #</span>
+
+<span class="s2">+ 0 1</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
 
 <span class="k">class</span> <span class="nc">_MapTest</span><span class="p">(</span><span class="n">BaseEvenniaTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parent for map tests</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -429,7 +477,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP1_DISPLAY</span>
 
     <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set up grid and map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up grid and map&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">xyzgrid</span><span class="o">.</span><span class="n">XYZGrid</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;testgrid&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">add_maps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_data</span><span class="p">)</span>
@@ -447,13 +495,13 @@
 
 
 <div class="viewcode-block" id="TestMap1"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap1">[docs]</a><span class="k">class</span> <span class="nc">TestMap1</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test the Map class with a simple 4-node map</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TestMap1.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap1.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">MAP1_DISPLAY</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestMap1.test_node_from_coord"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap1.test_node_from_coord">[docs]</a>    <span class="k">def</span> <span class="nf">test_node_from_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -486,7 +534,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_get_visual_range__scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">expectstr</span><span class="p">,</span> <span class="n">expectlst</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test displaying a part of the map around a central point.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -507,7 +555,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_get_visual_range__scan__character</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">expectstr</span><span class="p">,</span> <span class="n">expectlst</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test displaying a part of the map around a central point, showing the</span>
 <span class="sd">        character @-symbol in that spot.</span>
 
@@ -530,7 +578,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_get_visual_range__nodes__character</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get sub-part of map with node-mode.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -538,7 +586,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">mapstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap1.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap1.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -548,7 +596,7 @@
 
 
 <div class="viewcode-block" id="TestMap2"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap2">[docs]</a><span class="k">class</span> <span class="nc">TestMap2</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test with Map2 - a bigger map with multi-step links</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -557,7 +605,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP2_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap2.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap2.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="c1"># strip the leftover spaces on the right to better</span>
         <span class="c1"># work with text editor stripping this automatically ...</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
@@ -582,7 +630,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -594,15 +642,17 @@
             <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;#-#-#-#</span><span class="se">\n</span><span class="s2">|   |  </span><span class="se">\n</span><span class="s2">#-#-#--</span><span class="se">\n</span><span class="s2">  |    </span><span class="se">\n</span><span class="s2">  @-#-#&quot;</span><span class="p">),</span>
             <span class="p">(</span>
                 <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-                <span class="s2">&quot;    #---#</span><span class="se">\n</span><span class="s2">    |   |</span><span class="se">\n</span><span class="s2">#   |   #</span><span class="se">\n</span><span class="s2">|   |    </span><span class="se">\n</span><span class="s2">#-#-@-#--</span><span class="se">\n</span><span class="s2">|   &quot;</span>
-                <span class="s2">&quot;|    </span><span class="se">\n</span><span class="s2">#-#-#---#</span><span class="se">\n</span><span class="s2">  |     |</span><span class="se">\n</span><span class="s2">  #-#-#-#&quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;    #---#</span><span class="se">\n</span><span class="s2">    |   |</span><span class="se">\n</span><span class="s2">#   |   #</span><span class="se">\n</span><span class="s2">|   |    </span><span class="se">\n</span><span class="s2">#-#-@-#--</span><span class="se">\n</span><span class="s2">|   &quot;</span>
+                    <span class="s2">&quot;|    </span><span class="se">\n</span><span class="s2">#-#-#---#</span><span class="se">\n</span><span class="s2">  |     |</span><span class="se">\n</span><span class="s2">  #-#-#-#&quot;</span>
+                <span class="p">),</span>
             <span class="p">),</span>
             <span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="s2">&quot;#-#-@  </span><span class="se">\n</span><span class="s2">|   |  </span><span class="se">\n</span><span class="s2">#---#  </span><span class="se">\n</span><span class="s2">|   |  </span><span class="se">\n</span><span class="s2">|   #-#&quot;</span><span class="p">),</span>
             <span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;--#  </span><span class="se">\n</span><span class="s2">  |  </span><span class="se">\n</span><span class="s2">  #-#</span><span class="se">\n</span><span class="s2">    |</span><span class="se">\n</span><span class="s2">#---@</span><span class="se">\n</span><span class="s2">     </span><span class="se">\n</span><span class="s2">--#-#</span><span class="se">\n</span><span class="s2">  |  </span><span class="se">\n</span><span class="s2">#-#  &quot;</span><span class="p">),</span>
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_get_visual_range__scan__character</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test showing smaller part of grid, showing @-character in the middle.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -610,7 +660,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">mapstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap2.test_extended_path_tracking__horizontal"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap2.test_extended_path_tracking__horizontal">[docs]</a>    <span class="k">def</span> <span class="nf">test_extended_path_tracking__horizontal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Crossing multi-gridpoint links should be tracked properly.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -624,7 +674,7 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestMap2.test_extended_path_tracking__vertical"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap2.test_extended_path_tracking__vertical">[docs]</a>    <span class="k">def</span> <span class="nf">test_extended_path_tracking__vertical</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Testing multi-gridpoint links in the vertical direction.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -654,8 +704,10 @@
                 <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
                 <span class="mi">2</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;    #      </span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">    #---#  </span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="s2">&quot;#-#-@-#---#</span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">  #-#---#  &quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;    #      </span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">    #---#  </span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;#-#-@-#---#</span><span class="se">\n</span><span class="s2">    |      </span><span class="se">\n</span><span class="s2">  #-#---#  &quot;</span>
+                <span class="p">),</span>
             <span class="p">),</span>
             <span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="s2">&quot;  |  </span><span class="se">\n</span><span class="s2">  |  </span><span class="se">\n</span><span class="s2">#-@-#</span><span class="se">\n</span><span class="s2">  |  </span><span class="se">\n</span><span class="s2">#-#--&quot;</span><span class="p">),</span>  <span class="c1"># limit display size</span>
             <span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s2">&quot; | </span><span class="se">\n</span><span class="s2">-@-</span><span class="se">\n</span><span class="s2"> | &quot;</span><span class="p">),</span>
@@ -663,7 +715,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_get_visual_range__nodes__character</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">max_size</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get sub-part of map with node-mode.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -673,7 +725,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">mapstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap2.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap2.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -683,7 +735,7 @@
 
 
 <div class="viewcode-block" id="TestMap3"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap3">[docs]</a><span class="k">class</span> <span class="nc">TestMap3</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test Map3 - Map with diagonal links</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -692,7 +744,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP3_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap3.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap3.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP3_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
@@ -712,7 +764,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -725,14 +777,16 @@
                 <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
                 <span class="mi">2</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;      #  </span><span class="se">\n</span><span class="s2">     /   </span><span class="se">\n</span><span class="s2">  # /    </span><span class="se">\n</span><span class="s2">  |/     </span><span class="se">\n</span><span class="s2">  #     #</span><span class="se">\n</span><span class="s2">  |</span><span class="se">\\</span><span class="s2">   / </span><span class="se">\n</span><span class="s2">  # @-#  </span><span class="se">\n</span><span class="s2">  &quot;</span>
-                <span class="s2">&quot;|/   </span><span class="se">\\</span><span class="s2"> </span><span class="se">\n</span><span class="s2">  #     #</span><span class="se">\n</span><span class="s2"> / </span><span class="se">\\</span><span class="s2">     </span><span class="se">\n</span><span class="s2">#   #    &quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;      #  </span><span class="se">\n</span><span class="s2">     /   </span><span class="se">\n</span><span class="s2">  # /    </span><span class="se">\n</span><span class="s2">  |/     </span><span class="se">\n</span><span class="s2">  #     #</span><span class="se">\n</span><span class="s2">  |</span><span class="se">\\</span><span class="s2">   / </span><span class="se">\n</span><span class="s2">  # @-#  </span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;  |/   </span><span class="se">\\</span><span class="s2"> </span><span class="se">\n</span><span class="s2">  #     #</span><span class="se">\n</span><span class="s2"> / </span><span class="se">\\</span><span class="s2">     </span><span class="se">\n</span><span class="s2">#   #    &quot;</span>
+                <span class="p">),</span>
             <span class="p">),</span>
             <span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;  #  </span><span class="se">\n</span><span class="s2">  |  </span><span class="se">\n</span><span class="s2">  #  </span><span class="se">\n</span><span class="s2"> / </span><span class="se">\\</span><span class="s2"> </span><span class="se">\n</span><span class="s2">#   @</span><span class="se">\n</span><span class="s2"> </span><span class="se">\\</span><span class="s2"> / </span><span class="se">\n</span><span class="s2">  #  </span><span class="se">\n</span><span class="s2">  |  </span><span class="se">\n</span><span class="s2">  #  &quot;</span><span class="p">),</span>
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_get_visual_range__nodes__character</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">max_size</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get sub-part of map with node-mode.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -742,7 +796,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">mapstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap3.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap3.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -752,7 +806,7 @@
 
 
 <div class="viewcode-block" id="TestMap4"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap4">[docs]</a><span class="k">class</span> <span class="nc">TestMap4</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test Map4 - Map with + and x crossing links</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -761,7 +815,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP4_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap4.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap4.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP4_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
@@ -776,7 +830,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -784,7 +838,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_directions</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">directions</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap4.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap4.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -794,7 +848,7 @@
 
 
 <div class="viewcode-block" id="TestMap5"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap5">[docs]</a><span class="k">class</span> <span class="nc">TestMap5</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test Map5 - Small map with one-way links</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -803,7 +857,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP5_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap5.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap5.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP5_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
@@ -816,7 +870,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -824,7 +878,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_directions</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">directions</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap5.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap5.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -834,7 +888,7 @@
 
 
 <div class="viewcode-block" id="TestMap6"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap6">[docs]</a><span class="k">class</span> <span class="nc">TestMap6</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test Map6 - Bigger map with one-way links in different directions</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -843,7 +897,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP6_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap6.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap6.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP6_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
@@ -860,7 +914,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -868,7 +922,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_directions</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">directions</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap6.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap6.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -878,7 +932,7 @@
 
 
 <div class="viewcode-block" id="TestMap7"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap7">[docs]</a><span class="k">class</span> <span class="nc">TestMap7</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test Map7 - Small test of dynamic link node</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -887,7 +941,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP7_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap7.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap7.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP7_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
@@ -900,7 +954,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -908,7 +962,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_directions</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">directions</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap7.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap7.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -918,7 +972,7 @@
 
 
 <div class="viewcode-block" id="TestMap8"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap8">[docs]</a><span class="k">class</span> <span class="nc">TestMap8</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test Map8 - Small test of dynamic link node</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -927,7 +981,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP8_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap8.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap8.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP8_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
@@ -943,7 +997,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -956,13 +1010,12 @@
                 <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
                 <span class="mi">1</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;  #-o  </span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">#   o  </span><span class="se">\n</span><span class="s2">|   |  </span><span class="se">\n</span><span class="s2">o-o-@-#</span><span class="se">\n</span><span class="s2">    &quot;</span>
-                <span class="s2">&quot;|  </span><span class="se">\n</span><span class="s2">    o  </span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">    #  &quot;</span><span class="p">,</span>
+                <span class="s2">&quot;  #-o  </span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">#   o  </span><span class="se">\n</span><span class="s2">|   |  </span><span class="se">\n</span><span class="s2">o-o-@-#</span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">    o  </span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">    #  &quot;</span><span class="p">,</span>
             <span class="p">),</span>
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_get_visual_range__nodes__character</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">max_size</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get sub-part of map with node-mode.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -978,24 +1031,24 @@
                 <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
                 <span class="mi">1</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;  #-o  </span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">#   o  </span><span class="se">\n</span><span class="s2">|   |  </span><span class="se">\n</span><span class="s2">o-o-@..</span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">    o  &quot;</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">    #  &quot;</span><span class="p">,</span>
+                <span class="s2">&quot;  #-o  </span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">#   o  </span><span class="se">\n</span><span class="s2">|   |  </span><span class="se">\n</span><span class="s2">o-o-@..</span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">    o  </span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">    #  &quot;</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="p">(</span>
                 <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
                 <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
                 <span class="mi">1</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;  #-o  </span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">#   o  </span><span class="se">\n</span><span class="s2">|   |  </span><span class="se">\n</span><span class="s2">o-o-@-#</span><span class="se">\n</span><span class="s2">    .  </span><span class="se">\n</span><span class="s2">    .  &quot;</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    .  </span><span class="se">\n</span><span class="s2">    ...&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;  #-o  </span><span class="se">\n</span><span class="s2">    |  </span><span class="se">\n</span><span class="s2">#   o  </span><span class="se">\n</span><span class="s2">|   |  </span><span class="se">\n</span><span class="s2">o-o-@-#</span><span class="se">\n</span><span class="s2">    .  </span><span class="se">\n</span><span class="s2">    .  </span><span class="se">\n</span><span class="s2">    .  </span><span class="se">\n</span><span class="s2">    ...&quot;</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="p">(</span>
                 <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
                 <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
                 <span class="mi">2</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;#-#-o      </span><span class="se">\n</span><span class="s2">|  </span><span class="se">\\</span><span class="s2">|      </span><span class="se">\n</span><span class="s2">#-o-o-#   .</span><span class="se">\n</span><span class="s2">|   |</span><span class="se">\\</span><span class="s2">    .</span><span class="se">\n</span><span class="s2">o-o-@-&quot;</span>
-                <span class="s2">&quot;#   .</span><span class="se">\n</span><span class="s2">    .    . </span><span class="se">\n</span><span class="s2">    .   .  </span><span class="se">\n</span><span class="s2">    .  .   </span><span class="se">\n</span><span class="s2">#---...    &quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;#-#-o      </span><span class="se">\n</span><span class="s2">|  </span><span class="se">\\</span><span class="s2">|      </span><span class="se">\n</span><span class="s2">#-o-o-#   .</span><span class="se">\n</span><span class="s2">|   |</span><span class="se">\\</span><span class="s2">    .</span><span class="se">\n</span><span class="s2">o-o-@-&quot;</span>
+                    <span class="s2">&quot;#   .</span><span class="se">\n</span><span class="s2">    .    . </span><span class="se">\n</span><span class="s2">    .   .  </span><span class="se">\n</span><span class="s2">    .  .   </span><span class="se">\n</span><span class="s2">#---...    &quot;</span>
+                <span class="p">),</span>
             <span class="p">),</span>
             <span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="s2">&quot;    o-o</span><span class="se">\n</span><span class="s2">    | |</span><span class="se">\n</span><span class="s2">    o-@</span><span class="se">\n</span><span class="s2">      .</span><span class="se">\n</span><span class="s2">.     .</span><span class="se">\n</span><span class="s2">.    . &quot;</span><span class="p">),</span>
             <span class="p">(</span>
@@ -1003,13 +1056,15 @@
                 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
                 <span class="mi">2</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;        o-o</span><span class="se">\n</span><span class="s2">        | |</span><span class="se">\n</span><span class="s2">        o-@</span><span class="se">\n</span><span class="s2">.         .</span><span class="se">\n</span><span class="s2">.....     &quot;</span>
-                <span class="s2">&quot;.</span><span class="se">\n</span><span class="s2">    .    . </span><span class="se">\n</span><span class="s2">    .   .  </span><span class="se">\n</span><span class="s2">    .  .   </span><span class="se">\n</span><span class="s2">#---...    &quot;</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;        o-o</span><span class="se">\n</span><span class="s2">        | |</span><span class="se">\n</span><span class="s2">        o-@</span><span class="se">\n</span><span class="s2">.         .</span><span class="se">\n</span><span class="s2">.....     &quot;</span>
+                    <span class="s2">&quot;.</span><span class="se">\n</span><span class="s2">    .    . </span><span class="se">\n</span><span class="s2">    .   .  </span><span class="se">\n</span><span class="s2">    .  .   </span><span class="se">\n</span><span class="s2">#---...    &quot;</span>
+                <span class="p">),</span>
             <span class="p">),</span>
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_get_visual_range_with_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">max_size</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get visual range with a path-to-target marked.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1025,7 +1080,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">mapstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap8.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap8.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1035,7 +1090,7 @@
 
 
 <div class="viewcode-block" id="TestMap9"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap9">[docs]</a><span class="k">class</span> <span class="nc">TestMap9</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test Map9 - a map with up/down links.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1044,7 +1099,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP9_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap9.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap9.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP9_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
@@ -1057,7 +1112,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1065,7 +1120,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_directions</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">directions</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap9.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap9.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1075,7 +1130,7 @@
 
 
 <div class="viewcode-block" id="TestMap10"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap10">[docs]</a><span class="k">class</span> <span class="nc">TestMap10</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test Map10 - a map with blocked- and interrupt links/nodes. These are</span>
 <span class="sd">    &#39;invisible&#39; nodes and won&#39;t show up in the map display.</span>
 
@@ -1085,7 +1140,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP10_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap10.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap10.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP10_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
@@ -1105,7 +1160,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1124,7 +1179,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">,</span> <span class="n">expected_path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test path locations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1134,7 +1189,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_path</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">strpositions</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestMap10.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap10.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1144,7 +1199,7 @@
 
 
 <div class="viewcode-block" id="TestMap11"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap11">[docs]</a><span class="k">class</span> <span class="nc">TestMap11</span><span class="p">(</span><span class="n">_MapTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test Map11 - a map teleporter links.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1153,7 +1208,7 @@
     <span class="n">map_display</span> <span class="o">=</span> <span class="n">MAP11_DISPLAY</span>
 
 <div class="viewcode-block" id="TestMap11.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap11.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP11_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
@@ -1164,7 +1219,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1188,7 +1243,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">,</span> <span class="n">expected_path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test path locations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1204,7 +1259,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_get_visual_range_with_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">max_size</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get visual range with a path-to-target marked.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1221,7 +1276,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">mapstr</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TestMap11.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMap11.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the map into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1231,7 +1286,7 @@
 
 
 <div class="viewcode-block" id="TestMapStressTest"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestMapStressTest">[docs]</a><span class="k">class</span> <span class="nc">TestMapStressTest</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performance test of map patfinder and visualizer.</span>
 
 <span class="sd">    #-#-#-#-#....</span>
@@ -1249,11 +1304,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_get_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xsize</span><span class="p">,</span> <span class="n">Ysize</span><span class="p">):</span>
-        <span class="n">edge</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;+ </span><span class="si">{</span><span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="n">Xsize</span> <span class="o">*</span> <span class="mi">2</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">l1</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="s1">&#39;#-&#39;</span> <span class="o">*</span> <span class="n">Xsize</span><span class="si">}</span><span class="s2">#&quot;</span>
-        <span class="n">l2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="s1">&#39;|x&#39;</span> <span class="o">*</span> <span class="n">Xsize</span><span class="si">}</span><span class="s2">|&quot;</span>
+        <span class="n">edge</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;+ </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Xsize</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">l1</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="s1">&#39;#-&#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Xsize</span><span class="si">}</span><span class="s2">#&quot;</span>
+        <span class="n">l2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="s1">&#39;|x&#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Xsize</span><span class="si">}</span><span class="s2">|&quot;</span>
 
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">edge</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="p">(</span><span class="n">l1</span> <span class="o">+</span> <span class="n">l2</span><span class="p">)</span> <span class="o">*</span> <span class="n">Ysize</span><span class="si">}{</span><span class="n">l1</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">edge</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">edge</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="p">(</span><span class="n">l1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">l2</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Ysize</span><span class="si">}{</span><span class="n">l1</span><span class="si">}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">edge</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="nd">@parameterized</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
         <span class="p">[</span>
@@ -1262,7 +1317,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_grid_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gridsize</span><span class="p">,</span> <span class="n">max_time</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test of grid-creataion performance for Nx, Ny grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1285,7 +1340,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_grid_pathfind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gridsize</span><span class="p">,</span> <span class="n">max_time</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test pathfinding performance for Nx, Ny grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1321,7 +1376,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_grid_visibility</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gridsize</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">max_time</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test grid visualization performance for Nx, Ny grid for</span>
 <span class="sd">        different visibility distances.</span>
 
@@ -1354,7 +1409,7 @@
 
 
 <div class="viewcode-block" id="TestXYZGrid"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestXYZGrid">[docs]</a><span class="k">class</span> <span class="nc">TestXYZGrid</span><span class="p">(</span><span class="n">BaseEvenniaTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test base grid class with a single map, including spawning objects.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1372,13 +1427,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="TestXYZGrid.test_str_output"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestXYZGrid.test_str_output">[docs]</a>    <span class="k">def</span> <span class="nf">test_str_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the display_map&quot;&quot;&quot;</span>
         <span class="n">xymap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">get_map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zcoord</span><span class="p">)</span>
         <span class="n">stripped_map</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">xymap</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">MAP1_DISPLAY</span><span class="p">,</span> <span class="n">stripped_map</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;||&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="TestXYZGrid.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestXYZGrid.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Spawn objects for the grid&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Spawn objects for the grid&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">spawn</span><span class="p">()</span>
         <span class="c1"># import sys</span>
         <span class="c1"># sys.stderr.write(&quot;\nrooms: &quot; + repr(xyzroom.XYZRoom.objects.all()))</span>
@@ -1400,7 +1455,7 @@
 
 
 <div class="viewcode-block" id="TestXYZGridTransition"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestXYZGridTransition">[docs]</a><span class="k">class</span> <span class="nc">TestXYZGridTransition</span><span class="p">(</span><span class="n">BaseEvenniaTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test the XYZGrid class and transitions between maps.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1424,7 +1479,7 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">,</span> <span class="n">expected_directions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        test shortest-path calculations throughout the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1432,7 +1487,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">expected_directions</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">directions</span><span class="p">))</span>
 
 <div class="viewcode-block" id="TestXYZGridTransition.test_spawn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestXYZGridTransition.test_spawn">[docs]</a>    <span class="k">def</span> <span class="nf">test_spawn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Spawn the two maps into actual objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1452,7 +1507,7 @@
 
 
 <div class="viewcode-block" id="TestBuildExampleGrid"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestBuildExampleGrid">[docs]</a><span class="k">class</span> <span class="nc">TestBuildExampleGrid</span><span class="p">(</span><span class="n">BaseEvenniaTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test building the map-example (this takes about 30s)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1470,7 +1525,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="TestBuildExampleGrid.test_build"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestBuildExampleGrid.test_build">[docs]</a>    <span class="k">def</span> <span class="nf">test_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Build the map example.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1578,6 +1633,52 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
             <span class="n">mock_exit_callbacks</span><span class="o">.</span><span class="n">at_object_creation</span><span class="o">.</span><span class="n">mock_calls</span><span class="p">,</span> <span class="p">[</span><span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="p">(),</span> <span class="n">mock</span><span class="o">.</span><span class="n">call</span><span class="p">()]</span>
         <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="TestFlyDiveCommand"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand">[docs]</a><span class="k">class</span> <span class="nc">TestFlyDiveCommand</span><span class="p">(</span><span class="n">BaseEvenniaCommandTest</span><span class="p">):</span>
+<div class="viewcode-block" id="TestFlyDiveCommand.setUp"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">xyzgrid</span><span class="o">.</span><span class="n">XYZGrid</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;testgrid&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_data13a</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;map&quot;</span><span class="p">:</span> <span class="n">MAP13a</span><span class="p">,</span> <span class="s2">&quot;zcoord&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_data13b</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;map&quot;</span><span class="p">:</span> <span class="n">MAP13b</span><span class="p">,</span> <span class="s2">&quot;zcoord&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_data13c</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;map&quot;</span><span class="p">:</span> <span class="n">MAP13c</span><span class="p">,</span> <span class="s2">&quot;zcoord&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_data13d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;map&quot;</span><span class="p">:</span> <span class="n">MAP13d</span><span class="p">,</span> <span class="s2">&quot;zcoord&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>  <span class="c1"># not contiguous</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">add_maps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_data13a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_data13b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_data13c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_data13d</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">spawn</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestFlyDiveCommand.tearDown"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+    <span class="nd">@parameterized</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="c1"># startcoord, cmd, succeed?, endcoord</span>
+            <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;fly&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;fly&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;fly&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;fly&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;fly&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;fly&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;dive&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;dive&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;dive&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;dive&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;dive&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_fly_and_dive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startcoord</span><span class="p">,</span> <span class="n">cmdstring</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test flying up and down and seeing if it works at different locations.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_room</span> <span class="o">=</span> <span class="n">xyzgrid</span><span class="o">.</span><span class="n">XYZRoom</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">startcoord</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">char1</span><span class="o">.</span><span class="n">move_to</span><span class="p">(</span><span class="n">start_room</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">commands</span><span class="o">.</span><span class="n">CmdFlyAndDive</span><span class="p">(),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;You&quot;</span> <span class="k">if</span> <span class="n">success</span> <span class="k">else</span> <span class="s2">&quot;Can&#39;t&quot;</span><span class="p">,</span> <span class="n">cmdstring</span><span class="o">=</span><span class="n">cmdstring</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">char1</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">xyz</span><span class="p">,</span> <span class="n">endcoord</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -1601,7 +1702,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

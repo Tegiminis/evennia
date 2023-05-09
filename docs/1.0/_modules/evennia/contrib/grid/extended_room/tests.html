@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="tests.html">1.0 (develop branch)</a></li>
+  <li><a href="tests.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -93,11 +94,11 @@
 
 <div class="viewcode-block" id="ForceUTCDatetime"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.extended_room.tests.html#evennia.contrib.grid.extended_room.tests.ForceUTCDatetime">[docs]</a><span class="k">class</span> <span class="nc">ForceUTCDatetime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;Force UTC datetime.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Force UTC datetime.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ForceUTCDatetime.fromtimestamp"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.extended_room.tests.html#evennia.contrib.grid.extended_room.tests.ForceUTCDatetime.fromtimestamp">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">fromtimestamp</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Force fromtimestamp to run with naive datetimes.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Force fromtimestamp to run with naive datetimes.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span></div></div>
 
 
@@ -140,10 +141,27 @@
             <span class="s2">&quot;here&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Room(#</span><span class="si">{}</span><span class="s2">)</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SPRING_DESC</span><span class="p">),</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">extended_room</span><span class="o">.</span><span class="n">CmdExtendedRoomLook</span><span class="p">(),</span> <span class="s2">&quot;testdetail&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DETAIL_DESC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+            <span class="n">extended_room</span><span class="o">.</span><span class="n">CmdExtendedRoomLook</span><span class="p">(),</span> 
+            <span class="s2">&quot;testdetail&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;You look closely at </span><span class="si">{}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">|</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;testdetail&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">DETAIL_DESC</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
             <span class="n">extended_room</span><span class="o">.</span><span class="n">CmdExtendedRoomLook</span><span class="p">(),</span> <span class="s2">&quot;nonexistent&quot;</span><span class="p">,</span> <span class="s2">&quot;Could not find &#39;nonexistent&#39;.&quot;</span>
         <span class="p">)</span></div>
+        
+<div class="viewcode-block" id="TestExtendedRoom.test_cmdextendedlook_second_person"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.extended_room.tests.html#evennia.contrib.grid.extended_room.tests.TestExtendedRoom.test_cmdextendedlook_second_person">[docs]</a>    <span class="k">def</span> <span class="nf">test_cmdextendedlook_second_person</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># char2 is already in the same room. </span>
+        <span class="c1"># replace char2.msg with a Mock; this disables it and will catch what it is called with</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">char2</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span> 
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+            <span class="n">extended_room</span><span class="o">.</span><span class="n">CmdExtendedRoomLook</span><span class="p">(),</span> 
+            <span class="s2">&quot;testdetail&quot;</span>
+        <span class="p">)</span>
+     
+        <span class="c1"># check what char2 saw.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">char2</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Char looks closely at testdetail.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">{}),</span> <span class="n">from_obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">char1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestExtendedRoom.test_cmdsetdetail"><a class="viewcode-back" href="../../../../../api/evennia.contrib.grid.extended_room.tests.html#evennia.contrib.grid.extended_room.tests.TestExtendedRoom.test_cmdsetdetail">[docs]</a>    <span class="k">def</span> <span class="nf">test_cmdsetdetail</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">extended_room</span><span class="o">.</span><span class="n">CmdExtendedRoomDetail</span><span class="p">(),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Details on Room&quot;</span><span class="p">)</span>
@@ -204,7 +222,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

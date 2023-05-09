@@ -50,8 +50,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -61,7 +62,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="genindex.html">1.0 (develop branch)</a></li>
+  <li><a href="genindex.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -1195,6 +1196,8 @@
 </li>
         <li><a href="api/evennia.contrib.grid.slow_exit.slow_exit.html#evennia.contrib.grid.slow_exit.slow_exit.CmdStop.aliases">(evennia.contrib.grid.slow_exit.slow_exit.CmdStop attribute)</a>
 </li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive.aliases">(evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive attribute)</a>
+</li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdGoto.aliases">(evennia.contrib.grid.xyzgrid.commands.CmdGoto attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdMap.aliases">(evennia.contrib.grid.xyzgrid.commands.CmdMap attribute)</a>
@@ -1797,6 +1800,8 @@
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.XYZGridCmdSet.at_cmdset_creation">(evennia.contrib.grid.xyzgrid.commands.XYZGridCmdSet method)</a>
 </li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.XYZGridFlyDiveCmdSet.at_cmdset_creation">(evennia.contrib.grid.xyzgrid.commands.XYZGridFlyDiveCmdSet method)</a>
+</li>
         <li><a href="api/evennia.contrib.rpg.dice.dice.html#evennia.contrib.rpg.dice.dice.DiceCmdSet.at_cmdset_creation">(evennia.contrib.rpg.dice.dice.DiceCmdSet method)</a>
 </li>
         <li><a href="api/evennia.contrib.rpg.rpsystem.rpsystem.html#evennia.contrib.rpg.rpsystem.rpsystem.RPSystemCmdSet.at_cmdset_creation">(evennia.contrib.rpg.rpsystem.rpsystem.RPSystemCmdSet method)</a>
@@ -2378,6 +2383,8 @@
 
       <ul>
         <li><a href="api/evennia.commands.default.muxcommand.html#evennia.commands.default.muxcommand.MuxCommand.at_pre_cmd">(evennia.commands.default.muxcommand.MuxCommand method)</a>
+</li>
+        <li><a href="api/evennia.commands.default.unloggedin.html#evennia.commands.default.unloggedin.CmdUnconnectedCreate.at_pre_cmd">(evennia.commands.default.unloggedin.CmdUnconnectedCreate method)</a>
 </li>
       </ul></li>
       <li><a href="api/evennia.contrib.game_systems.turnbattle.tb_equip.html#evennia.contrib.game_systems.turnbattle.tb_equip.TBEArmor.at_pre_drop">at_pre_drop() (evennia.contrib.game_systems.turnbattle.tb_equip.TBEArmor method)</a>
@@ -3489,6 +3496,8 @@
 </li>
         <li><a href="api/evennia.contrib.rpg.buffs.buff.html#evennia.contrib.rpg.buffs.buff.BuffHandler.clear">(evennia.contrib.rpg.buffs.buff.BuffHandler method)</a>
 </li>
+        <li><a href="api/evennia.contrib.rpg.rpsystem.rpsystem.html#evennia.contrib.rpg.rpsystem.rpsystem.SdescHandler.clear">(evennia.contrib.rpg.rpsystem.rpsystem.SdescHandler method)</a>
+</li>
         <li><a href="api/evennia.contrib.rpg.traits.traits.html#evennia.contrib.rpg.traits.traits.TraitHandler.clear">(evennia.contrib.rpg.traits.traits.TraitHandler method)</a>
 </li>
         <li><a href="api/evennia.contrib.utils.random_string_generator.random_string_generator.html#evennia.contrib.utils.random_string_generator.random_string_generator.RandomStringGenerator.clear">(evennia.contrib.utils.random_string_generator.random_string_generator.RandomStringGenerator method)</a>
@@ -3539,8 +3548,6 @@
       <li><a href="api/evennia.server.amp_client.html#evennia.server.amp_client.AMPClientFactory.clientConnectionFailed">clientConnectionFailed() (evennia.server.amp_client.AMPClientFactory method)</a>
 
       <ul>
-        <li><a href="api/evennia.server.portal.discord.html#evennia.server.portal.discord.DiscordWebsocketServerFactory.clientConnectionFailed">(evennia.server.portal.discord.DiscordWebsocketServerFactory method)</a>
-</li>
         <li><a href="api/evennia.server.portal.grapevine.html#evennia.server.portal.grapevine.RestartingWebsocketServerFactory.clientConnectionFailed">(evennia.server.portal.grapevine.RestartingWebsocketServerFactory method)</a>
 </li>
         <li><a href="api/evennia.server.portal.irc.html#evennia.server.portal.irc.IRCBotFactory.clientConnectionFailed">(evennia.server.portal.irc.IRCBotFactory method)</a>
@@ -3549,8 +3556,6 @@
       <li><a href="api/evennia.server.amp_client.html#evennia.server.amp_client.AMPClientFactory.clientConnectionLost">clientConnectionLost() (evennia.server.amp_client.AMPClientFactory method)</a>
 
       <ul>
-        <li><a href="api/evennia.server.portal.discord.html#evennia.server.portal.discord.DiscordWebsocketServerFactory.clientConnectionLost">(evennia.server.portal.discord.DiscordWebsocketServerFactory method)</a>
-</li>
         <li><a href="api/evennia.server.portal.grapevine.html#evennia.server.portal.grapevine.RestartingWebsocketServerFactory.clientConnectionLost">(evennia.server.portal.grapevine.RestartingWebsocketServerFactory method)</a>
 </li>
         <li><a href="api/evennia.server.portal.irc.html#evennia.server.portal.irc.IRCBotFactory.clientConnectionLost">(evennia.server.portal.irc.IRCBotFactory method)</a>
@@ -3777,6 +3782,8 @@
       <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdFind">CmdFind (class in evennia.commands.default.building)</a>
 </li>
       <li><a href="api/evennia.contrib.game_systems.barter.barter.html#evennia.contrib.game_systems.barter.barter.CmdFinish">CmdFinish (class in evennia.contrib.game_systems.barter.barter)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive">CmdFlyAndDive (class in evennia.contrib.grid.xyzgrid.commands)</a>
 </li>
       <li><a href="api/evennia.contrib.full_systems.evscaperoom.commands.html#evennia.contrib.full_systems.evscaperoom.commands.CmdFocus">CmdFocus (class in evennia.contrib.full_systems.evscaperoom.commands)</a>
 </li>
@@ -5346,6 +5353,8 @@
 </li>
       <li><a href="api/evennia.commands.cmdsethandler.html#evennia.commands.cmdsethandler.CmdSetHandler.delete_default">delete_default() (evennia.commands.cmdsethandler.CmdSetHandler method)</a>
 </li>
+      <li><a href="api/evennia.utils.logger.html#evennia.utils.logger.delete_log_file">delete_log_file() (in module evennia.utils.logger)</a>
+</li>
       <li><a href="api/evennia.prototypes.prototypes.html#evennia.prototypes.prototypes.delete_prototype">delete_prototype() (in module evennia.prototypes.prototypes)</a>
 </li>
       <li><a href="api/evennia.scripts.manager.html#evennia.scripts.manager.ScriptDBManager.delete_script">delete_script() (evennia.scripts.manager.ScriptDBManager method)</a>
@@ -5725,8 +5734,6 @@
       <li><a href="api/evennia.contrib.tutorials.tutorial_world.mob.html#evennia.contrib.tutorials.tutorial_world.mob.Mob.do_patrol">do_patrol() (evennia.contrib.tutorials.tutorial_world.mob.Mob method)</a>
 </li>
       <li><a href="api/evennia.utils.dbserialize.html#evennia.utils.dbserialize.do_pickle">do_pickle() (in module evennia.utils.dbserialize)</a>
-</li>
-      <li><a href="api/evennia.server.portal.discord.html#evennia.server.portal.discord.DiscordWebsocketServerFactory.do_retry">do_retry (evennia.server.portal.discord.DiscordWebsocketServerFactory attribute)</a>
 </li>
       <li><a href="api/evennia.commands.default.help.html#evennia.commands.default.help.CmdHelp.do_search">do_search() (evennia.commands.default.help.CmdHelp method)</a>
 </li>
@@ -9750,6 +9757,8 @@
 </li>
         <li><a href="api/evennia.contrib.grid.slow_exit.slow_exit.html#evennia.contrib.grid.slow_exit.slow_exit.CmdStop.func">(evennia.contrib.grid.slow_exit.slow_exit.CmdStop method)</a>
 </li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive.func">(evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive method)</a>
+</li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdGoto.func">(evennia.contrib.grid.xyzgrid.commands.CmdGoto method)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdMap.func">(evennia.contrib.grid.xyzgrid.commands.CmdMap method)</a>
@@ -11314,6 +11323,8 @@
 </li>
         <li><a href="api/evennia.contrib.grid.slow_exit.slow_exit.html#evennia.contrib.grid.slow_exit.slow_exit.CmdStop.help_category">(evennia.contrib.grid.slow_exit.slow_exit.CmdStop attribute)</a>
 </li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive.help_category">(evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive attribute)</a>
+</li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdGoto.help_category">(evennia.contrib.grid.xyzgrid.commands.CmdGoto attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdMap.help_category">(evennia.contrib.grid.xyzgrid.commands.CmdMap attribute)</a>
@@ -11677,6 +11688,12 @@
 </li>
       <li><a href="api/evennia.contrib.full_systems.evscaperoom.objects.html#evennia.contrib.full_systems.evscaperoom.objects.Mixable.ingredient_recipe">ingredient_recipe (evennia.contrib.full_systems.evscaperoom.objects.Mixable attribute)</a>
 </li>
+      <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.InheritedTCWithComponents">InheritedTCWithComponents (class in evennia.contrib.base_systems.components.tests)</a>
+</li>
+      <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.InheritedTCWithComponents.DoesNotExist">InheritedTCWithComponents.DoesNotExist</a>
+</li>
+      <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.InheritedTCWithComponents.MultipleObjectsReturned">InheritedTCWithComponents.MultipleObjectsReturned</a>
+</li>
       <li><a href="api/evennia.utils.utils.html#evennia.utils.utils.inherits_from">inherits_from() (in module evennia.utils.utils)</a>
 </li>
       <li><a href="api/evennia.contrib.base_systems.building_menu.building_menu.html#evennia.contrib.base_systems.building_menu.building_menu.BuildingMenu.init">init() (evennia.contrib.base_systems.building_menu.building_menu.BuildingMenu method)</a>
@@ -11769,10 +11786,10 @@
         <li><a href="api/evennia.web.admin.scripts.html#evennia.web.admin.scripts.ScriptAdmin.inlines">(evennia.web.admin.scripts.ScriptAdmin attribute)</a>
 </li>
       </ul></li>
-      <li><a href="api/evennia.web.admin.tags.html#evennia.web.admin.tags.InlineTagForm">InlineTagForm (class in evennia.web.admin.tags)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evennia.web.admin.tags.html#evennia.web.admin.tags.InlineTagForm">InlineTagForm (class in evennia.web.admin.tags)</a>
+</li>
       <li><a href="api/evennia.web.admin.tags.html#evennia.web.admin.tags.InlineTagForm.Meta">InlineTagForm.Meta (class in evennia.web.admin.tags)</a>
 </li>
       <li><a href="api/evennia.typeclasses.attributes.html#evennia.typeclasses.attributes.InMemoryAttribute">InMemoryAttribute (class in evennia.typeclasses.attributes)</a>
@@ -11879,6 +11896,8 @@
         <li><a href="api/evennia.objects.objects.html#evennia.objects.objects.DefaultObject.is_connected">(evennia.objects.objects.DefaultObject property)</a>
 </li>
       </ul></li>
+      <li><a href="api/evennia.server.portal.discord.html#evennia.server.portal.discord.DiscordWebsocketServerFactory.is_connecting">is_connecting (evennia.server.portal.discord.DiscordWebsocketServerFactory attribute)</a>
+</li>
       <li><a href="api/evennia.commands.command.html#evennia.commands.command.Command.is_exit">is_exit (evennia.commands.command.Command attribute)</a>
 </li>
       <li><a href="api/evennia.contrib.tutorials.evadventure.npcs.html#evennia.contrib.tutorials.evadventure.npcs.EvAdventureNPC.is_idle">is_idle (evennia.contrib.tutorials.evadventure.npcs.EvAdventureNPC attribute)</a>
@@ -12444,6 +12463,8 @@
 </li>
         <li><a href="api/evennia.contrib.grid.slow_exit.slow_exit.html#evennia.contrib.grid.slow_exit.slow_exit.CmdStop.key">(evennia.contrib.grid.slow_exit.slow_exit.CmdStop attribute)</a>
 </li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive.key">(evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive attribute)</a>
+</li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdGoto.key">(evennia.contrib.grid.xyzgrid.commands.CmdGoto attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdMap.key">(evennia.contrib.grid.xyzgrid.commands.CmdMap attribute)</a>
@@ -12453,6 +12474,8 @@
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdXYZTeleport.key">(evennia.contrib.grid.xyzgrid.commands.CmdXYZTeleport attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.XYZGridCmdSet.key">(evennia.contrib.grid.xyzgrid.commands.XYZGridCmdSet attribute)</a>
+</li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.XYZGridFlyDiveCmdSet.key">(evennia.contrib.grid.xyzgrid.commands.XYZGridFlyDiveCmdSet attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.rpg.buffs.buff.html#evennia.contrib.rpg.buffs.buff.BaseBuff.key">(evennia.contrib.rpg.buffs.buff.BaseBuff attribute)</a>
 </li>
@@ -13364,6 +13387,8 @@
 </li>
         <li><a href="api/evennia.contrib.grid.slow_exit.slow_exit.html#evennia.contrib.grid.slow_exit.slow_exit.CmdStop.lock_storage">(evennia.contrib.grid.slow_exit.slow_exit.CmdStop attribute)</a>
 </li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive.lock_storage">(evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive attribute)</a>
+</li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdGoto.lock_storage">(evennia.contrib.grid.xyzgrid.commands.CmdGoto attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdMap.lock_storage">(evennia.contrib.grid.xyzgrid.commands.CmdMap attribute)</a>
@@ -14264,6 +14289,8 @@
       <li><a href="api/evennia.commands.cmdset.html#evennia.commands.cmdset.CmdSet.mergetype">mergetype (evennia.commands.cmdset.CmdSet attribute)</a>
 
       <ul>
+        <li><a href="api/evennia.contrib.base_systems.building_menu.building_menu.html#evennia.contrib.base_systems.building_menu.building_menu.BuildingMenuCmdSet.mergetype">(evennia.contrib.base_systems.building_menu.building_menu.BuildingMenuCmdSet attribute)</a>
+</li>
         <li><a href="api/evennia.contrib.tutorials.red_button.red_button.html#evennia.contrib.tutorials.red_button.red_button.BlindCmdSet.mergetype">(evennia.contrib.tutorials.red_button.red_button.BlindCmdSet attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.tutorials.tutorial_world.rooms.html#evennia.contrib.tutorials.tutorial_world.rooms.DarkCmdSet.mergetype">(evennia.contrib.tutorials.tutorial_world.rooms.DarkCmdSet attribute)</a>
@@ -16467,6 +16494,8 @@
 </li>
         <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.CharWithSignal.path">(evennia.contrib.base_systems.components.tests.CharWithSignal attribute)</a>
 </li>
+        <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.InheritedTCWithComponents.path">(evennia.contrib.base_systems.components.tests.InheritedTCWithComponents attribute)</a>
+</li>
         <li><a href="api/evennia.contrib.base_systems.custom_gametime.custom_gametime.html#evennia.contrib.base_systems.custom_gametime.custom_gametime.GametimeScript.path">(evennia.contrib.base_systems.custom_gametime.custom_gametime.GametimeScript attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.base_systems.ingame_python.scripts.html#evennia.contrib.base_systems.ingame_python.scripts.EventHandler.path">(evennia.contrib.base_systems.ingame_python.scripts.EventHandler attribute)</a>
@@ -16608,6 +16637,8 @@
         <li><a href="api/evennia.contrib.grid.wilderness.wilderness.html#evennia.contrib.grid.wilderness.wilderness.WildernessScript.path">(evennia.contrib.grid.wilderness.wilderness.WildernessScript attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.XYZGridCmdSet.path">(evennia.contrib.grid.xyzgrid.commands.XYZGridCmdSet attribute)</a>
+</li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.XYZGridFlyDiveCmdSet.path">(evennia.contrib.grid.xyzgrid.commands.XYZGridFlyDiveCmdSet attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestXyzExit.path">(evennia.contrib.grid.xyzgrid.tests.TestXyzExit attribute)</a>
 </li>
@@ -18679,6 +18710,8 @@
 </li>
         <li><a href="api/evennia.contrib.grid.slow_exit.slow_exit.html#evennia.contrib.grid.slow_exit.slow_exit.CmdStop.search_index_entry">(evennia.contrib.grid.slow_exit.slow_exit.CmdStop attribute)</a>
 </li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive.search_index_entry">(evennia.contrib.grid.xyzgrid.commands.CmdFlyAndDive attribute)</a>
+</li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdGoto.search_index_entry">(evennia.contrib.grid.xyzgrid.commands.CmdGoto attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.CmdMap.search_index_entry">(evennia.contrib.grid.xyzgrid.commands.CmdMap attribute)</a>
@@ -19218,6 +19251,8 @@
         <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestBuildExampleGrid.setUp">(evennia.contrib.grid.xyzgrid.tests.TestBuildExampleGrid method)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestCallbacks.setUp">(evennia.contrib.grid.xyzgrid.tests.TestCallbacks method)</a>
+</li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.setUp">(evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestXYZGrid.setUp">(evennia.contrib.grid.xyzgrid.tests.TestXYZGrid method)</a>
 </li>
@@ -20199,6 +20234,8 @@
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestCallbacks.tearDown">(evennia.contrib.grid.xyzgrid.tests.TestCallbacks method)</a>
 </li>
+        <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.tearDown">(evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestXYZGrid.tearDown">(evennia.contrib.grid.xyzgrid.tests.TestXYZGrid method)</a>
 </li>
         <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestXYZGridTransition.tearDown">(evennia.contrib.grid.xyzgrid.tests.TestXYZGridTransition method)</a>
@@ -20214,6 +20251,8 @@
         <li><a href="api/evennia.contrib.tutorials.evadventure.tests.test_combat.html#evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatHandlerTest.tearDown">(evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatHandlerTest method)</a>
 </li>
         <li><a href="api/evennia.server.portal.tests.html#evennia.server.portal.tests.TestWebSocket.tearDown">(evennia.server.portal.tests.TestWebSocket method)</a>
+</li>
+        <li><a href="api/evennia.utils.test_resources.html#evennia.utils.test_resources.EvenniaTestCase.tearDown">(evennia.utils.test_resources.EvenniaTestCase method)</a>
 </li>
         <li><a href="api/evennia.utils.test_resources.html#evennia.utils.test_resources.EvenniaTestMixin.tearDown">(evennia.utils.test_resources.EvenniaTestMixin method)</a>
 </li>
@@ -20414,6 +20453,8 @@
 </li>
       <li><a href="api/evennia.contrib.tutorials.evadventure.tests.test_chargen.html#evennia.contrib.tutorials.evadventure.tests.test_chargen.EvAdventureCharacterGenerationTest.test_build_desc">test_build_desc() (evennia.contrib.tutorials.evadventure.tests.test_chargen.EvAdventureCharacterGenerationTest method)</a>
 </li>
+      <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.InheritedTCWithComponents.test_c">test_c (evennia.contrib.base_systems.components.tests.InheritedTCWithComponents attribute)</a>
+</li>
       <li><a href="api/evennia.server.profiling.tests.html#evennia.server.profiling.tests.TestDummyrunnerSettings.test_c_creates_button">test_c_creates_button() (evennia.server.profiling.tests.TestDummyrunnerSettings method)</a>
 </li>
       <li><a href="api/evennia.server.profiling.tests.html#evennia.server.profiling.tests.TestDummyrunnerSettings.test_c_creates_obj">test_c_creates_obj() (evennia.server.profiling.tests.TestDummyrunnerSettings method)</a>
@@ -20559,6 +20600,8 @@
       <li><a href="api/evennia.contrib.rpg.dice.tests.html#evennia.contrib.rpg.dice.tests.TestDice.test_cmddice">test_cmddice() (evennia.contrib.rpg.dice.tests.TestDice method)</a>
 </li>
       <li><a href="api/evennia.contrib.grid.extended_room.tests.html#evennia.contrib.grid.extended_room.tests.TestExtendedRoom.test_cmdextendedlook">test_cmdextendedlook() (evennia.contrib.grid.extended_room.tests.TestExtendedRoom method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.extended_room.tests.html#evennia.contrib.grid.extended_room.tests.TestExtendedRoom.test_cmdextendedlook_second_person">test_cmdextendedlook_second_person() (evennia.contrib.grid.extended_room.tests.TestExtendedRoom method)</a>
 </li>
       <li><a href="api/evennia.contrib.grid.extended_room.tests.html#evennia.contrib.grid.extended_room.tests.TestExtendedRoom.test_cmdgametime">test_cmdgametime() (evennia.contrib.grid.extended_room.tests.TestExtendedRoom method)</a>
 </li>
@@ -20770,6 +20813,8 @@
 </li>
       <li><a href="api/evennia.commands.default.tests.html#evennia.commands.default.tests.TestBuilding.test_dig">test_dig() (evennia.commands.default.tests.TestBuilding method)</a>
 </li>
+      <li><a href="api/evennia.commands.default.tests.html#evennia.commands.default.tests.TestUnconnectedCommand.test_disabled_registration">test_disabled_registration() (evennia.commands.default.tests.TestUnconnectedCommand method)</a>
+</li>
       <li><a href="api/evennia.commands.default.tests.html#evennia.commands.default.tests.TestDiscord.test_discord__linking">test_discord__linking() (evennia.commands.default.tests.TestDiscord method)</a>
 </li>
       <li><a href="api/evennia.commands.default.tests.html#evennia.commands.default.tests.TestDiscord.test_discord__list">test_discord__list() (evennia.commands.default.tests.TestDiscord method)</a>
@@ -20861,6 +20906,30 @@
       <li><a href="api/evennia.contrib.tutorials.evadventure.tests.test_combat.html#evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatActionTest.test_flee__success">test_flee__success() (evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatActionTest method)</a>
 </li>
       <li><a href="api/evennia.contrib.rpg.traits.tests.html#evennia.contrib.rpg.traits.tests.TestNumericTraitOperators.test_floordiv">test_floordiv() (evennia.contrib.rpg.traits.tests.TestNumericTraitOperators method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive">test_fly_and_dive (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand attribute)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_00">test_fly_and_dive_00() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_01">test_fly_and_dive_01() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_02">test_fly_and_dive_02() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_03">test_fly_and_dive_03() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_04">test_fly_and_dive_04() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_05">test_fly_and_dive_05() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_06">test_fly_and_dive_06() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_07">test_fly_and_dive_07() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_08">test_fly_and_dive_08() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_09">test_fly_and_dive_09() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand.test_fly_and_dive_10">test_fly_and_dive_10() (evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand method)</a>
 </li>
       <li><a href="api/evennia.contrib.full_systems.evscaperoom.tests.html#evennia.contrib.full_systems.evscaperoom.tests.TestEvscaperoomCommands.test_focus">test_focus() (evennia.contrib.full_systems.evscaperoom.tests.TestEvscaperoomCommands method)</a>
 </li>
@@ -21115,6 +21184,8 @@
       <li><a href="api/evennia.server.profiling.tests.html#evennia.server.profiling.tests.TestDummyrunnerSettings.test_idles">test_idles() (evennia.server.profiling.tests.TestDummyrunnerSettings method)</a>
 </li>
       <li><a href="api/evennia.commands.default.tests.html#evennia.commands.default.tests.TestUnconnectedCommand.test_info_command">test_info_command() (evennia.commands.default.tests.TestUnconnectedCommand method)</a>
+</li>
+      <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.TestComponents.test_inherited_typeclass_does_not_include_child_class_components">test_inherited_typeclass_does_not_include_child_class_components() (evennia.contrib.base_systems.components.tests.TestComponents method)</a>
 </li>
       <li><a href="api/evennia.contrib.rpg.traits.tests.html#evennia.contrib.rpg.traits.tests.TestTrait.test_init">test_init() (evennia.contrib.rpg.traits.tests.TestTrait method)</a>
 
@@ -22368,6 +22439,8 @@
 </li>
       <li><a href="api/evennia.contrib.utils.tree_select.tests.html#evennia.contrib.utils.tree_select.tests.TestFieldFillFunc">TestFieldFillFunc (class in evennia.contrib.utils.tree_select.tests)</a>
 </li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.tests.html#evennia.contrib.grid.xyzgrid.tests.TestFlyDiveCommand">TestFlyDiveCommand (class in evennia.contrib.grid.xyzgrid.tests)</a>
+</li>
       <li><a href="api/evennia.contrib.game_systems.gendersub.tests.html#evennia.contrib.game_systems.gendersub.tests.TestGenderSub">TestGenderSub (class in evennia.contrib.game_systems.gendersub.tests)</a>
 </li>
       <li><a href="api/evennia.commands.default.tests.html#evennia.commands.default.tests.TestGeneral">TestGeneral (class in evennia.commands.default.tests)</a>
@@ -22846,6 +22919,8 @@
         <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.CharacterWithComponents.typename">(evennia.contrib.base_systems.components.tests.CharacterWithComponents attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.CharWithSignal.typename">(evennia.contrib.base_systems.components.tests.CharWithSignal attribute)</a>
+</li>
+        <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.InheritedTCWithComponents.typename">(evennia.contrib.base_systems.components.tests.InheritedTCWithComponents attribute)</a>
 </li>
         <li><a href="api/evennia.contrib.base_systems.custom_gametime.custom_gametime.html#evennia.contrib.base_systems.custom_gametime.custom_gametime.GametimeScript.typename">(evennia.contrib.base_systems.custom_gametime.custom_gametime.GametimeScript attribute)</a>
 </li>
@@ -23782,14 +23857,14 @@
 </li>
       <li><a href="api/evennia.contrib.grid.xyzgrid.xyzroom.html#evennia.contrib.grid.xyzgrid.xyzroom.XYZRoom.xymap">xymap() (evennia.contrib.grid.xyzgrid.xyzroom.XYZRoom property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/evennia.contrib.grid.xyzgrid.xyzroom.html#evennia.contrib.grid.xyzgrid.xyzroom.XYZExit.xyz">xyz() (evennia.contrib.grid.xyzgrid.xyzroom.XYZExit property)</a>
 
       <ul>
         <li><a href="api/evennia.contrib.grid.xyzgrid.xyzroom.html#evennia.contrib.grid.xyzgrid.xyzroom.XYZRoom.xyz">(evennia.contrib.grid.xyzgrid.xyzroom.XYZRoom property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/evennia.contrib.grid.xyzgrid.xyzroom.html#evennia.contrib.grid.xyzgrid.xyzroom.XYZExit.xyz_destination">xyz_destination() (evennia.contrib.grid.xyzgrid.xyzroom.XYZExit property)</a>
 </li>
       <li><a href="api/evennia.contrib.grid.xyzgrid.launchcmd.html#evennia.contrib.grid.xyzgrid.launchcmd.xyzcommand">xyzcommand() (in module evennia.contrib.grid.xyzgrid.launchcmd)</a>
@@ -23815,6 +23890,8 @@
       <li><a href="api/evennia.contrib.grid.xyzgrid.xyzgrid.html#evennia.contrib.grid.xyzgrid.xyzgrid.XYZGrid.MultipleObjectsReturned">XYZGrid.MultipleObjectsReturned</a>
 </li>
       <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.XYZGridCmdSet">XYZGridCmdSet (class in evennia.contrib.grid.xyzgrid.commands)</a>
+</li>
+      <li><a href="api/evennia.contrib.grid.xyzgrid.commands.html#evennia.contrib.grid.xyzgrid.commands.XYZGridFlyDiveCmdSet">XYZGridFlyDiveCmdSet (class in evennia.contrib.grid.xyzgrid.commands)</a>
 </li>
       <li><a href="api/evennia.contrib.grid.xyzgrid.xyzroom.html#evennia.contrib.grid.xyzgrid.xyzroom.XYZManager">XYZManager (class in evennia.contrib.grid.xyzgrid.xyzroom)</a>
 </li>
@@ -23868,7 +23945,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="tb_range.html">1.0 (develop branch)</a></li>
+  <li><a href="tb_range.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -202,7 +203,7 @@
 
 <div class="viewcode-block" id="RangedCombatRules"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules">[docs]</a><span class="k">class</span> <span class="nc">RangedCombatRules</span><span class="p">(</span><span class="n">tb_basic</span><span class="o">.</span><span class="n">BasicCombatRules</span><span class="p">):</span>
 <div class="viewcode-block" id="RangedCombatRules.get_attack"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.get_attack">[docs]</a>    <span class="k">def</span> <span class="nf">get_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attacker</span><span class="p">,</span> <span class="n">defender</span><span class="p">,</span> <span class="n">attack_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a value for an attack roll.</span>
 
 <span class="sd">        Args:</span>
@@ -233,7 +234,7 @@
         <span class="k">return</span> <span class="n">attack_value</span></div>
 
 <div class="viewcode-block" id="RangedCombatRules.get_defense"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.get_defense">[docs]</a>    <span class="k">def</span> <span class="nf">get_defense</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attacker</span><span class="p">,</span> <span class="n">defender</span><span class="p">,</span> <span class="n">attack_type</span><span class="o">=</span><span class="s2">&quot;melee&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a value for defense, which an attack roll must equal or exceed in order</span>
 <span class="sd">        for an attack to hit.</span>
 
@@ -257,7 +258,7 @@
         <span class="k">return</span> <span class="n">defense_value</span></div>
 
 <div class="viewcode-block" id="RangedCombatRules.get_range"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.get_range">[docs]</a>    <span class="k">def</span> <span class="nf">get_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets the combat range between two objects.</span>
 
 <span class="sd">        Args:</span>
@@ -280,7 +281,7 @@
         <span class="k">return</span> <span class="n">obj1</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">combat_range</span><span class="p">[</span><span class="n">obj2</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="RangedCombatRules.distance_inc"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.distance_inc">[docs]</a>    <span class="k">def</span> <span class="nf">distance_inc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mover</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function that increases distance in range field between mover and target.</span>
 
 <span class="sd">        Args:</span>
@@ -295,7 +296,7 @@
             <span class="n">mover</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">combat_range</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span></div>
 
 <div class="viewcode-block" id="RangedCombatRules.distance_dec"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.distance_dec">[docs]</a>    <span class="k">def</span> <span class="nf">distance_dec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mover</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper function that decreases distance in range field between mover and target.</span>
 
 <span class="sd">        Args:</span>
@@ -316,7 +317,7 @@
                     <span class="n">thing</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">combat_range</span><span class="p">[</span><span class="n">mover</span><span class="p">]</span> <span class="o">=</span> <span class="n">thing</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">combat_range</span><span class="p">[</span><span class="n">target</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="RangedCombatRules.approach"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.approach">[docs]</a>    <span class="k">def</span> <span class="nf">approach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mover</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Manages a character&#39;s whole approach, including changes in ranges to other characters.</span>
 
 <span class="sd">        Args:</span>
@@ -343,7 +344,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distance_dec</span><span class="p">(</span><span class="n">mover</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RangedCombatRules.withdraw"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.withdraw">[docs]</a>    <span class="k">def</span> <span class="nf">withdraw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mover</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Manages a character&#39;s whole withdrawal, including changes in ranges to other characters.</span>
 
 <span class="sd">        Args:</span>
@@ -378,7 +379,7 @@
 <div class="viewcode-block" id="RangedCombatRules.resolve_attack"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.resolve_attack">[docs]</a>    <span class="k">def</span> <span class="nf">resolve_attack</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">attacker</span><span class="p">,</span> <span class="n">defender</span><span class="p">,</span> <span class="n">attack_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">defense_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attack_type</span><span class="o">=</span><span class="s2">&quot;melee&quot;</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Resolves an attack and outputs the result.</span>
 
 <span class="sd">        Args:</span>
@@ -416,7 +417,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">at_defeat</span><span class="p">(</span><span class="n">defender</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RangedCombatRules.combat_status_message"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.combat_status_message">[docs]</a>    <span class="k">def</span> <span class="nf">combat_status_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fighter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sends a message to a player with their current HP and</span>
 <span class="sd">        distances to other fighters and objects. Called at turn</span>
 <span class="sd">        start and by the &#39;status&#39; command.</span>
@@ -464,7 +465,7 @@
 
 
 <div class="viewcode-block" id="TBRangeTurnHandler"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeTurnHandler">[docs]</a><span class="k">class</span> <span class="nc">TBRangeTurnHandler</span><span class="p">(</span><span class="n">tb_basic</span><span class="o">.</span><span class="n">TBBasicTurnHandler</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is the script that handles the progression of combat through turns.</span>
 <span class="sd">    On creation (when a fight is started) it adds all combat-ready characters</span>
 <span class="sd">    to its roster and then sorts them into a turn order. There can only be one</span>
@@ -479,7 +480,7 @@
     <span class="n">rules</span> <span class="o">=</span> <span class="n">COMBAT_RULES</span>
 
 <div class="viewcode-block" id="TBRangeTurnHandler.init_range"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeTurnHandler.init_range">[docs]</a>    <span class="k">def</span> <span class="nf">init_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_init</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initializes range values for an object at the start of a fight.</span>
 
 <span class="sd">        Args:</span>
@@ -502,7 +503,7 @@
         <span class="n">to_init</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">combat_range</span> <span class="o">=</span> <span class="n">rangedict</span></div>
 
 <div class="viewcode-block" id="TBRangeTurnHandler.join_rangefield"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeTurnHandler.join_rangefield">[docs]</a>    <span class="k">def</span> <span class="nf">join_rangefield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_init</span><span class="p">,</span> <span class="n">anchor_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_distance</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a new object to the range field of a fight in progress.</span>
 
 <span class="sd">        Args:</span>
@@ -531,7 +532,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">withdraw</span><span class="p">(</span><span class="n">to_init</span><span class="p">,</span> <span class="n">anchor_obj</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TBRangeTurnHandler.start_turn"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeTurnHandler.start_turn">[docs]</a>    <span class="k">def</span> <span class="nf">start_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">character</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Readies a character for the start of their turn by replenishing their</span>
 <span class="sd">        available actions and notifying them that their turn has come up.</span>
 
@@ -547,7 +548,7 @@
         <span class="n">character</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">combat_actionsleft</span> <span class="o">=</span> <span class="n">ACTIONS_PER_TURN</span></div>
 
 <div class="viewcode-block" id="TBRangeTurnHandler.join_fight"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeTurnHandler.join_fight">[docs]</a>    <span class="k">def</span> <span class="nf">join_fight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">character</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds a new character to a fight already in progress.</span>
 
 <span class="sd">        Args:</span>
@@ -572,7 +573,7 @@
 
 
 <div class="viewcode-block" id="TBRangeCharacter"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeCharacter">[docs]</a><span class="k">class</span> <span class="nc">TBRangeCharacter</span><span class="p">(</span><span class="n">tb_basic</span><span class="o">.</span><span class="n">TBBasicCharacter</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A character able to participate in turn-based combat. Has attributes for current</span>
 <span class="sd">    and maximum HP, and access to combat commands.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -581,7 +582,7 @@
 
 
 <div class="viewcode-block" id="TBRangeObject"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeObject">[docs]</a><span class="k">class</span> <span class="nc">TBRangeObject</span><span class="p">(</span><span class="n">DefaultObject</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An object that is assigned range values in combat. Getting, giving, and dropping</span>
 <span class="sd">    the object has restrictions in combat - you must be next to an object to get it,</span>
 <span class="sd">    must be next to your target to give them something, and can only interact with</span>
@@ -589,7 +590,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TBRangeObject.at_pre_drop"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeObject.at_pre_drop">[docs]</a>    <span class="k">def</span> <span class="nf">at_pre_drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dropper</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called by the default `drop` command before this object has been</span>
 <span class="sd">        dropped.</span>
 
@@ -613,7 +614,7 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="TBRangeObject.at_drop"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeObject.at_drop">[docs]</a>    <span class="k">def</span> <span class="nf">at_drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dropper</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called by the default `drop` command when this object has been</span>
 <span class="sd">        dropped.</span>
 
@@ -634,7 +635,7 @@
             <span class="n">dropper</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">combat_turnhandler</span><span class="o">.</span><span class="n">join_rangefield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">anchor_obj</span><span class="o">=</span><span class="n">dropper</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TBRangeObject.at_pre_get"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeObject.at_pre_get">[docs]</a>    <span class="k">def</span> <span class="nf">at_pre_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">getter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called by the default `get` command before this object has been</span>
 <span class="sd">        picked up.</span>
 
@@ -661,7 +662,7 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="TBRangeObject.at_get"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeObject.at_get">[docs]</a>    <span class="k">def</span> <span class="nf">at_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">getter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called by the default `get` command when this object has been</span>
 <span class="sd">        picked up.</span>
 
@@ -688,7 +689,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">spend_action</span><span class="p">(</span><span class="n">getter</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">action_name</span><span class="o">=</span><span class="s2">&quot;get&quot;</span><span class="p">)</span>  <span class="c1"># Use up one action.</span></div>
 
 <div class="viewcode-block" id="TBRangeObject.at_pre_give"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeObject.at_pre_give">[docs]</a>    <span class="k">def</span> <span class="nf">at_pre_give</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">giver</span><span class="p">,</span> <span class="n">getter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called by the default `give` command before this object has been</span>
 <span class="sd">        given.</span>
 
@@ -719,7 +720,7 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="TBRangeObject.at_give"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.TBRangeObject.at_give">[docs]</a>    <span class="k">def</span> <span class="nf">at_give</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">giver</span><span class="p">,</span> <span class="n">getter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called by the default `give` command when this object has been</span>
 <span class="sd">        given.</span>
 
@@ -747,7 +748,7 @@
 
 
 <div class="viewcode-block" id="CmdFight"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdFight">[docs]</a><span class="k">class</span> <span class="nc">CmdFight</span><span class="p">(</span><span class="n">tb_basic</span><span class="o">.</span><span class="n">CmdFight</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Starts a fight with everyone in the same room as you.</span>
 
 <span class="sd">    Usage:</span>
@@ -766,7 +767,7 @@
 
 
 <div class="viewcode-block" id="CmdAttack"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdAttack">[docs]</a><span class="k">class</span> <span class="nc">CmdAttack</span><span class="p">(</span><span class="n">tb_basic</span><span class="o">.</span><span class="n">CmdAttack</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Attacks another character in melee.</span>
 
 <span class="sd">    Usage:</span>
@@ -826,7 +827,7 @@
 
 
 <div class="viewcode-block" id="CmdShoot"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdShoot">[docs]</a><span class="k">class</span> <span class="nc">CmdShoot</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Attacks another character from range.</span>
 
 <span class="sd">    Usage:</span>
@@ -898,7 +899,7 @@
 
 
 <div class="viewcode-block" id="CmdApproach"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdApproach">[docs]</a><span class="k">class</span> <span class="nc">CmdApproach</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Approaches an object.</span>
 
 <span class="sd">    Usage:</span>
@@ -953,7 +954,7 @@
 
 
 <div class="viewcode-block" id="CmdWithdraw"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdWithdraw">[docs]</a><span class="k">class</span> <span class="nc">CmdWithdraw</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Moves away from an object.</span>
 
 <span class="sd">    Usage:</span>
@@ -1007,7 +1008,7 @@
 
 
 <div class="viewcode-block" id="CmdPass"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdPass">[docs]</a><span class="k">class</span> <span class="nc">CmdPass</span><span class="p">(</span><span class="n">tb_basic</span><span class="o">.</span><span class="n">CmdPass</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Passes on your turn.</span>
 
 <span class="sd">    Usage:</span>
@@ -1025,7 +1026,7 @@
 
 
 <div class="viewcode-block" id="CmdDisengage"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdDisengage">[docs]</a><span class="k">class</span> <span class="nc">CmdDisengage</span><span class="p">(</span><span class="n">tb_basic</span><span class="o">.</span><span class="n">CmdDisengage</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Passes your turn and attempts to end combat.</span>
 
 <span class="sd">    Usage:</span>
@@ -1044,7 +1045,7 @@
 
 
 <div class="viewcode-block" id="CmdRest"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdRest">[docs]</a><span class="k">class</span> <span class="nc">CmdRest</span><span class="p">(</span><span class="n">tb_basic</span><span class="o">.</span><span class="n">CmdRest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Recovers damage.</span>
 
 <span class="sd">    Usage:</span>
@@ -1061,7 +1062,7 @@
 
 
 <div class="viewcode-block" id="CmdStatus"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdStatus">[docs]</a><span class="k">class</span> <span class="nc">CmdStatus</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gives combat information.</span>
 
 <span class="sd">    Usage:</span>
@@ -1082,7 +1083,7 @@
 
 
 <div class="viewcode-block" id="CmdCombatHelp"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.CmdCombatHelp">[docs]</a><span class="k">class</span> <span class="nc">CmdCombatHelp</span><span class="p">(</span><span class="n">tb_basic</span><span class="o">.</span><span class="n">CmdCombatHelp</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    View help or a list of topics</span>
 
 <span class="sd">    Usage:</span>
@@ -1110,14 +1111,14 @@
 
 
 <div class="viewcode-block" id="BattleCmdSet"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.BattleCmdSet">[docs]</a><span class="k">class</span> <span class="nc">BattleCmdSet</span><span class="p">(</span><span class="n">default_cmds</span><span class="o">.</span><span class="n">CharacterCmdSet</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This command set includes all the commmands used in the battle system.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;DefaultCharacter&quot;</span>
 
 <div class="viewcode-block" id="BattleCmdSet.at_cmdset_creation"><a class="viewcode-back" href="../../../../../api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.BattleCmdSet.at_cmdset_creation">[docs]</a>    <span class="k">def</span> <span class="nf">at_cmdset_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Populates the cmdset</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">CmdFight</span><span class="p">())</span>
@@ -1153,7 +1154,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

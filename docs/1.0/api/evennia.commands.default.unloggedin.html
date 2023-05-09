@@ -77,8 +77,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -88,7 +89,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="evennia.commands.default.unloggedin.html">1.0 (develop branch)</a></li>
+  <li><a href="evennia.commands.default.unloggedin.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -121,7 +122,7 @@ connect “account name” “pass word”</p>
 
 <dl class="py attribute">
 <dt id="evennia.commands.default.unloggedin.CmdUnconnectedConnect.aliases">
-<code class="sig-name descname">aliases</code><em class="property"> = ['conn', 'con', 'co']</em><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedConnect.aliases" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">aliases</code><em class="property"> = ['con', 'co', 'conn']</em><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedConnect.aliases" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -156,7 +157,7 @@ there is no object yet before the account has logged in)</p>
 
 <dl class="py attribute">
 <dt id="evennia.commands.default.unloggedin.CmdUnconnectedConnect.search_index_entry">
-<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'conn con co', 'category': 'general', 'key': 'connect', 'no_prefix': ' conn con co', 'tags': '', 'text': '\n    connect to the game\n\n    Usage (at login screen):\n      connect accountname password\n      connect &quot;account name&quot; &quot;pass word&quot;\n\n    Use the create command to first create an account before logging in.\n\n    If you have spaces in your name, enclose it in double quotes.\n    '}</em><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedConnect.search_index_entry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'con co conn', 'category': 'general', 'key': 'connect', 'no_prefix': ' con co conn', 'tags': '', 'text': '\n    connect to the game\n\n    Usage (at login screen):\n      connect accountname password\n      connect &quot;account name&quot; &quot;pass word&quot;\n\n    Use the create command to first create an account before logging in.\n\n    If you have spaces in your name, enclose it in double quotes.\n    '}</em><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedConnect.search_index_entry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -180,7 +181,7 @@ create “account name” “pass word”</p>
 
 <dl class="py attribute">
 <dt id="evennia.commands.default.unloggedin.CmdUnconnectedCreate.aliases">
-<code class="sig-name descname">aliases</code><em class="property"> = ['cr', 'cre']</em><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedCreate.aliases" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">aliases</code><em class="property"> = ['cre', 'cr']</em><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedCreate.aliases" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -192,6 +193,12 @@ create “account name” “pass word”</p>
 <dt id="evennia.commands.default.unloggedin.CmdUnconnectedCreate.arg_regex">
 <code class="sig-name descname">arg_regex</code><em class="property"> = re.compile('\\s.*?|$', re.IGNORECASE)</em><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedCreate.arg_regex" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt id="evennia.commands.default.unloggedin.CmdUnconnectedCreate.at_pre_cmd">
+<code class="sig-name descname">at_pre_cmd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/commands/default/unloggedin.html#CmdUnconnectedCreate.at_pre_cmd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedCreate.at_pre_cmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that account creation is enabled.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="evennia.commands.default.unloggedin.CmdUnconnectedCreate.func">
@@ -211,7 +218,7 @@ create “account name” “pass word”</p>
 
 <dl class="py attribute">
 <dt id="evennia.commands.default.unloggedin.CmdUnconnectedCreate.search_index_entry">
-<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'cr cre', 'category': 'general', 'key': 'create', 'no_prefix': ' cr cre', 'tags': '', 'text': '\n    create a new account account\n\n    Usage (at login screen):\n      create &lt;accountname&gt; &lt;password&gt;\n      create &quot;account name&quot; &quot;pass word&quot;\n\n    This creates a new account account.\n\n    If you have spaces in your name, enclose it in double quotes.\n    '}</em><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedCreate.search_index_entry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'cre cr', 'category': 'general', 'key': 'create', 'no_prefix': ' cre cr', 'tags': '', 'text': '\n    create a new account account\n\n    Usage (at login screen):\n      create &lt;accountname&gt; &lt;password&gt;\n      create &quot;account name&quot; &quot;pass word&quot;\n\n    This creates a new account account.\n\n    If you have spaces in your name, enclose it in double quotes.\n    '}</em><a class="headerlink" href="#evennia.commands.default.unloggedin.CmdUnconnectedCreate.search_index_entry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -548,7 +555,7 @@ logged in, use option screenreader on).</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

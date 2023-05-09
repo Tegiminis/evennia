@@ -86,8 +86,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -97,7 +98,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="evennia.contrib.grid.xyzgrid.xymap_legend.html">1.0 (develop branch)</a></li>
+  <li><a href="evennia.contrib.grid.xyzgrid.xymap_legend.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -387,6 +388,9 @@ and an ‘outgoing direction’. It’s like a railway track between
 MapNodes. A Link can be placed on any location in the grid, but even when
 on an integer XY position they still don’t represent an actual in-game place
 but just a link between such places (the Nodes).</p>
+<p>&gt; Note that, if you want to create a child link-class that spawns onto the grid
+(usually an exit), you must set its <strong>.prototype</strong>. This parent class will not on
+its own spawn anything.</p>
 <p>Each link has a ‘weight’ &gt;=1,  this indicates how ‘slow’
 it is to traverse that link. This is used by the Dijkstra algorithm
 to find the ‘fastest’ route to a point. By default this weight is 1
@@ -1325,7 +1329,7 @@ one-way link out of the teleporter on one side.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

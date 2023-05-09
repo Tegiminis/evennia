@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="comms.html">1.0 (develop branch)</a></li>
+  <li><a href="comms.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -91,7 +92,7 @@
 
 
 <div class="viewcode-block" id="MsgTagInline"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.MsgTagInline">[docs]</a><span class="k">class</span> <span class="nc">MsgTagInline</span><span class="p">(</span><span class="n">TagInline</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inline display for Msg-tags.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -101,7 +102,7 @@
 
 
 <div class="viewcode-block" id="MsgForm"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.MsgForm">[docs]</a><span class="k">class</span> <span class="nc">MsgForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom Msg form.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -130,7 +131,7 @@
 
 <div class="viewcode-block" id="MsgAdmin"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.MsgAdmin">[docs]</a><span class="nd">@admin</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Msg</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MsgAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines display for Msg objects</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -225,7 +226,7 @@
             <span class="k">return</span> <span class="n">msg</span></div>
 
 <div class="viewcode-block" id="MsgAdmin.serialized_string"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.MsgAdmin.serialized_string">[docs]</a>    <span class="k">def</span> <span class="nf">serialized_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the serialized version of the object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -239,7 +240,7 @@
     <span class="p">)</span>
 
 <div class="viewcode-block" id="MsgAdmin.get_form"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.MsgAdmin.get_form">[docs]</a>    <span class="k">def</span> <span class="nf">get_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Overrides help texts.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -250,7 +251,7 @@
 
 
 <div class="viewcode-block" id="ChannelAttributeInline"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.ChannelAttributeInline">[docs]</a><span class="k">class</span> <span class="nc">ChannelAttributeInline</span><span class="p">(</span><span class="n">AttributeInline</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inline display of Channel Attribute - experimental</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -260,7 +261,7 @@
 
 
 <div class="viewcode-block" id="ChannelTagInline"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.ChannelTagInline">[docs]</a><span class="k">class</span> <span class="nc">ChannelTagInline</span><span class="p">(</span><span class="n">TagInline</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inline display of Channel Tags - experimental</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -270,7 +271,7 @@
 
 
 <div class="viewcode-block" id="ChannelForm"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.ChannelForm">[docs]</a><span class="k">class</span> <span class="nc">ChannelForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Form for accessing channels.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -291,7 +292,7 @@
 
 <div class="viewcode-block" id="ChannelAdmin"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.ChannelAdmin">[docs]</a><span class="nd">@admin</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ChannelDB</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ChannelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines display for Channel objects</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -330,7 +331,7 @@
     <span class="p">)</span>
 
 <div class="viewcode-block" id="ChannelAdmin.subscriptions"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.ChannelAdmin.subscriptions">[docs]</a>    <span class="k">def</span> <span class="nf">subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method to get subs from a channel.</span>
 
 <span class="sd">        Args:</span>
@@ -340,7 +341,7 @@
         <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">subscriptions</span><span class="o">.</span><span class="n">all</span><span class="p">()])</span></div>
 
 <div class="viewcode-block" id="ChannelAdmin.no_of_subscribers"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.ChannelAdmin.no_of_subscribers">[docs]</a>    <span class="k">def</span> <span class="nf">no_of_subscribers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get number of subs for a a channel .</span>
 
 <span class="sd">        Args:</span>
@@ -350,7 +351,7 @@
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">subscriptions</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="ChannelAdmin.serialized_string"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.ChannelAdmin.serialized_string">[docs]</a>    <span class="k">def</span> <span class="nf">serialized_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the serialized version of the object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -363,7 +364,7 @@
     <span class="p">)</span>
 
 <div class="viewcode-block" id="ChannelAdmin.get_form"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.ChannelAdmin.get_form">[docs]</a>    <span class="k">def</span> <span class="nf">get_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Overrides help texts.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -373,7 +374,7 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_form</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ChannelAdmin.save_model"><a class="viewcode-back" href="../../../../api/evennia.web.admin.comms.html#evennia.web.admin.comms.ChannelAdmin.save_model">[docs]</a>    <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Model-save hook.</span>
 
 <span class="sd">        Args:</span>
@@ -418,7 +419,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

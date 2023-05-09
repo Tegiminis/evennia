@@ -84,8 +84,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -95,7 +96,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Accounts.html">1.0 (develop branch)</a></li>
+  <li><a href="Accounts.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -115,7 +116,7 @@
 </pre></div>
 </div>
 <p>An <em>Account</em> represents a unique game account - one player playing the game. Whereas a player can potentially connect to the game from several Clients/Sessions, they will normally have only one Account.</p>
-<p>The Account object has no in-game representation. In order to actually get on the game the Account must <em>puppet</em> an <a class="reference internal" href="Objects.html"><span class="doc std std-doc">Object</span></a> (normally a <a class="reference internal" href="Objects.html#characters"><span class="std std-doc">Character</span></a>).</p>
+<p>The Account object has no in-game representation. In order to actually get on the game the Account must <em>puppet</em> an <a class="reference internal" href="Objects.html"><span class="doc std std-doc">Object</span></a> (normally a <span class="xref myst">Character</span>).</p>
 <p>Exactly how many Sessions can interact with an Account and its Puppets at once is determined by
 Evennia’s <span class="xref myst">MULTISESSION_MODE</span></p>
 <p>Apart from storing login information and other account-specific data, the Account object is what is chatting on Evennia’s default <a class="reference internal" href="Channels.html"><span class="doc std std-doc">Channels</span></a>.  It is also a good place to store <a class="reference internal" href="Locks.html"><span class="doc std std-doc">Permissions</span></a> to be consistent between different in-game characters. It can also hold player-level configuration options.</p>
@@ -165,7 +166,7 @@ Evennia’s <span class="xref myst">MULTISESSION_MODE</span></p>
 <li><p><code class="docutils literal notranslate"><span class="pre">user</span></code> - a unique link to a <code class="docutils literal notranslate"><span class="pre">User</span></code> Django object, representing the logged-in user.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">obj</span></code> - an alias for <code class="docutils literal notranslate"><span class="pre">character</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> - an alias for <code class="docutils literal notranslate"><span class="pre">user.username</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sessions</span></code> - an instance of <a class="reference external" href="https://github.com/evennia/evennia/blob/master/evennia.objects.objects#objectsessionhandler">ObjectSessionHandler</a> managing all connected Sessions (physical connections) this object listens to (Note: In older versions of Evennia, this was a list). The so-called <code class="docutils literal notranslate"><span class="pre">session-id</span></code> (used in many places) is found as a property <code class="docutils literal notranslate"><span class="pre">sessid</span></code> on each Session instance.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sessions</span></code> - an instance of <a class="reference external" href="https://github.com/evennia/evennia/blob/main/evennia.objects.objects#objectsessionhandler">ObjectSessionHandler</a> managing all connected Sessions (physical connections) this object listens to (Note: In older versions of Evennia, this was a list). The so-called <code class="docutils literal notranslate"><span class="pre">session-id</span></code> (used in many places) is found as a property <code class="docutils literal notranslate"><span class="pre">sessid</span></code> on each Session instance.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">is_superuser</span></code> (bool: True/False) - if this account is a superuser.</p></li>
 </ul>
 <p>Special handlers:</p>
@@ -214,7 +215,7 @@ the commands found in the cmdset defined by <code class="docutils literal notran
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

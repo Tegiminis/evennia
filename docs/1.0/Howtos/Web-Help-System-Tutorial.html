@@ -97,8 +97,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -108,7 +109,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Web-Help-System-Tutorial.html">1.0 (develop branch)</a></li>
+  <li><a href="Web-Help-System-Tutorial.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -158,7 +159,7 @@ game directory should look like:</p>
 </pre></div>
 </div>
 <p>The “web/help_system” directory contains files created by Django.  We’ll use some of them, but if
-you want to learn more about them all, you should read <a class="reference external" href="https://docs.djangoproject.com/en/1.9/intro/tutorial01/">the Django
+you want to learn more about them all, you should read <a class="reference external" href="https://docs.djangoproject.com/en/4.1/intro/tutorial01/">the Django
 tutorial</a>.</p>
 <p>There is a last thing to be done: your folder has been added, but Django doesn’t know about it, it
 doesn’t know it’s a new app.  We need to tell it, and we do so by editing a simple setting.  Open
@@ -196,7 +197,7 @@ lines:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 
 <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;help_system/index.html&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -342,7 +343,7 @@ in or not.  Last gift by Evennia, if the user is logged in, <code class="docutil
 an account object, which will help us a lot in coupling the game and online system.</p>
 <p>So we might end up with something like:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">()</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">character</span><span class="p">:</span>
         <span class="n">character</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">character</span>
@@ -353,7 +354,7 @@ an account object, which will help us a lot in coupling the game and online syst
 have something like:</p>
 </div></blockquote>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">()</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">_playable_characters</span><span class="p">:</span>
         <span class="n">character</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">_playable_characters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -374,7 +375,7 @@ create it through your game:  connect to it and enter:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typeclasses.characters</span> <span class="kn">import</span> <span class="n">Character</span>
 
 <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">()</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">character</span><span class="p">:</span>
         <span class="n">character</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">character</span>
@@ -398,7 +399,7 @@ that can be seen by this character (either our ‘anonymous’ character, or our
 <span class="kn">from</span> <span class="nn">typeclasses.characters</span> <span class="kn">import</span> <span class="n">Character</span>
 
 <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The &#39;index&#39; view.&quot;&quot;&quot;</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">()</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">character</span><span class="p">:</span>
         <span class="n">character</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">character</span>
@@ -428,7 +429,7 @@ that can be seen by this character (either our ‘anonymous’ character, or our
         <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;help_system/index.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">_get_topics</span><span class="p">(</span><span class="n">character</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return the categories and topics for this character.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the categories and topics for this character.&quot;&quot;&quot;</span>
     <span class="n">cmdset</span> <span class="o">=</span> <span class="n">character</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">commands</span> <span class="o">=</span> <span class="n">cmdset</span><span class="o">.</span><span class="n">commands</span>
     <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">HelpEntry</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span>
@@ -608,7 +609,7 @@ themselves links to display their details.</p></li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

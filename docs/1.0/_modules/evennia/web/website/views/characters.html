@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="characters.html">1.0 (develop branch)</a></li>
+  <li><a href="characters.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -103,7 +104,7 @@
 
 
 <div class="viewcode-block" id="CharacterMixin"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterMixin">[docs]</a><span class="k">class</span> <span class="nc">CharacterMixin</span><span class="p">(</span><span class="n">TypeclassMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is a &quot;mixin&quot;, a modifier of sorts.</span>
 
 <span class="sd">    Any view class with this in its inheritance list will be modified to work</span>
@@ -119,7 +120,7 @@
     <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;character-manage&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CharacterMixin.get_queryset"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterMixin.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method will override the Django get_queryset method to only</span>
 <span class="sd">        return a list of characters associated with the current authenticated</span>
 <span class="sd">        user.</span>
@@ -137,7 +138,7 @@
 
 
 <div class="viewcode-block" id="CharacterListView"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterListView">[docs]</a><span class="k">class</span> <span class="nc">CharacterListView</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">CharacterMixin</span><span class="p">,</span> <span class="n">ListView</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This view provides a mechanism by which a logged-in player can view a list</span>
 <span class="sd">    of all other characters.</span>
 
@@ -155,7 +156,7 @@
     <span class="n">access_type</span> <span class="o">=</span> <span class="s2">&quot;view&quot;</span>
 
 <div class="viewcode-block" id="CharacterListView.get_queryset"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterListView.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method will override the Django get_queryset method to return a</span>
 <span class="sd">        list of all characters (filtered/sorted) instead of just those limited</span>
 <span class="sd">        to the account.</span>
@@ -176,7 +177,7 @@
 
 
 <div class="viewcode-block" id="CharacterPuppetView"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterPuppetView">[docs]</a><span class="k">class</span> <span class="nc">CharacterPuppetView</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">CharacterMixin</span><span class="p">,</span> <span class="n">RedirectView</span><span class="p">,</span> <span class="n">ObjectDetailView</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This view provides a mechanism by which a logged-in player can &quot;puppet&quot; one</span>
 <span class="sd">    of their characters within the context of the website.</span>
 
@@ -186,7 +187,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CharacterPuppetView.get_redirect_url"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterPuppetView.get_redirect_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_redirect_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Django hook.</span>
 
 <span class="sd">        This view returns the URL to which the user should be redirected after</span>
@@ -217,7 +218,7 @@
 
 
 <div class="viewcode-block" id="CharacterManageView"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterManageView">[docs]</a><span class="k">class</span> <span class="nc">CharacterManageView</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">CharacterMixin</span><span class="p">,</span> <span class="n">ListView</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This view provides a mechanism by which a logged-in player can browse,</span>
 <span class="sd">    edit, or delete their own characters.</span>
 
@@ -232,7 +233,7 @@
 
 
 <div class="viewcode-block" id="CharacterUpdateView"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterUpdateView">[docs]</a><span class="k">class</span> <span class="nc">CharacterUpdateView</span><span class="p">(</span><span class="n">CharacterMixin</span><span class="p">,</span> <span class="n">ObjectUpdateView</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This view provides a mechanism by which a logged-in player (enforced by</span>
 <span class="sd">    ObjectUpdateView) can edit the attributes of a character they own.</span>
 
@@ -244,7 +245,7 @@
 
 
 <div class="viewcode-block" id="CharacterDetailView"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterDetailView">[docs]</a><span class="k">class</span> <span class="nc">CharacterDetailView</span><span class="p">(</span><span class="n">CharacterMixin</span><span class="p">,</span> <span class="n">ObjectDetailView</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This view provides a mechanism by which a user can view the attributes of</span>
 <span class="sd">    a character, owned by them or not.</span>
 
@@ -259,7 +260,7 @@
     <span class="n">access_type</span> <span class="o">=</span> <span class="s2">&quot;view&quot;</span>
 
 <div class="viewcode-block" id="CharacterDetailView.get_queryset"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterDetailView.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method will override the Django get_queryset method to return a</span>
 <span class="sd">        list of all characters the user may access.</span>
 
@@ -279,7 +280,7 @@
 
 
 <div class="viewcode-block" id="CharacterDeleteView"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterDeleteView">[docs]</a><span class="k">class</span> <span class="nc">CharacterDeleteView</span><span class="p">(</span><span class="n">CharacterMixin</span><span class="p">,</span> <span class="n">ObjectDeleteView</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This view provides a mechanism by which a logged-in player (enforced by</span>
 <span class="sd">    ObjectDeleteView) can delete a character they own.</span>
 
@@ -290,7 +291,7 @@
 
 
 <div class="viewcode-block" id="CharacterCreateView"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterCreateView">[docs]</a><span class="k">class</span> <span class="nc">CharacterCreateView</span><span class="p">(</span><span class="n">CharacterMixin</span><span class="p">,</span> <span class="n">ObjectCreateView</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This view provides a mechanism by which a logged-in player (enforced by</span>
 <span class="sd">    ObjectCreateView) can create a new character.</span>
 
@@ -300,7 +301,7 @@
     <span class="n">template_name</span> <span class="o">=</span> <span class="s2">&quot;website/character_form.html&quot;</span>
 
 <div class="viewcode-block" id="CharacterCreateView.form_valid"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterCreateView.form_valid">[docs]</a>    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Django hook, modified for Evennia.</span>
 
 <span class="sd">        This hook is called after a valid form is submitted.</span>
@@ -360,7 +361,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

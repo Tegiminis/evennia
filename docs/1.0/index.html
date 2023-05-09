@@ -79,8 +79,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -90,7 +91,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="index.html">1.0 (develop branch)</a></li>
+  <li><a href="index.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -249,6 +250,7 @@
 <li class="toctree-l3"><a class="reference internal" href="Setup/Client-Support-Grid.html">Client Support Grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Setup/Security-Practices.html">Security Hints and Practices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Setup/Config-HAProxy.html">Configuring HAProxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Setup/Config-Nginx.html">Configuring NGINX for Evennia with SSL</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Setup/Config-Apache-Proxy.html">Configuring an Apache Proxy</a></li>
 </ul>
 </li>
@@ -319,6 +321,9 @@
 <li class="toctree-l3"><a class="reference internal" href="Components/Typeclasses.html">Typeclasses</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Components/Accounts.html">Accounts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Components/Objects.html">Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Components/Characters.html">Characters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Components/Rooms.html">Rooms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Components/Exits.html">Exits</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Components/Scripts.html">Scripts</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Components/Channels.html">Channels</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Components/Msg.html">Msg</a></li>
@@ -450,11 +455,6 @@
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Building-Menu.html">Building menu</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Color-Markups.html">Additional Color markups</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Components.html">Components</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Components.html#the-components-contrib">The Components Contrib</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Components.html#pros">Pros</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Components.html#cons">Cons</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Components.html#how-to-install">How to install</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Components.html#full-example">Full Example</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Custom-Gametime.html">Custom gameime</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Email-Login.html">Email-based login system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Godotwebsocket.html">Godot Websocket</a></li>
@@ -466,18 +466,15 @@
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#building-menu"><code class="docutils literal notranslate"><span class="pre">building_menu</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#color-markups"><code class="docutils literal notranslate"><span class="pre">color_markups</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#components"><code class="docutils literal notranslate"><span class="pre">components</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#custom-gametime"><code class="docutils literal notranslate"><span class="pre">custom_gametime</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#email-login"><code class="docutils literal notranslate"><span class="pre">email_login</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#godotwebsocket"><code class="docutils literal notranslate"><span class="pre">godotwebsocket</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#ingame-python"><code class="docutils literal notranslate"><span class="pre">ingame_python</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#menu-login"><code class="docutils literal notranslate"><span class="pre">menu_login</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#mux-comms-cmds"><code class="docutils literal notranslate"><span class="pre">mux_comms_cmds</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#unixcommand"><code class="docutils literal notranslate"><span class="pre">unixcommand</span></code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="Contribs/Contribs-Overview.html#the-components-contrib">The Components Contrib</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#custom-gametime"><code class="docutils literal notranslate"><span class="pre">custom_gametime</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#email-login"><code class="docutils literal notranslate"><span class="pre">email_login</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#godotwebsocket"><code class="docutils literal notranslate"><span class="pre">godotwebsocket</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#ingame-python"><code class="docutils literal notranslate"><span class="pre">ingame_python</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#menu-login"><code class="docutils literal notranslate"><span class="pre">menu_login</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#mux-comms-cmds"><code class="docutils literal notranslate"><span class="pre">mux_comms_cmds</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#unixcommand"><code class="docutils literal notranslate"><span class="pre">unixcommand</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#full-systems">full_systems</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Evscaperoom.html">EvscapeRoom</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#evscaperoom"><code class="docutils literal notranslate"><span class="pre">evscaperoom</span></code></a></li>
@@ -486,6 +483,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#game-systems">game_systems</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Barter.html">Barter system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Clothing.html">Clothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Containers.html">Containers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Cooldowns.html">Cooldowns</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Crafting.html">Crafting system</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Gendersub.html">Gendersub</a></li>
@@ -495,6 +493,10 @@
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contrib-Turnbattle.html">Turn based battle system framework</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#barter"><code class="docutils literal notranslate"><span class="pre">barter</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#clothing"><code class="docutils literal notranslate"><span class="pre">clothing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#containers"><code class="docutils literal notranslate"><span class="pre">containers</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Contribs/Contribs-Overview.html#installation">Installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#cooldowns"><code class="docutils literal notranslate"><span class="pre">cooldowns</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#crafting"><code class="docutils literal notranslate"><span class="pre">crafting</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Contribs/Contribs-Overview.html#gendersub"><code class="docutils literal notranslate"><span class="pre">gendersub</span></code></a></li>
@@ -659,7 +661,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

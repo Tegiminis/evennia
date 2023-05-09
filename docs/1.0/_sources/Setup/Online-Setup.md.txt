@@ -1,10 +1,10 @@
 # Online Setup
 
-Evennia development can be made without any Internet connection beyond fetching updates. At some point however, you are likely to want to make your game visible online, either as part opening it to the public or to allow other developers or beta testers access to it.
+Evennia development can be made without any Internet connection beyond fetching updates. However, at some point, you are likely to want to make your game visible online, either as part of opening it to the public or to allow other developers or beta testers access to it.
 
 ## Connecting to Evennia over the Internet
 
-Accessing your Evennia server from the outside is not hard on its own. Any issues are usually due to the various security measures your computer, network or hosting service has. These will generally (and correctly) block outside access to servers on your machine unless you tell them otherwise.  
+Accessing your Evennia server from the outside is not hard on its own. Any issues are usually due to the various security measures of your computer, network, or hosting service. These will generally (and correctly) block outside access to servers on your machine unless you tell them otherwise.  
 
 We will start by showing how to host your server on your own local computer. Even if you plan to
 host your "real" game on a remote host later, setting it up locally is useful practice. We cover
@@ -13,10 +13,10 @@ remote hosting later in this document.
 Out of the box, Evennia uses three ports for outward communication. If your computer has a firewall, these should be open for in/out communication (and only these, other ports used by Evennia are internal to your computer only).
 
  - `4000`, telnet, for traditional mud clients
- - `4001`, HTTP for the website)
+ - `4001`, HTTP, for the website
  - `4002`, websocket, for the web client
 
-Evennia will by default accept incoming connections on all interfaces (`0.0.0.0`) so in principle anyone knowing the ports to use and has the IP address to your machine should be able to connect to your game.
+Evennia will by default accept incoming connections on all interfaces (`0.0.0.0`), so in principle anyone knowing the ports to use and has the IP address to your machine should be able to connect to your game.
 
 ```{sidebar} Closing the log view
 If you need to close the log-view, use `Ctrl-C`. Use just `evennia --log` on its own to start tailing the logs again.
@@ -34,7 +34,7 @@ If you need to reconfigure a router, the router's Internet-facing ports do *not*
 
 ### Settings example
 
-You can connect Evennia to the Internet without any changes to your settings. The default settings are easy to use but are not necessarily the safest. You can customize your online presence in your [settings file](./Settings.md#settings-file). To have Evennia recognize changed port settings you have to do a full `evennia reboot` to also restart the Portal and not just the Server component.
+You can connect Evennia to the Internet without any changes to your settings. The default settings are easy to use but are not necessarily the safest. You can customize your online presence in your [settings file](./Settings.md#settings-file). To have Evennia recognize changed port settings, you have to do a full `evennia reboot` to also restart the Portal and not just the Server component.
 
 Below is an example of a simple set of settings, mostly using the defaults. Evennia will require access to five computer ports, of which three (only) should be open to the outside world. Below we
 continue to assume that our server address is `203.0.113.0`.
@@ -328,7 +328,7 @@ Evennia users:
 | [Amazon Lightsail][9] | Cloud | $5/month | Free first month. AWS's "fixed cost" offering.|
 | [Azure App Services][12] | Cloud | Free | Free tier with limited regions for hobbyists. |
 | [Huawei Cloud][13] | Cloud | on demand | Similar to Amazon. Free 12-month tier with limited regions. |
-| [Host1Plus][5] | VPS & Cloud | $4/month | $4-$8/month depending on length of sign-up period.
+| [Heficed][5] | VPS & Cloud | $6/month | $6/month for a 1GB ram server. |
 | [Scaleway][6] | Cloud | &euro;3/month / on-demand | EU based (Paris, Amsterdam). Smallest option provides 2GB RAM. |
 | [Prgmr][10] | VPS | $5/month | 1 month free with a year prepay. You likely want some experience with servers with this option as they don't have a lot of support.|
 | [Linode][11] | Cloud | $5/month / on-demand | Multiple regions. Smallest option provides 1GB RAM|
@@ -340,7 +340,7 @@ Evennia users:
 [2]: https://www.digitalocean.com/pricing
 [3]: https://aws.amazon.com/pricing/
 [4]: https://www.genesismuds.com/
-[5]: https://www.host1plus.com/
+[5]: https://www.heficed.com/
 [6]: https://www.scaleway.com/
 [7]: https://lowendbox.com/
 [8]: https://www.lowendtalk.com

@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="models.html">1.0 (develop branch)</a></li>
+  <li><a href="models.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -119,7 +120,7 @@
 
 
 <div class="viewcode-block" id="AccountDB"><a class="viewcode-back" href="../../../api/evennia.accounts.models.html#evennia.accounts.models.AccountDB">[docs]</a><span class="k">class</span> <span class="nc">AccountDB</span><span class="p">(</span><span class="n">TypedObject</span><span class="p">,</span> <span class="n">AbstractUser</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is a special model using Django&#39;s &#39;profile&#39; functionality</span>
 <span class="sd">    and extends the default Django User model. It is defined as such</span>
 <span class="sd">    by use of the variable AUTH_PROFILE_MODULE in the settings.</span>
@@ -191,7 +192,7 @@
     <span class="c1"># This seems very sensitive to caching, so leaving it be for now /Griatch</span>
     <span class="c1"># @property</span>
     <span class="k">def</span> <span class="nf">__cmdset_storage_get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Getter. Allows for value = self.name. Returns a list of cmdset_storage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">storage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_cmdset_storage</span>
@@ -200,7 +201,7 @@
 
     <span class="c1"># @cmdset_storage.setter</span>
     <span class="k">def</span> <span class="nf">__cmdset_storage_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Setter. Allows for self.name = value. Stores as a comma-separated</span>
 <span class="sd">        string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -277,7 +278,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

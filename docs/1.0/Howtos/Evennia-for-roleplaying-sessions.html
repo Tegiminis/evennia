@@ -106,8 +106,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -117,7 +118,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Evennia-for-roleplaying-sessions.html">1.0 (develop branch)</a></li>
+  <li><a href="Evennia-for-roleplaying-sessions.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -154,7 +155,8 @@ defaults for our particular use-case. Below we will flesh out these components f
 <section id="starting-out">
 <h2>Starting out<a class="headerlink" href="#starting-out" title="Permalink to this headline">¶</a></h2>
 <p>We will assume you start from scratch. You need Evennia installed, as per the <a class="reference internal" href="../Setup/Installation.html"><span class="doc std std-doc">Setup Quickstart</span></a>
-instructions. Initialize a new game directory with <code class="docutils literal notranslate"><span class="pre">evennia</span> <span class="pre">init</span> </code><gamedirname><code class="docutils literal notranslate"><span class="pre">.</span> <span class="pre">In</span> <span class="pre">this</span> <span class="pre">tutorial</span> <span class="pre">we</span> <span class="pre">assume</span> <span class="pre">your</span> <span class="pre">game</span> <span class="pre">dir</span> <span class="pre">is</span> <span class="pre">simply</span> <span class="pre">named</span> </code>mygame<code class="docutils literal notranslate"><span class="pre">.</span> <span class="pre">You</span> <span class="pre">can</span> <span class="pre">use</span> <span class="pre">the</span> <span class="pre">default</span> <span class="pre">database</span> <span class="pre">and</span> <span class="pre">keep</span> <span class="pre">all</span> <span class="pre">other</span> <span class="pre">settings</span> <span class="pre">to</span> <span class="pre">default</span> <span class="pre">for</span> <span class="pre">now.</span> <span class="pre">Familiarize</span> <span class="pre">yourself</span> <span class="pre">with</span> <span class="pre">the</span> </code>mygame` folder before continuing. You might want to browse the  <a class="reference internal" href="Beginner-Tutorial/Part1/Beginner-Tutorial-Part1-Overview.html"><span class="doc std std-doc">Beginner Tutorial</span></a> tutorial, just to see roughly where things are modified.</p>
+instructions. Initialize a new game directory with <code class="docutils literal notranslate"><span class="pre">evennia</span> <span class="pre">init</span> <span class="pre">&lt;gamedirname&gt;</span></code>. In this tutorial we assume your game dir is simply named <code class="docutils literal notranslate"><span class="pre">mygame</span></code>. You can use the default database and keep all other settings to default for now. Familiarize yourself with the
+<code class="docutils literal notranslate"><span class="pre">mygame</span></code> folder before continuing. You might want to browse the  <a class="reference internal" href="Beginner-Tutorial/Part1/Beginner-Tutorial-Part1-Overview.html"><span class="doc std std-doc">Beginner Tutorial</span></a> tutorial, just to see roughly where things are modified.</p>
 </section>
 <section id="the-game-master-role">
 <h2>The Game Master role<a class="headerlink" href="#the-game-master-role" title="Permalink to this headline">¶</a></h2>
@@ -228,7 +230,7 @@ access) and the IC “Character objects”.</p>
 <span class="k">class</span> <span class="nc">Character</span><span class="p">(</span><span class="n">DefaultCharacter</span><span class="p">):</span>
     <span class="c1"># [...]</span>
     <span class="k">def</span> <span class="nf">get_display_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">looker</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method customizes how character names are displayed. We assume</span>
 <span class="sd">        only permissions of types &quot;Developers&quot; and &quot;Admins&quot; require</span>
 <span class="sd">        special attention.</span>
@@ -277,7 +279,7 @@ Evennia’s default “mux-like” commands here.</p>
 <span class="kn">import</span> <span class="nn">evennia</span>
 
 <span class="k">class</span> <span class="nc">CmdMakeGM</span><span class="p">(</span><span class="n">default_cmds</span><span class="o">.</span><span class="n">MuxCommand</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Change an account&#39;s GM status</span>
 
 <span class="sd">    Usage:</span>
@@ -387,7 +389,7 @@ expected by our new <code class="docutils literal notranslate"><span class="pre"
                         <span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="s2">&quot;incols&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Above, we create a two-column table by supplying the two columns directly. We also tell the table to be right-aligned and to use the “incols” border type (borders drawns only in between columns). The <code class="docutils literal notranslate"><span class="pre">EvTable</span></code> class takes a lot of arguments for customizing its look, you can see <a class="reference external" href="https://github.com/evennia/evennia/blob/master/evennia.utils.evtable#evtable__init__">some of the possible keyword arguments here</a>. Once you have the <code class="docutils literal notranslate"><span class="pre">table</span></code> you could also retroactively add new columns and rows to it with <code class="docutils literal notranslate"><span class="pre">table.add_row()</span></code> and <code class="docutils literal notranslate"><span class="pre">table.add_column()</span></code>: if necessary the table will expand with empty rows/columns to always remain rectangular.</p>
+<p>Above, we create a two-column table by supplying the two columns directly. We also tell the table to be right-aligned and to use the “incols” border type (borders drawns only in between columns). The <code class="docutils literal notranslate"><span class="pre">EvTable</span></code> class takes a lot of arguments for customizing its look, you can see <a class="reference external" href="https://github.com/evennia/evennia/blob/main/evennia.utils.evtable#evtable__init__">some of the possible keyword arguments here</a>. Once you have the <code class="docutils literal notranslate"><span class="pre">table</span></code> you could also retroactively add new columns and rows to it with <code class="docutils literal notranslate"><span class="pre">table.add_row()</span></code> and <code class="docutils literal notranslate"><span class="pre">table.add_column()</span></code>: if necessary the table will expand with empty rows/columns to always remain rectangular.</p>
 <p>The result from printing the above table will be</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table_string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 
@@ -535,7 +537,7 @@ example.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_charsheet</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">update_charsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Call this to update the sheet after any of the ingoing data</span>
 <span class="sd">        has changed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -584,7 +586,7 @@ The easiest to force an existing Character to re-fire its <code class="docutils 
     <span class="k">return</span> <span class="kc">True</span>
 
 <span class="k">class</span> <span class="nc">CmdSheet</span><span class="p">(</span><span class="n">MuxCommand</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Edit a field on the character sheet</span>
 
 <span class="sd">    Usage:</span>
@@ -647,7 +649,7 @@ The easiest to force an existing Character to re-fire its <code class="docutils 
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># continuing in mygame/commands/command.py</span>
 
 <span class="k">class</span> <span class="nc">CmdGMsheet</span><span class="p">(</span><span class="n">MuxCommand</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    GM-modification of char sheets</span>
 
 <span class="sd">    Usage:</span>
@@ -801,7 +803,7 @@ when the message was sent.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

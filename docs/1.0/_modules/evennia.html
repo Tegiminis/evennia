@@ -51,8 +51,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -62,7 +63,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="evennia.html">1.0 (develop branch)</a></li>
+  <li><a href="evennia.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -101,7 +102,7 @@
 <span class="s2">Online manual and API docs are found at http://www.evennia.com.</span>
 
 <span class="s2">Flat-API shortcut names:</span>
-<span class="si">{}</span><span class="s2"></span>
+<span class="si">{}</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
 <span class="c1"># Delayed loading of properties</span>
@@ -182,7 +183,7 @@
 
 
 <span class="k">def</span> <span class="nf">_create_version</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function for building the version string</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">os</span>
@@ -213,7 +214,7 @@
 
 
 <span class="k">def</span> <span class="nf">_init</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function is called automatically by the launcher only after</span>
 <span class="sd">    Evennia has fully initialized all its models. It sets up the API</span>
 <span class="sd">    in a safe environment where all models are available already.</span>
@@ -299,7 +300,7 @@
     <span class="c1"># API containers</span>
 
     <span class="k">class</span> <span class="nc">_EvContainer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parent for other containers</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -313,7 +314,7 @@
         <span class="n">help</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_help</span><span class="p">)</span>
 
     <span class="k">class</span> <span class="nc">DBmanagers</span><span class="p">(</span><span class="n">_EvContainer</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Links to instantiated Django database managers. These are used</span>
 <span class="sd">        to perform more advanced custom database queries than the standard</span>
 <span class="sd">        search functions allow.</span>
@@ -358,7 +359,7 @@
     <span class="k">del</span> <span class="n">DBmanagers</span>
 
     <span class="k">class</span> <span class="nc">DefaultCmds</span><span class="p">(</span><span class="n">_EvContainer</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This container holds direct shortcuts to all default commands in Evennia.</span>
 
 <span class="sd">        To access in code, do &#39;from evennia import default_cmds&#39; then</span>
@@ -409,7 +410,7 @@
     <span class="k">del</span> <span class="n">DefaultCmds</span>
 
     <span class="k">class</span> <span class="nc">SystemCmds</span><span class="p">(</span><span class="n">_EvContainer</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creating commands with keys set to these constants will make</span>
 <span class="sd">        them system commands called as a replacement by the parser when</span>
 <span class="sd">        special situations occur. If not defined, the hard-coded</span>
@@ -445,7 +446,7 @@
 
 
 <div class="viewcode-block" id="set_trace"><a class="viewcode-back" href="../api/evennia.html#evennia.set_trace">[docs]</a><span class="k">def</span> <span class="nf">set_trace</span><span class="p">(</span><span class="n">term_size</span><span class="o">=</span><span class="p">(</span><span class="mi">140</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="n">debugger</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function for running a debugger inside the Evennia event loop.</span>
 
 <span class="sd">    Args:</span>
@@ -531,7 +532,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

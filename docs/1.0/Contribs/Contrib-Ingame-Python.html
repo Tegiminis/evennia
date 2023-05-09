@@ -119,8 +119,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -130,7 +131,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Contrib-Ingame-Python.html">1.0 (develop branch)</a></li>
+  <li><a href="Contrib-Ingame-Python.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -183,7 +184,7 @@ using ingame-python events.</p></li>
 defines the context in which we would like to call some arbitrary code.  For
 instance, one event is defined on exits and will fire every time a character
 traverses through this exit.  Events are described on a <a class="reference internal" href="../Components/Typeclasses.html"><span class="doc std std-doc">typeclass</span></a>
-(<a class="reference internal" href="../Components/Objects.html#exits"><span class="std std-doc">exits</span></a> in our example).  All objects inheriting from this
+(<a class="reference internal" href="../Components/Exits.html"><span class="doc std std-doc">exits</span></a> in our example).  All objects inheriting from this
 typeclass will have access to this event.</p></li>
 <li><p><strong>Callbacks</strong> can be set on individual objects, on events defined in code.
 These <strong>callbacks</strong> can contain arbitrary code and describe a specific
@@ -340,7 +341,7 @@ this:</p>
 <span class="kn">from</span> <span class="nn">evennia.contrib.base_systems.ingame_python.commands</span> <span class="kn">import</span> <span class="n">CmdCallback</span>
 
 <span class="k">class</span> <span class="nc">CharacterCmdSet</span><span class="p">(</span><span class="n">default_cmds</span><span class="o">.</span><span class="n">CharacterCmdSet</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The `CharacterCmdSet` contains general in-game commands like `look`,</span>
 <span class="sd">    `get`, etc available on in-game Character objects. It is merged with</span>
 <span class="sd">    the `PlayerCmdSet` when a Player puppets a Character.</span>
@@ -348,7 +349,7 @@ this:</p>
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;DefaultCharacter&quot;</span>
 
     <span class="k">def</span> <span class="nf">at_cmdset_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Populates the cmdset</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">at_cmdset_creation</span><span class="p">()</span>
@@ -830,7 +831,7 @@ write something like:</p>
 
 <span class="nd">@register_events</span>
 <span class="k">class</span> <span class="nc">Object</span><span class="p">(</span><span class="n">EventObject</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -881,7 +882,7 @@ of an object.  If this object is valid, it will call its “push” event.</p>
 
 <span class="k">class</span> <span class="nc">CmdPush</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Push something.</span>
 
 <span class="sd">    Usage:</span>
@@ -894,7 +895,7 @@ of an object.  If this object is valid, it will call its “push” event.</p>
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;push&quot;</span>
 
     <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Called when pushing something.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called when pushing something.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;Usage: push &lt;something&gt;&quot;</span><span class="p">)</span>
             <span class="k">return</span>
@@ -1043,7 +1044,7 @@ file will be overwritten, so edit that file rather than this one.</small></p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

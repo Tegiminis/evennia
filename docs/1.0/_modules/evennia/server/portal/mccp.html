@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="mccp.html">1.0 (develop branch)</a></li>
+  <li><a href="mccp.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -99,7 +100,7 @@
 
 
 <div class="viewcode-block" id="mccp_compress"><a class="viewcode-back" href="../../../../api/evennia.server.portal.mccp.html#evennia.server.portal.mccp.mccp_compress">[docs]</a><span class="k">def</span> <span class="nf">mccp_compress</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handles zlib compression, if applicable.</span>
 
 <span class="sd">    Args:</span>
@@ -115,14 +116,14 @@
 
 
 <div class="viewcode-block" id="Mccp"><a class="viewcode-back" href="../../../../api/evennia.server.portal.mccp.html#evennia.server.portal.mccp.Mccp">[docs]</a><span class="k">class</span> <span class="nc">Mccp</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements the MCCP protocol. Add this to a</span>
 <span class="sd">    variable on the telnet protocol to set it up.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Mccp.__init__"><a class="viewcode-back" href="../../../../api/evennia.server.portal.mccp.html#evennia.server.portal.mccp.Mccp.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">protocol</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        initialize MCCP by storing protocol on</span>
 <span class="sd">        ourselves and calling the client to see if</span>
 <span class="sd">        it supports MCCP. Sets callbacks to</span>
@@ -139,7 +140,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="o">.</span><span class="n">will</span><span class="p">(</span><span class="n">MCCP</span><span class="p">)</span><span class="o">.</span><span class="n">addCallbacks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_mccp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_mccp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Mccp.no_mccp"><a class="viewcode-back" href="../../../../api/evennia.server.portal.mccp.html#evennia.server.portal.mccp.Mccp.no_mccp">[docs]</a>    <span class="k">def</span> <span class="nf">no_mccp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called if client doesn&#39;t support mccp or chooses to turn it off.</span>
 
 <span class="sd">        Args:</span>
@@ -152,7 +153,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="o">.</span><span class="n">handshake_done</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Mccp.do_mccp"><a class="viewcode-back" href="../../../../api/evennia.server.portal.mccp.html#evennia.server.portal.mccp.Mccp.do_mccp">[docs]</a>    <span class="k">def</span> <span class="nf">do_mccp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The client supports MCCP. Set things up by</span>
 <span class="sd">        creating a zlib compression stream.</span>
 
@@ -187,7 +188,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

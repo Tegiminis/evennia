@@ -73,8 +73,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -84,7 +85,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Tutorial-NPC-Reacting.html">1.0 (develop branch)</a></li>
+  <li><a href="Tutorial-NPC-Reacting.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -111,7 +112,7 @@ location.</p>
 <p>What we will need is the following:</p>
 <ul class="simple">
 <li><p>An NPC typeclass that can react when someone enters.</p></li>
-<li><p>A custom <a class="reference internal" href="../Components/Objects.html#rooms"><span class="std std-doc">Room</span></a> typeclass that can tell the NPC that someone entered.</p></li>
+<li><p>A custom <span class="xref myst">Room</span> typeclass that can tell the NPC that someone entered.</p></li>
 <li><p>We will also tweak our default <code class="docutils literal notranslate"><span class="pre">Character</span></code> typeclass a little.</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in mygame/typeclasses/npcs.py  (for example)</span>
@@ -119,11 +120,11 @@ location.</p>
 <span class="kn">from</span> <span class="nn">typeclasses.characters</span> <span class="kn">import</span> <span class="n">Character</span>
 
 <span class="k">class</span> <span class="nc">NPC</span><span class="p">(</span><span class="n">Character</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A NPC typeclass which extends the character class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">at_char_entered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">character</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A simple is_aggressive check.</span>
 <span class="sd">        Can be expanded upon later.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -205,7 +206,7 @@ Orc says, Graah! Die, Anna!
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

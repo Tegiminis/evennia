@@ -87,8 +87,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -98,7 +99,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Tags.html">1.0 (develop branch)</a></li>
+  <li><a href="Tags.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -225,7 +226,7 @@ with a given Tag like this in code:</p>
 <blockquote>
 <div><p>Note that searching for just “furniture” will only return the objects tagged with the “furniture” tag that has a category of <code class="docutils literal notranslate"><span class="pre">None</span></code>. We must explicitly give the category to get the “luxurious” furniture.</p>
 </div></blockquote>
-<p>Using any of the <code class="docutils literal notranslate"><span class="pre">search_tag</span></code> variants will all return <a class="reference external" href="https://docs.djangoproject.com/en/2.1/ref/models/querysets/">Django Querysets</a>, including if you only have one match. You can treat querysets as lists and iterate over them, or continue building search queries with them.</p>
+<p>Using any of the <code class="docutils literal notranslate"><span class="pre">search_tag</span></code> variants will all return <a class="reference external" href="https://docs.djangoproject.com/en/4.1/ref/models/querysets/">Django Querysets</a>, including if you only have one match. You can treat querysets as lists and iterate over them, or continue building search queries with them.</p>
 <p>Remember when searching that not setting a category means setting it to <code class="docutils literal notranslate"><span class="pre">None</span></code> - this does <em>not</em>
 mean that category is undefined, rather <code class="docutils literal notranslate"><span class="pre">None</span></code> is considered the default, unnamed category.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">evennia</span> 
@@ -292,7 +293,7 @@ permissions and <code class="docutils literal notranslate"><span class="pre">&#6
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

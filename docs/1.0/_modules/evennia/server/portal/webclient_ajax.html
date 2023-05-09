@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="webclient_ajax.html">1.0 (develop branch)</a></li>
+  <li><a href="webclient_ajax.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -142,7 +143,7 @@
 
 
 <div class="viewcode-block" id="AjaxWebClient"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient">[docs]</a><span class="k">class</span> <span class="nc">AjaxWebClient</span><span class="p">(</span><span class="n">resource</span><span class="o">.</span><span class="n">Resource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An ajax/comet long-polling transport</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -166,7 +167,7 @@
             <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">_keepalive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Callback for checking the connection is still alive.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -196,7 +197,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="AjaxWebClient.get_client_sessid"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.get_client_sessid">[docs]</a>    <span class="k">def</span> <span class="nf">get_client_sessid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper to get the client session id out of the request.</span>
 
 <span class="sd">        Args:</span>
@@ -208,7 +209,7 @@
         <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="sa">b</span><span class="s2">&quot;csessid&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.get_browserstr"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.get_browserstr">[docs]</a>    <span class="k">def</span> <span class="nf">get_browserstr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get browser-string out of the request.</span>
 
 <span class="sd">        Args:</span>
@@ -221,13 +222,13 @@
         <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="sa">b</span><span class="s2">&quot;browserstr&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.at_login"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.at_login">[docs]</a>    <span class="k">def</span> <span class="nf">at_login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called when this session gets authenticated by the server.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.lineSend"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.lineSend">[docs]</a>    <span class="k">def</span> <span class="nf">lineSend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">csessid</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This adds the data to the buffer and/or sends it to the client</span>
 <span class="sd">        as soon as possible.</span>
 
@@ -249,7 +250,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">databuffer</span><span class="p">[</span><span class="n">csessid</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataentries</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.client_disconnect"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.client_disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">client_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">csessid</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disconnect session with given csessid.</span>
 
 <span class="sd">        Args:</span>
@@ -263,7 +264,7 @@
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">databuffer</span><span class="p">[</span><span class="n">csessid</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.mode_init"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.mode_init">[docs]</a>    <span class="k">def</span> <span class="nf">mode_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called by render_POST when the client requests an init</span>
 <span class="sd">        mode operation (at startup)</span>
 
@@ -322,7 +323,7 @@
         <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="n">host_string</span><span class="p">,</span> <span class="s2">&quot;csessid&quot;</span><span class="p">:</span> <span class="n">csessid</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.mode_keepalive"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.mode_keepalive">[docs]</a>    <span class="k">def</span> <span class="nf">mode_keepalive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called by render_POST when the</span>
 <span class="sd">        client is replying to the keepalive.</span>
 
@@ -335,7 +336,7 @@
         <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&quot;&quot;&#39;</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.mode_input"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.mode_input">[docs]</a>    <span class="k">def</span> <span class="nf">mode_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called by render_POST when the client</span>
 <span class="sd">        is sending data to the server.</span>
 
@@ -351,7 +352,7 @@
         <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&quot;&quot;&#39;</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.mode_receive"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.mode_receive">[docs]</a>    <span class="k">def</span> <span class="nf">mode_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called by render_POST when the client is telling us</span>
 <span class="sd">        that it is ready to receive data as soon as it is available.</span>
 <span class="sd">        This is the basis of a long-polling (comet) mechanism: the</span>
@@ -379,7 +380,7 @@
             <span class="k">return</span> <span class="n">server</span><span class="o">.</span><span class="n">NOT_DONE_YET</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.mode_close"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.mode_close">[docs]</a>    <span class="k">def</span> <span class="nf">mode_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called by render_POST when the client is signalling</span>
 <span class="sd">        that it is about to be closed.</span>
 
@@ -396,7 +397,7 @@
         <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&quot;&quot;&#39;</span></div>
 
 <div class="viewcode-block" id="AjaxWebClient.render_POST"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClient.render_POST">[docs]</a>    <span class="k">def</span> <span class="nf">render_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function is what Twisted calls with POST requests coming</span>
 <span class="sd">        in from the ajax client. The requests should be tagged with</span>
 <span class="sd">        different modes depending on what needs to be done, such as</span>
@@ -437,7 +438,7 @@
 
 
 <div class="viewcode-block" id="AjaxWebClientSession"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClientSession">[docs]</a><span class="k">class</span> <span class="nc">AjaxWebClientSession</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This represents a session running in an AjaxWebclient.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -446,7 +447,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AjaxWebClientSession.get_client_session"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClientSession.get_client_session">[docs]</a>    <span class="k">def</span> <span class="nf">get_client_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the Client browser session (used for auto-login based on browser session)</span>
 
 <span class="sd">        Returns:</span>
@@ -458,7 +459,7 @@
             <span class="k">return</span> <span class="n">_CLIENT_SESSIONS</span><span class="p">(</span><span class="n">session_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">csessid</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AjaxWebClientSession.disconnect"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClientSession.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="s2">&quot;Server disconnected.&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disconnect from server.</span>
 
 <span class="sd">        Args:</span>
@@ -481,7 +482,7 @@
             <span class="n">csession</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="AjaxWebClientSession.data_in"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClientSession.data_in">[docs]</a>    <span class="k">def</span> <span class="nf">data_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Data User -&gt; Evennia</span>
 
 <span class="sd">        Keyword Args:</span>
@@ -491,7 +492,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sessionhandler</span><span class="o">.</span><span class="n">data_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AjaxWebClientSession.data_out"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClientSession.data_out">[docs]</a>    <span class="k">def</span> <span class="nf">data_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Data Evennia -&gt; User</span>
 
 <span class="sd">        Keyword Args:</span>
@@ -500,7 +501,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sessionhandler</span><span class="o">.</span><span class="n">data_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AjaxWebClientSession.send_text"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClientSession.send_text">[docs]</a>    <span class="k">def</span> <span class="nf">send_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send text data. This will pre-process the text for</span>
 <span class="sd">        color-replacement, conversion to html etc.</span>
 
@@ -552,7 +553,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">send_text</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AjaxWebClientSession.send_default"><a class="viewcode-back" href="../../../../api/evennia.server.portal.webclient_ajax.html#evennia.server.portal.webclient_ajax.AjaxWebClientSession.send_default">[docs]</a>    <span class="k">def</span> <span class="nf">send_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmdname</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Data Evennia -&gt; User.</span>
 
 <span class="sd">        Args:</span>
@@ -590,7 +591,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

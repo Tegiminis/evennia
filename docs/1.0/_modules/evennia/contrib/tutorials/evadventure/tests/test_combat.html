@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="test_combat.html">1.0 (develop branch)</a></li>
+  <li><a href="test_combat.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -94,7 +95,7 @@
 
 
 <div class="viewcode-block" id="EvAdventureTurnbasedCombatHandlerTest"><a class="viewcode-back" href="../../../../../../api/evennia.contrib.tutorials.evadventure.tests.test_combat.html#evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatHandlerTest">[docs]</a><span class="k">class</span> <span class="nc">EvAdventureTurnbasedCombatHandlerTest</span><span class="p">(</span><span class="n">EvAdventureMixin</span><span class="p">,</span> <span class="n">BaseEvenniaTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test methods on the turn-based combat handler.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -210,7 +211,7 @@
 
 
 <div class="viewcode-block" id="EvAdventureTurnbasedCombatActionTest"><a class="viewcode-back" href="../../../../../../api/evennia.contrib.tutorials.evadventure.tests.test_combat.html#evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatActionTest">[docs]</a><span class="k">class</span> <span class="nc">EvAdventureTurnbasedCombatActionTest</span><span class="p">(</span><span class="n">EvAdventureMixin</span><span class="p">,</span> <span class="n">BaseEvenniaTest</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test actions in turn_based combat.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -297,7 +298,7 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="EvAdventureTurnbasedCombatActionTest.test_use_item"><a class="viewcode-back" href="../../../../../../api/evennia.contrib.tutorials.evadventure.tests.test_combat.html#evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatActionTest.test_use_item">[docs]</a>    <span class="k">def</span> <span class="nf">test_use_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use up a potion during combat.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -311,7 +312,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># deleted, it was used up</span></div>
 
 <div class="viewcode-block" id="EvAdventureTurnbasedCombatActionTest.test_swap_wielded_weapon_or_spell"><a class="viewcode-back" href="../../../../../../api/evennia.contrib.tutorials.evadventure.tests.test_combat.html#evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatActionTest.test_swap_wielded_weapon_or_spell">[docs]</a>    <span class="k">def</span> <span class="nf">test_swap_wielded_weapon_or_spell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        First draw a weapon (from empty fists), then swap that out to another weapon, then</span>
 <span class="sd">        swap to a spell rune.</span>
 
@@ -354,7 +355,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">combatant</span><span class="o">.</span><span class="n">equipment</span><span class="o">.</span><span class="n">slots</span><span class="p">[</span><span class="n">WieldLocation</span><span class="o">.</span><span class="n">TWO_HANDS</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="EvAdventureTurnbasedCombatActionTest.test_flee__success"><a class="viewcode-back" href="../../../../../../api/evennia.contrib.tutorials.evadventure.tests.test_combat.html#evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatActionTest.test_flee__success">[docs]</a>    <span class="k">def</span> <span class="nf">test_flee__success</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Test fleeing twice, leading to leaving combat.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -368,7 +369,7 @@
 
 <div class="viewcode-block" id="EvAdventureTurnbasedCombatActionTest.test_flee__blocked"><a class="viewcode-back" href="../../../../../../api/evennia.contrib.tutorials.evadventure.tests.test_combat.html#evennia.contrib.tutorials.evadventure.tests.test_combat.EvAdventureTurnbasedCombatActionTest.test_flee__blocked">[docs]</a>    <span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;evennia.contrib.tutorials.evadventure.combat_turnbased.rules.randint&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_flee__blocked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_randint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="n">mock_randint</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="mi">11</span>  <span class="c1"># means block will succeed</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_run_action</span><span class="p">(</span><span class="n">combat_turnbased</span><span class="o">.</span><span class="n">CombatActionFlee</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -408,7 +409,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

@@ -100,8 +100,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -111,7 +112,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Beginner-Tutorial-Rules.html">1.0 (develop branch)</a></li>
+  <li><a href="Beginner-Tutorial-Rules.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -239,7 +240,7 @@ modules:</p>
 <span class="k">class</span> <span class="nc">EvAdventureRollEngine</span><span class="p">:</span>
     
     <span class="k">def</span> <span class="nf">roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">roll_string</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">        Roll XdY dice, where X is the number of dice </span>
 <span class="sd">        and Y the number of sides per die. </span>
 <span class="sd">        </span>
@@ -358,7 +359,7 @@ Attribute is available as <code class="docutils literal notranslate"><span class
        
    <span class="k">def</span> <span class="nf">saving_throw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">bonus_type</span><span class="o">=</span><span class="n">Ability</span><span class="o">.</span><span class="n">STR</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> 
                     <span class="n">advantage</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">disadvantage</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot; </span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">       Do a saving throw, trying to beat a target.</span>
 <span class="sd">       </span>
 <span class="sd">       Args:</span>
@@ -421,7 +422,7 @@ roll higher than <code class="docutils literal notranslate"><span class="pre">13
         <span class="n">defender_defense</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">defender</span><span class="p">,</span> <span class="n">defense_type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span> 
         <span class="n">result</span><span class="p">,</span> <span class="n">quality</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saving_throw</span><span class="p">(</span><span class="n">attacker</span><span class="p">,</span> <span class="n">bonus_type</span><span class="o">=</span><span class="n">attack_type</span><span class="p">,</span>
                                             <span class="n">target</span><span class="o">=</span><span class="n">defender_defense</span><span class="p">,</span> 
-                                            <span class="n">advantage</span><span class="o">=</span><span class="n">advantave</span><span class="p">,</span> <span class="n">disadvantage</span><span class="o">=</span><span class="n">disadvantage</span><span class="p">)</span>
+                                            <span class="n">advantage</span><span class="o">=</span><span class="n">advantage</span><span class="p">,</span> <span class="n">disadvantage</span><span class="o">=</span><span class="n">disadvantage</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">quality</span> 
 </pre></div>
@@ -461,7 +462,7 @@ health on game entities. We will need <code class="docutils literal notranslate"
     <span class="c1"># ... </span>
     
     <span class="k">def</span> <span class="nf">heal_from_rest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">character</span><span class="p">):</span> 
-        <span class="sd">&quot;&quot;&quot; </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">        A night&#39;s rest retains 1d8 + CON HP  </span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -540,7 +541,7 @@ early table results, for example).</p>
     <span class="c1"># ... </span>
 
     <span class="k">def</span> <span class="nf">roll_random_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dieroll</span><span class="p">,</span> <span class="n">table_choices</span><span class="p">):</span> 
-        <span class="sd">&quot;&quot;&quot; </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">        Args: </span>
 <span class="sd">             dieroll (str): A die roll string, like &quot;1d20&quot;.</span>
 <span class="sd">             table_choices (iterable): A list of either single elements or </span>
@@ -707,15 +708,15 @@ character!</p>
 <span class="k">class</span> <span class="nc">TestEvAdventureRuleEngine</span><span class="p">(</span><span class="n">BaseEvenniaTest</span><span class="p">):</span>
    
     <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Called before every test method&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called before every test method&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">roll_engine</span> <span class="o">=</span> <span class="n">rules</span><span class="o">.</span><span class="n">EvAdventureRollEngine</span><span class="p">()</span>
     
     <span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;evadventure.rules.randint&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_roll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_randint</span><span class="p">):</span>
         <span class="n">mock_randint</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="mi">4</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roll_engine</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="s2">&quot;1d6&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>     
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roll_engine</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="s2">&quot;2d6&quot;</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span>     
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roll_engine</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="s2">&quot;1d6&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>     
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roll_engine</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="s2">&quot;2d6&quot;</span><span class="p">),</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span>     
         
     <span class="c1"># test of the other rule methods below ...</span>
 </pre></div>
@@ -786,7 +787,7 @@ address that next.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

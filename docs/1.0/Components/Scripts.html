@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Channels" href="Channels.html" />
-    <link rel="prev" title="Objects" href="Objects.html" /> 
+    <link rel="prev" title="Exits" href="Exits.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -33,7 +33,7 @@
           <a href="Channels.html" title="Channels"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="Objects.html" title="Objects"
+          <a href="Exits.html" title="Exits"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="Components-Overview.html" accesskey="U">Core Components</a> &#187;</li>
@@ -81,8 +81,8 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="Objects.html"
-                        title="previous chapter">Objects</a></p>
+  <p class="topless"><a href="Exits.html"
+                        title="previous chapter">Exits</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="Channels.html"
                         title="next chapter">Channels</a></p>
@@ -94,8 +94,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -105,7 +106,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Scripts.html">1.0 (develop branch)</a></li>
+  <li><a href="Scripts.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -127,7 +128,7 @@
 <li><p>Scripts can <em>attach</em> to Objects and Accounts via e.g. <code class="docutils literal notranslate"><span class="pre">obj.scripts.add/remove</span></code>. In the script you can then access the object/account as <code class="docutils literal notranslate"><span class="pre">self.obj</span></code> or <code class="docutils literal notranslate"><span class="pre">self.account</span></code>. This can be used to dynamically extend other typeclasses but also to use the timer component to affect the parent object in various ways. For historical reasons, a Script <em>not</em> attached to an object is referred to as a <em>Global</em> Script.</p></li>
 </ul>
 <div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 1.0: </span>In previus Evennia versions, stopping the Script’s timer also meant deleting the Script object.
+<p><span class="versionmodified changed">Changed in version 1.0: </span>In previous Evennia versions, stopping the Script’s timer also meant deleting the Script object.
 Starting with this version, the timer can be start/stopped separately and <code class="docutils literal notranslate"><span class="pre">.delete()</span></code> must be called
 on the Script explicitly to delete it.</p>
 </div>
@@ -212,7 +213,7 @@ can use this as a base for your own scripts.</p>
 
 <span class="k">class</span> <span class="nc">MyScript</span><span class="p">(</span><span class="n">Script</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">at_script_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Called once, when script is first created&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called once, when script is first created&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;myscript&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="s2">&quot;bar&quot;</span>
 
@@ -315,7 +316,7 @@ If so, the ‘parent object’ will be available to the script as either <code c
     <span class="kn">import</span> <span class="nn">random</span>
 
     <span class="k">class</span> <span class="nc">Weather</span><span class="p">(</span><span class="n">Script</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A timer script that displays weather info. Meant to</span>
 <span class="sd">        be attached to a room.</span>
 
@@ -416,7 +417,7 @@ scripts. All you need is the Script’s <code class="docutils literal notranslat
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Note that global scripts appear as properties on <code class="docutils literal notranslate"><span class="pre">GLOBAL_SCRIPTS</span></code> based on their <code class="docutils literal notranslate"><span class="pre">key</span></code>. If you were to create two global scripts with the same <code class="docutils literal notranslate"><span class="pre">key</span></code> (even with different typeclasses), the <code class="docutils literal notranslate"><span class="pre">GLOBAL_SCRIPTS</span></code> container will only return one of them (which one depends on order in the database). Best is to organize your scripts so that this does not happen. Otherwise, use <code class="docutils literal notranslate"><span class="pre">evennia.search_scripts</span></code> to get exactly the script you want.</p>
+<p>Note that global scripts appear as properties on <code class="docutils literal notranslate"><span class="pre">GLOBAL_SCRIPTS</span></code> based on their <code class="docutils literal notranslate"><span class="pre">key</span></code>. If you were to create two global scripts with the same <code class="docutils literal notranslate"><span class="pre">key</span></code> (even with different typeclasses), the <code class="docutils literal notranslate"><span class="pre">GLOBAL_SCRIPTS</span></code> container will only return one of them (which one depends on order in the database). Best is to organize your scripts so that this does not happen. Otherwise, use <code class="docutils literal notranslate"><span class="pre">evennia.search_script</span></code> to get exactly the script you want.</p>
 </div>
 <p>There are two ways to make a script appear as a property on <code class="docutils literal notranslate"><span class="pre">GLOBAL_SCRIPTS</span></code>:</p>
 <ol class="simple">
@@ -479,7 +480,7 @@ information in settings to recreate it for you on the fly.</p>
           <a href="Channels.html" title="Channels"
              >next</a> |</li>
         <li class="right" >
-          <a href="Objects.html" title="Objects"
+          <a href="Exits.html" title="Exits"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="Components-Overview.html" >Core Components</a> &#187;</li>
@@ -487,7 +488,7 @@ information in settings to recreate it for you on the fly.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

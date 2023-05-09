@@ -85,8 +85,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -96,7 +97,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Contrib-Wilderness.html">1.0 (develop branch)</a></li>
+  <li><a href="Contrib-Wilderness.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -125,11 +126,11 @@ is used to call functions/classes in this contrib directly.</p>
 with their own name. If no name is provided, then a default one is used. Internally,
 the wilderness is stored as a Script with the name you specify. If you don’t
 specify the name, a script named “default” will be created and used.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@py from evennia.contrib.grid import wilderness; wilderness.create_wilderness()
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>py from evennia.contrib.grid import wilderness; wilderness.create_wilderness()
 </pre></div>
 </div>
 <p>Once created, it is possible to move into that wilderness map:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@py from evennia.contrib.grid import wilderness; wilderness.enter_wilderness(me)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>py from evennia.contrib.grid import wilderness; wilderness.enter_wilderness(me)
 </pre></div>
 </div>
 <p>All coordinates used by the wilderness map are in the format of <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code>
@@ -203,13 +204,20 @@ provided as a string: a “.” symbol is a location we can walk on.</p>
         <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;This is a room in the pyramid.&quot;</span>
         <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">3</span> <span class="p">:</span>
             <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;You can see far and wide from the top of the pyramid.&quot;</span>
-        <span class="n">room</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="n">desc</span>
+        <span class="n">room</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">active_desc</span> <span class="o">=</span> <span class="n">desc</span>
 </pre></div>
 </div>
+<p>Note that the currently active description is stored as <code class="docutils literal notranslate"><span class="pre">.ndb.active_desc</span></code>. When
+looking at the room, this is what will be pulled and shown.</p>
+<blockquote>
+<div><p>Exits on a room are always present, but locks hide those not used for a
+location. So make sure to <code class="docutils literal notranslate"><span class="pre">quell</span></code> if you are a superuser (since the superuser ignores
+locks, those exits will otherwise not be hidden)</p>
+</div></blockquote>
 <p>Now we can use our new pyramid-shaped wilderness map. From inside Evennia we
 create a new wilderness (with the name “default”) but using our new map provider:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>py from world import pyramid as p; p.wilderness.create_wilderness(mapprovider=p.PyramidMapProvider())
-py from evennia.contrib import wilderness; wilderness.enter_wilderness(me, coordinates=(4, 1))
+py from evennia.contrib.grid import wilderness; wilderness.enter_wilderness(me, coordinates=(4, 1))
 </pre></div>
 </div>
 </section>
@@ -256,7 +264,7 @@ file will be overwritten, so edit that file rather than this one.</small></p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

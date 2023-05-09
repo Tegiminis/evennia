@@ -63,7 +63,7 @@
   <ul>
 <li><a class="reference internal" href="#">Crafting system</a><ul>
 <li><a class="reference internal" href="#examples">Examples</a></li>
-<li><a class="reference internal" href="#intallation-and-usage">Intallation and Usage</a></li>
+<li><a class="reference internal" href="#installation-and-usage">Installation and Usage</a></li>
 <li><a class="reference internal" href="#adding-new-recipes">Adding new recipes</a></li>
 <li><a class="reference internal" href="#deeper-customization-of-recipes">Deeper customization of recipes</a><ul>
 <li><a class="reference internal" href="#skilled-crafters">Skilled crafters</a></li>
@@ -88,8 +88,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -99,7 +100,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Contrib-Crafting.html">1.0 (develop branch)</a></li>
+  <li><a href="Contrib-Crafting.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -151,8 +152,8 @@ makeshift_fishing_rod + storm_drain -&gt; key
 <p>See the <a class="reference internal" href="../api/evennia.contrib.game_systems.crafting.example_recipes.html#evennia-contrib-game-systems-crafting-example-recipes"><span class="std std-ref">sword example</span></a> for an example
 of how to design a recipe tree for crafting a sword from base elements.</p>
 </section>
-<section id="intallation-and-usage">
-<h2>Intallation and Usage<a class="headerlink" href="#intallation-and-usage" title="Permalink to this headline">¶</a></h2>
+<section id="installation-and-usage">
+<h2>Installation and Usage<a class="headerlink" href="#installation-and-usage" title="Permalink to this headline">¶</a></h2>
 <p>Import the <code class="docutils literal notranslate"><span class="pre">CmdCraft</span></code> command from evennia/contrib/crafting/crafting.py  and
 add it to your Character cmdset. Reload and the <code class="docutils literal notranslate"><span class="pre">craft</span></code> command will be
 available to you:</p>
@@ -185,7 +186,7 @@ there:</p>
 
 
 <span class="k">class</span> <span class="nc">RecipeBread</span><span class="p">(</span><span class="n">CraftingRecipe</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">  Bread is good for making sandwitches!</span>
 
 <span class="sd">  &quot;&quot;&quot;</span>
@@ -220,7 +221,7 @@ there:</p>
 <section id="adding-new-recipes">
 <h2>Adding new recipes<a class="headerlink" href="#adding-new-recipes" title="Permalink to this headline">¶</a></h2>
 <p>A <em>recipe</em> is a class inheriting from
-<code class="docutils literal notranslate"><span class="pre">evennia.contrib.crafting.crafting.CraftingRecipe</span></code>. This class implements the
+<code class="docutils literal notranslate"><span class="pre">evennia.contrib.game_systems.crafting.CraftingRecipe</span></code>. This class implements the
 most common form of crafting - that using in-game objects. Each recipe is a
 separate class which gets initialized with the consumables/tools you provide.</p>
 <p>For the <code class="docutils literal notranslate"><span class="pre">craft</span></code> command to find your custom recipes, you need to tell Evennia
@@ -236,10 +237,10 @@ as viable recipes.</p>
 example setting:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in mygame/world/myrecipes.py</span>
 
-<span class="kn">from</span> <span class="nn">evennia.contrib.crafting.crafting</span> <span class="kn">import</span> <span class="n">CraftingRecipe</span>
+<span class="kn">from</span> <span class="nn">evennia.contrib.game_systems.crafting</span> <span class="kn">import</span> <span class="n">CraftingRecipe</span>
 
 <span class="k">class</span> <span class="nc">WoodenPuppetRecipe</span><span class="p">(</span><span class="n">CraftingRecipe</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A puppet&quot;&quot;&quot;</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A puppet&quot;&quot;&quot;</span><span class="s2">&quot;</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;wooden puppet&quot;</span>  <span class="c1"># name to refer to this recipe as</span>
     <span class="n">tool_tags</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;knife&quot;</span><span class="p">]</span>
     <span class="n">consumable_tags</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;wood&quot;</span><span class="p">]</span>
@@ -283,11 +284,11 @@ know ingredients.</p>
 recipe’s requirements. This is great for testing.</p>
 <p>Assuming these objects were put in our inventory, we could now craft using the
 in-game command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt; craft wooden puppet from wood using hobby knife
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>craft<span class="w"> </span>wooden<span class="w"> </span>puppet<span class="w"> </span>from<span class="w"> </span>wood<span class="w"> </span>using<span class="w"> </span>hobby<span class="w"> </span>knife
 </pre></div>
 </div>
 <p>In code we would do</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia.contrib.crafting.crafting</span> <span class="kn">import</span> <span class="n">craft</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia.contrib.game_systems.crafting</span> <span class="kn">import</span> <span class="n">craft</span>
 <span class="n">puppet</span> <span class="o">=</span> <span class="n">craft</span><span class="p">(</span><span class="n">crafter</span><span class="p">,</span> <span class="s2">&quot;wooden puppet&quot;</span><span class="p">,</span> <span class="n">knife</span><span class="p">,</span> <span class="n">wood</span><span class="p">)</span>
 
 </pre></div>
@@ -340,15 +341,15 @@ notion of being able to fail the craft if you are not skilled enough. Just how
 skills work is game-dependent, so to add this you need to make your own recipe
 parent class and have your recipes inherit from this.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
-<span class="kn">from</span> <span class="nn">evennia.contrib.crafting.crafting</span> <span class="kn">import</span> <span class="n">CraftingRecipe</span>
+<span class="kn">from</span> <span class="nn">evennia.contrib.game_systems.crafting</span> <span class="kn">import</span> <span class="n">CraftingRecipe</span>
 
 <span class="k">class</span> <span class="nc">SkillRecipe</span><span class="p">(</span><span class="n">CraftingRecipe</span><span class="p">):</span>
-   <span class="sd">&quot;&quot;&quot;A recipe that considers skill&quot;&quot;&quot;</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;A recipe that considers skill&quot;&quot;&quot;</span>
 
     <span class="n">difficulty</span> <span class="o">=</span> <span class="mi">20</span>
 
     <span class="k">def</span> <span class="nf">craft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The input is ok. Determine if crafting succeeds&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The input is ok. Determine if crafting succeeds&quot;&quot;&quot;</span>
 
         <span class="c1"># this is set at initialization</span>
         <span class="n">crafter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crafte</span>
@@ -412,7 +413,7 @@ file will be overwritten, so edit that file rather than this one.</small></p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

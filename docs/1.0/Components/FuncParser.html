@@ -72,6 +72,7 @@
 <li><a class="reference internal" href="#evennia-utils-funcparser-funcparser-callables"><code class="docutils literal notranslate"><span class="pre">evennia.utils.funcparser.FUNCPARSER_CALLABLES</span></code></a></li>
 <li><a class="reference internal" href="#evennia-utils-funcparser-searching-callables"><code class="docutils literal notranslate"><span class="pre">evennia.utils.funcparser.SEARCHING_CALLABLES</span></code></a></li>
 <li><a class="reference internal" href="#evennia-utils-funcparser-actor-stance-callables"><code class="docutils literal notranslate"><span class="pre">evennia.utils.funcparser.ACTOR_STANCE_CALLABLES</span></code></a></li>
+<li><a class="reference internal" href="#evennia-prototypes-protfuncs"><code class="docutils literal notranslate"><span class="pre">evennia.prototypes.protfuncs</span></code></a></li>
 <li><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
@@ -93,8 +94,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -104,7 +106,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="FuncParser.html">1.0 (develop branch)</a></li>
+  <li><a href="FuncParser.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -117,11 +119,23 @@
             
   <section class="tex2jax_ignore mathjax_ignore" id="funcparser-inline-text-parsing">
 <h1>FuncParser inline text parsing<a class="headerlink" href="#funcparser-inline-text-parsing" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="../api/evennia.utils.funcparser.html#evennia.utils.funcparser.FuncParser" title="evennia.utils.funcparser.FuncParser"><span class="xref myst py py-class">FuncParser</span></a> extracts and executes ‘inline functions’ embedded in a string on the form <code class="docutils literal notranslate"><span class="pre">$funcname(args,</span> <span class="pre">kwargs)</span></code>. Under the hood, this will lead to a call to a Python function you control. The inline function call will be replaced by the return from the function.</p>
+<p>The <a class="reference internal" href="../api/evennia.utils.funcparser.html#evennia.utils.funcparser.FuncParser" title="evennia.utils.funcparser.FuncParser"><span class="xref myst py py-class">FuncParser</span></a> extracts and executes ‘inline functions’ embedded in a string on the form <code class="docutils literal notranslate"><span class="pre">$funcname(args,</span> <span class="pre">kwargs)</span></code>, executes the matching ‘inline function’ and replaces the call with the return from the call.</p>
+<p>To test it, let’s tell Evennia to apply the Funcparser on every outgoing message. This is disabled by default (not everyone needs this functionality). To activate, add to your settings file:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>FUNCPARSER_PARSE_OUTGOING_MESSAGES_ENABLED = True
+</pre></div>
+</div>
+<p>After a reload, you can try this in-game</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>say<span class="w"> </span>I<span class="w"> </span>got<span class="w"> </span><span class="nv">$randint</span><span class="o">(</span><span class="m">1</span>,5<span class="o">)</span><span class="w"> </span>gold!
+You<span class="w"> </span>say<span class="w"> </span><span class="s2">&quot;I got 3 gold!&quot;</span>
+</pre></div>
+</div>
+<p>To escape the inlinefunc (e.g. to explain to someone how it works, use <code class="docutils literal notranslate"><span class="pre">$$</span></code>)</p>
+<p>While <code class="docutils literal notranslate"><span class="pre">randint</span></code> may look and work just like <code class="docutils literal notranslate"><span class="pre">random.randint</span></code> from the standard Python library, it is <em>not</em>. Instead it’s a <code class="docutils literal notranslate"><span class="pre">inlinefunc</span></code> named <code class="docutils literal notranslate"><span class="pre">randint</span></code> made available to Evennia (which in turn uses the standard library function). For security reasons, only functions explicitly assigned to be used as inlinefuncs are viable.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">FuncParser</span></code>  tool is initialized with the inlinefuncs it’s supposed to recognize. Below is an example of a parser only only understanding a single <code class="docutils literal notranslate"><span class="pre">$pow</span></code> inlinefunc:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia.utils.funcparser</span> <span class="kn">import</span> <span class="n">FuncParser</span>
 
 <span class="k">def</span> <span class="nf">_power_callable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;This will be callable as $pow(number, power=&lt;num&gt;) in string&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This will be callable as $pow(number, power=&lt;num&gt;) in string&quot;&quot;&quot;</span>
     <span class="nb">pow</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;power&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="nb">pow</span>
 
@@ -138,11 +152,6 @@
 <p>Normally the return is always converted to a string but you can also get the actual data type from the call:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">parse_to_any</span><span class="p">(</span><span class="s2">&quot;$pow(4)&quot;</span><span class="p">)</span>
 <span class="mi">16</span>
-</pre></div>
-</div>
-<p>To show a <code class="docutils literal notranslate"><span class="pre">$func()</span></code> verbatim in your code without parsing it, escape it as either <code class="docutils literal notranslate"><span class="pre">$$func()</span></code> or <code class="docutils literal notranslate"><span class="pre">\$func()</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;This is an escaped $$pow(4) and so is this \$pow(3)&quot;</span><span class="p">)</span>
-<span class="s2">&quot;This is an escaped $pow(4) and so is this $pow(3)&quot;</span>
 </pre></div>
 </div>
 <section id="working-with-funcparser">
@@ -322,7 +331,7 @@ representation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia.utils.utils</span> <span class="kn">import</span> <span class="n">safe_convert_to_types</span>
 
 <span class="k">def</span> <span class="nf">_process_callable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    $process(expression, local, extra1=34, extra2=foo)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -352,9 +361,7 @@ representation.</p>
 </section>
 <section id="default-funcparser-callables">
 <h2>Default funcparser callables<a class="headerlink" href="#default-funcparser-callables" title="Permalink to this headline">¶</a></h2>
-<p>These are some example callables you can import and add your parser. They are divided into
-global-level dicts in <code class="docutils literal notranslate"><span class="pre">evennia.utils.funcparser</span></code>. Just import the dict(s) and merge/add one or
-more to them when you create your <code class="docutils literal notranslate"><span class="pre">FuncParser</span></code> instance to have those callables be available.</p>
+<p>These are some example callables you can import and add your parser. They are divided into global-level dicts in <code class="docutils literal notranslate"><span class="pre">evennia.utils.funcparser</span></code>. Just import the dict(s) and merge/add one or more to them when you create your <code class="docutils literal notranslate"><span class="pre">FuncParser</span></code> instance to have those callables be available.</p>
 <section id="evennia-utils-funcparser-funcparser-callables">
 <h3><code class="docutils literal notranslate"><span class="pre">evennia.utils.funcparser.FUNCPARSER_CALLABLES</span></code><a class="headerlink" href="#evennia-utils-funcparser-funcparser-callables" title="Permalink to this headline">¶</a></h3>
 <p>These are the ‘base’ callables.</p>
@@ -418,6 +425,15 @@ on who sees it. This makes use of the tools in <a class="reference internal" hre
 to do this, and only works for English verbs.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">$pron(pronoun</span> <span class="pre">[,options])</span></code> (<a class="reference internal" href="../api/evennia.utils.funcparser.html#evennia.utils.funcparser.funcparser_callable_pronoun" title="evennia.utils.funcparser.funcparser_callable_pronoun"><span class="xref myst py py-func">code</span></a>) - Dynamically
 map pronouns (like his, herself, you, its etc) between 1st/2nd person to 3rd person.</p></li>
+</ul>
+</section>
+<section id="evennia-prototypes-protfuncs">
+<h3><code class="docutils literal notranslate"><span class="pre">evennia.prototypes.protfuncs</span></code><a class="headerlink" href="#evennia-prototypes-protfuncs" title="Permalink to this headline">¶</a></h3>
+<p>This is used by the <a class="reference internal" href="Prototypes.html"><span class="doc std std-doc">Prototype system</span></a> and allows for adding references inside the prototype. The funcparsing will happen before the spawn.</p>
+<p>Available inlinefuncs to prototypes:</p>
+<ul class="simple">
+<li><p>All <code class="docutils literal notranslate"><span class="pre">FUNCPARSER_CALLABLES</span></code> and <code class="docutils literal notranslate"><span class="pre">SEARCHING_CALLABLES</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$protkey(key)</span></code> - returns the value of another key within the same prototype. Note that the system will try to convert this to a ‘real’ value (like turning the string “3” into the integer 3), for security reasons, not all embedded values can be converted this way. Note however that you can do nested calls with inlinefuncs, including adding your own converters.</p></li>
 </ul>
 </section>
 <section id="example">
@@ -488,7 +504,7 @@ all the defaults (like <code class="docutils literal notranslate"><span class="p
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

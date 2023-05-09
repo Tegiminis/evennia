@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="account.html">1.0 (develop branch)</a></li>
+  <li><a href="account.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -99,7 +100,6 @@
 <span class="kn">from</span> <span class="nn">codecs</span> <span class="kn">import</span> <span class="n">lookup</span> <span class="k">as</span> <span class="n">codecs_lookup</span>
 
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
-
 <span class="kn">from</span> <span class="nn">evennia.server.sessionhandler</span> <span class="kn">import</span> <span class="n">SESSIONS</span>
 <span class="kn">from</span> <span class="nn">evennia.utils</span> <span class="kn">import</span> <span class="n">create</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="n">search</span><span class="p">,</span> <span class="n">utils</span>
 
@@ -127,14 +127,14 @@
 
 
 <span class="k">class</span> <span class="nc">MuxAccountLookCommand</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Custom parent (only) parsing for OOC looking, sets a &quot;playable&quot;</span>
 <span class="sd">    property on the command based on the parsing.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Custom parsing&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Custom parsing&quot;&quot;&quot;</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 
@@ -160,7 +160,7 @@
 <span class="c1"># note that this is inheriting from MuxAccountLookCommand,</span>
 <span class="c1"># and has the .playable property.</span>
 <div class="viewcode-block" id="CmdOOCLook"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdOOCLook">[docs]</a><span class="k">class</span> <span class="nc">CmdOOCLook</span><span class="p">(</span><span class="n">MuxAccountLookCommand</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    look while out-of-character</span>
 
 <span class="sd">    Usage:</span>
@@ -183,7 +183,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdOOCLook.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdOOCLook.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;implement the ooc look command&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;implement the ooc look command&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">puppet</span><span class="p">:</span>
             <span class="c1"># if we are puppeting, this is only reached in the case the that puppet</span>
@@ -201,7 +201,7 @@
 
 
 <div class="viewcode-block" id="CmdCharCreate"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdCharCreate">[docs]</a><span class="k">class</span> <span class="nc">CmdCharCreate</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    create a new character</span>
 
 <span class="sd">    Usage:</span>
@@ -221,7 +221,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdCharCreate.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdCharCreate.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;create the new character&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;create the new character&quot;&quot;&quot;</span>
         <span class="n">account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;Usage: charcreate &lt;charname&gt; [= description]&quot;</span><span class="p">)</span>
@@ -268,7 +268,8 @@
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">new_character</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">desc</span><span class="p">:</span>
             <span class="n">new_character</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;This is a character.&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Created new character </span><span class="si">{</span><span class="n">new_character</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">. Use |wic </span><span class="si">{</span><span class="n">new_character</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">|n to enter the game as this character.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Created new character </span><span class="si">{</span><span class="n">new_character</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">. Use |wic </span><span class="si">{</span><span class="n">new_character</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">|n to enter&quot;</span>
+            <span class="s2">&quot; the game as this character.&quot;</span>
         <span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">log_sec</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Character Created: </span><span class="si">{</span><span class="n">new_character</span><span class="si">}</span><span class="s2"> (Caller: </span><span class="si">{</span><span class="n">account</span><span class="si">}</span><span class="s2">, IP: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">).&quot;</span>
@@ -276,7 +277,7 @@
 
 
 <div class="viewcode-block" id="CmdCharDelete"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdCharDelete">[docs]</a><span class="k">class</span> <span class="nc">CmdCharDelete</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    delete a character - this cannot be undone!</span>
 
 <span class="sd">    Usage:</span>
@@ -290,7 +291,7 @@
     <span class="n">help_category</span> <span class="o">=</span> <span class="s2">&quot;General&quot;</span>
 
 <div class="viewcode-block" id="CmdCharDelete.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdCharDelete.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;delete the character&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;delete the character&quot;&quot;&quot;</span>
         <span class="n">account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
@@ -347,7 +348,7 @@
 
 
 <div class="viewcode-block" id="CmdIC"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdIC">[docs]</a><span class="k">class</span> <span class="nc">CmdIC</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    control an object you have permission to puppet</span>
 
 <span class="sd">    Usage:</span>
@@ -374,7 +375,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdIC.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdIC.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Main puppet method</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span>
@@ -394,11 +395,13 @@
             <span class="k">if</span> <span class="n">account</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">_playable_characters</span><span class="p">:</span>
                 <span class="c1"># look at the playable_characters list first</span>
                 <span class="n">character_candidates</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-                    <span class="n">account</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span>
-                        <span class="n">candidates</span><span class="o">=</span><span class="n">account</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">_playable_characters</span><span class="p">,</span>
-                        <span class="n">search_object</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                        <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">utils</span><span class="o">.</span><span class="n">make_iter</span><span class="p">(</span>
+                        <span class="n">account</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span>
+                            <span class="n">candidates</span><span class="o">=</span><span class="n">account</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">_playable_characters</span><span class="p">,</span>
+                            <span class="n">search_object</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="p">)</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
@@ -419,7 +422,7 @@
                     <span class="p">]</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">character_candidates</span><span class="p">:</span>
                     <span class="c1"># fall back to global search only if Builder+ has no</span>
-                    <span class="c1"># playable_characers in list and is not standing in a room</span>
+                    <span class="c1"># playable_characters in list and is not standing in a room</span>
                     <span class="c1"># with a matching char.</span>
                     <span class="n">character_candidates</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
                         <span class="p">[</span>
@@ -447,19 +450,21 @@
             <span class="n">account</span><span class="o">.</span><span class="n">puppet_object</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">new_character</span><span class="p">)</span>
             <span class="n">account</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">_last_puppet</span> <span class="o">=</span> <span class="n">new_character</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">log_sec</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Puppet Success: (Caller: </span><span class="si">{</span><span class="n">account</span><span class="si">}</span><span class="s2">, Target: </span><span class="si">{</span><span class="n">new_character</span><span class="si">}</span><span class="s2">, IP: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">).&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Puppet Success: (Caller: </span><span class="si">{</span><span class="n">account</span><span class="si">}</span><span class="s2">, Target: </span><span class="si">{</span><span class="n">new_character</span><span class="si">}</span><span class="s2">, IP:&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">).&quot;</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;|rYou cannot become |C</span><span class="si">{</span><span class="n">new_character</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">|n: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">log_sec</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Puppet Failed: %s (Caller: </span><span class="si">{</span><span class="n">account</span><span class="si">}</span><span class="s2">, Target: </span><span class="si">{</span><span class="n">new_character</span><span class="si">}</span><span class="s2">, IP: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">).&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Puppet Failed: %s (Caller: </span><span class="si">{</span><span class="n">account</span><span class="si">}</span><span class="s2">, Target: </span><span class="si">{</span><span class="n">new_character</span><span class="si">}</span><span class="s2">, IP:&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2">).&quot;</span>
             <span class="p">)</span></div></div>
 
 
 <span class="c1"># note that this is inheriting from MuxAccountLookCommand,</span>
 <span class="c1"># and as such has the .playable property.</span>
 <div class="viewcode-block" id="CmdOOC"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdOOC">[docs]</a><span class="k">class</span> <span class="nc">CmdOOC</span><span class="p">(</span><span class="n">MuxAccountLookCommand</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    stop puppeting and go ooc</span>
 
 <span class="sd">    Usage:</span>
@@ -479,7 +484,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdOOC.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdOOC.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Implement function&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement function&quot;&quot;&quot;</span>
 
         <span class="n">account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span>
         <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
@@ -509,7 +514,7 @@
 
 
 <div class="viewcode-block" id="CmdSessions"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdSessions">[docs]</a><span class="k">class</span> <span class="nc">CmdSessions</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    check your connected session(s)</span>
 
 <span class="sd">    Usage:</span>
@@ -527,7 +532,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdSessions.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdSessions.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Implement function&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement function&quot;&quot;&quot;</span>
         <span class="n">account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span>
         <span class="n">sessions</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
         <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">styled_table</span><span class="p">(</span>
@@ -546,7 +551,7 @@
 
 
 <div class="viewcode-block" id="CmdWho"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdWho">[docs]</a><span class="k">class</span> <span class="nc">CmdWho</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    list who is currently online</span>
 
 <span class="sd">    Usage:</span>
@@ -565,7 +570,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdWho.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdWho.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get all connected accounts by polling session.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -634,7 +639,7 @@
 
 
 <div class="viewcode-block" id="CmdOption"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdOption">[docs]</a><span class="k">class</span> <span class="nc">CmdOption</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set an account option</span>
 
 <span class="sd">    Usage:</span>
@@ -660,7 +665,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdOption.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdOption.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implements the command</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -747,7 +752,8 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">flags</span><span class="p">[</span><span class="n">new_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Option |w</span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">|n was changed from &#39;|w</span><span class="si">{</span><span class="n">old_val</span><span class="si">}</span><span class="s2">|n&#39; to &#39;|w</span><span class="si">{</span><span class="n">new_val</span><span class="si">}</span><span class="s2">|n&#39;.&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Option |w</span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">|n was changed from &#39;|w</span><span class="si">{</span><span class="n">old_val</span><span class="si">}</span><span class="s2">|n&#39; to&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; &#39;|w</span><span class="si">{</span><span class="n">new_val</span><span class="si">}</span><span class="s2">|n&#39;.&quot;</span>
                     <span class="p">)</span>
                 <span class="k">return</span> <span class="p">{</span><span class="n">new_name</span><span class="p">:</span> <span class="n">new_val</span><span class="p">}</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
@@ -801,7 +807,7 @@
 
 
 <div class="viewcode-block" id="CmdPassword"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdPassword">[docs]</a><span class="k">class</span> <span class="nc">CmdPassword</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    change your password</span>
 
 <span class="sd">    Usage:</span>
@@ -817,7 +823,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdPassword.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdPassword.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;hook function.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;hook function.&quot;&quot;&quot;</span>
 
         <span class="n">account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="p">:</span>
@@ -845,7 +851,7 @@
 
 
 <div class="viewcode-block" id="CmdQuit"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdQuit">[docs]</a><span class="k">class</span> <span class="nc">CmdQuit</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    quit the game</span>
 
 <span class="sd">    Usage:</span>
@@ -866,7 +872,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdQuit.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdQuit.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;hook function&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;hook function&quot;&quot;&quot;</span>
         <span class="n">account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span>
 
         <span class="k">if</span> <span class="s2">&quot;all&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">switches</span><span class="p">:</span>
@@ -893,7 +899,7 @@
 
 
 <div class="viewcode-block" id="CmdColorTest"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdColorTest">[docs]</a><span class="k">class</span> <span class="nc">CmdColorTest</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    testing which colors your client support</span>
 
 <span class="sd">    Usage:</span>
@@ -922,7 +928,7 @@
     <span class="n">slice_bright_bg</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># from ANSI_PARSER.ansi_xterm256_bright_bg_map</span>
 
 <div class="viewcode-block" id="CmdColorTest.table_format"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdColorTest.table_format">[docs]</a>    <span class="k">def</span> <span class="nf">table_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method to format the ansi/xterm256 tables.</span>
 <span class="sd">        Takes a table of columns [[val,val,...],[val,val,...],...]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -942,7 +948,7 @@
         <span class="k">return</span> <span class="n">ftable</span></div>
 
 <div class="viewcode-block" id="CmdColorTest.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdColorTest.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Show color tables&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Show color tables&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">):</span>
             <span class="c1"># show ansi 16-color table</span>
@@ -1025,7 +1031,7 @@
 
 
 <div class="viewcode-block" id="CmdQuell"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdQuell">[docs]</a><span class="k">class</span> <span class="nc">CmdQuell</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    use character&#39;s permissions instead of account&#39;s</span>
 
 <span class="sd">    Usage:</span>
@@ -1050,7 +1056,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_recache_locks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">account</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Helper method to reset the lockhandler on an already puppeted object&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper method to reset the lockhandler on an already puppeted object&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
             <span class="n">char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">puppet</span>
             <span class="k">if</span> <span class="n">char</span><span class="p">:</span>
@@ -1061,7 +1067,7 @@
         <span class="n">account</span><span class="o">.</span><span class="n">locks</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
 <div class="viewcode-block" id="CmdQuell.func"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdQuell.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform the command&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the command&quot;&quot;&quot;</span>
         <span class="n">account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">account</span>
         <span class="n">permstr</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">account</span><span class="o">.</span><span class="n">is_superuser</span> <span class="ow">and</span> <span class="s2">&quot;(superuser)&quot;</span> <span class="ow">or</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">permissions</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
@@ -1093,7 +1099,7 @@
 
 
 <div class="viewcode-block" id="CmdStyle"><a class="viewcode-back" href="../../../../api/evennia.commands.default.account.html#evennia.commands.default.account.CmdStyle">[docs]</a><span class="k">class</span> <span class="nc">CmdStyle</span><span class="p">(</span><span class="n">COMMAND_DEFAULT_CLASS</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    In-game style options</span>
 
 <span class="sd">    Usage:</span>
@@ -1101,7 +1107,7 @@
 <span class="sd">      style &lt;option&gt; = &lt;value&gt;</span>
 
 <span class="sd">    Configure stylings for in-game display elements like table borders, help</span>
-<span class="sd">    entriest etc. Use without arguments to see all available options.</span>
+<span class="sd">    entries etc. Use without arguments to see all available options.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1153,7 +1159,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

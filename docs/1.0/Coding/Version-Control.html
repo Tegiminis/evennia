@@ -103,8 +103,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -114,7 +115,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Version-Control.html">1.0 (develop branch)</a></li>
+  <li><a href="Version-Control.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -409,7 +410,7 @@ git checkout develop
 <h3>Fixing an Evennia bug or feature<a class="headerlink" href="#fixing-an-evennia-bug-or-feature" title="Permalink to this headline">¶</a></h3>
 <p>This should be done in your fork of Evennia. You should <em>always</em> do this in a <em>separate git branch</em> based off the Evennia branch you want to improve.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>git checkout main (or develop)
-git branch - b myfixbranch
+git branch -b myfixbranch
 </pre></div>
 </div>
 <p>Now fix whatever needs fixing. Abide by the <a class="reference internal" href="Evennia-Code-Style.html"><span class="doc std std-doc">Evennia code style</span></a>. You can <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code> commit your changes along the way as normal.</p>
@@ -449,9 +450,9 @@ This is a formal request for upstream Evennia to adopt and pull your code into t
 <h3>Getting 403: Forbidden access<a class="headerlink" href="#getting-403-forbidden-access" title="Permalink to this headline">¶</a></h3>
 <p>Some users have experienced this on <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code> to their remote repository. They are not asked for username/password (and don’t have a ssh key set up).</p>
 <p>Some users have reported that the workaround is to create a file <code class="docutils literal notranslate"><span class="pre">.netrc</span></code> under your home directory and add your github credentials there:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>machine github.com
-login &lt;my_github_username&gt;
-password &lt;my_github_password&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>machine<span class="w"> </span>github.com
+login<span class="w"> </span>&lt;my_github_username&gt;
+password<span class="w"> </span>&lt;my_github_password&gt;
 </pre></div>
 </div>
 </section>
@@ -485,7 +486,7 @@ password &lt;my_github_password&gt;
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

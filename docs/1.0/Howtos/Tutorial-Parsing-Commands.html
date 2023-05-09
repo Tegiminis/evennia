@@ -96,8 +96,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -107,7 +108,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Tutorial-Parsing-Commands.html">1.0 (develop branch)</a></li>
+  <li><a href="Tutorial-Parsing-Commands.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -173,7 +174,7 @@ access the command arguments in <code class="docutils literal notranslate"><span
 <p>To begin with, look at this example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CmdTest</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test command.</span>
 
 <span class="sd">    Syntax:</span>
@@ -212,7 +213,7 @@ in <code class="docutils literal notranslate"><span class="pre">self.args</span>
 force Python to display the command arguments as a debug string using a little shortcut.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CmdTest</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test command.</span>
 
 <span class="sd">    Syntax:</span>
@@ -280,7 +281,7 @@ string.</p></li>
 separator, we call <code class="docutils literal notranslate"><span class="pre">lstrip</span></code> on the command arguments:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CmdTest</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test command.</span>
 
 <span class="sd">    Syntax:</span>
@@ -293,7 +294,7 @@ separator, we call <code class="docutils literal notranslate"><span class="pre">
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parse arguments, just strip them.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse arguments, just strip them.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -350,7 +351,7 @@ won’t work as is, I warn you:</p>
 
 <span class="k">class</span> <span class="nc">CmdRoll</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Play random, enter a number and try your luck.</span>
 
 <span class="sd">    Usage:</span>
@@ -367,7 +368,7 @@ won’t work as is, I warn you:</p>
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;roll&quot;</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the argument to a number.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the argument to a number.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -399,7 +400,7 @@ converting:</p>
 
 <span class="k">class</span> <span class="nc">CmdRoll</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Play random, enter a number and try your luck.</span>
 
 <span class="sd">    Usage:</span>
@@ -416,7 +417,7 @@ converting:</p>
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;roll&quot;</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the argument to number if possible.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the argument to number if possible.&quot;&quot;&quot;</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
 
         <span class="c1"># Convert to int if possible</span>
@@ -459,7 +460,7 @@ by grouping:</p>
 
 <span class="k">class</span> <span class="nc">CmdRoll</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Play random, enter a number and try your luck.</span>
 
 <span class="sd">    Usage:</span>
@@ -476,7 +477,7 @@ by grouping:</p>
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;roll&quot;</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert the argument to number if possible.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the argument to number if possible.&quot;&quot;&quot;</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
 
         <span class="c1"># Convert to int if possible</span>
@@ -586,7 +587,7 @@ the number of dice to roll.</p>
 
 <span class="k">class</span> <span class="nc">CmdRoll</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Play random, enter a number and try your luck.</span>
 
 <span class="sd">    Specify two numbers separated by a space.  The first number is the</span>
@@ -606,7 +607,7 @@ the number of dice to roll.</p>
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;roll&quot;</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Split the arguments and convert them.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Split the arguments and convert them.&quot;&quot;&quot;</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
 
         <span class="c1"># Split: we expect two arguments separated by a space</span>
@@ -844,7 +845,7 @@ code.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

@@ -83,8 +83,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -94,7 +95,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Tutorial-NPC-Merchants.html">1.0 (develop branch)</a></li>
+  <li><a href="Tutorial-NPC-Merchants.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -127,7 +128,7 @@ To enter the shop, you’ll just need to stand in the same room and use the <cod
 <span class="kn">from</span> <span class="nn">evennia</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CmdSet</span><span class="p">,</span> <span class="n">EvMenu</span>
 
 <span class="k">class</span> <span class="nc">CmdOpenShop</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span> 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Open the shop! </span>
 
 <span class="sd">    Usage:</span>
@@ -156,7 +157,7 @@ To enter the shop, you’ll just need to stand in the same room and use the <cod
      <span class="k">def</span> <span class="nf">open_shop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shopper</span><span class="p">):</span>
          <span class="n">menunodes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># TODO! </span>
          <span class="n">shopname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">shopname</span> <span class="ow">or</span> <span class="s2">&quot;The shop&quot;</span>
-         <span class="n">EvMenu</span><span class="p">(</span><span class="n">shopper</span><span class="p">,</span> <span class="n">menunodes</span><span class="p">,</span> <span class="n">startnode</span><span class="o">=</span><span class="s2">&quot;shop_start&quot;</span><span class="p">,</span> 
+         <span class="n">EvMenu</span><span class="p">(</span><span class="n">shopper</span><span class="p">,</span> <span class="n">menunodes</span><span class="p">,</span> <span class="n">startnode</span><span class="o">=</span><span class="s2">&quot;shopfront&quot;</span><span class="p">,</span> 
                 <span class="n">shopname</span><span class="o">=</span><span class="n">shopname</span><span class="p">,</span> <span class="n">shopkeeper</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wares</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">)</span>
 
 </pre></div>
@@ -295,7 +296,7 @@ _________________________________________________________
              <span class="s2">&quot;inspect_and_buy&quot;</span><span class="p">:</span> <span class="n">node_inspect_and_buy</span>
          <span class="p">}</span>
          <span class="n">shopname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">shopname</span> <span class="ow">or</span> <span class="s2">&quot;The shop&quot;</span>
-         <span class="n">EvMenu</span><span class="p">(</span><span class="n">shopper</span><span class="p">,</span> <span class="n">menunodes</span><span class="p">,</span> <span class="n">startnode</span><span class="o">=</span><span class="s2">&quot;shop_start&quot;</span><span class="p">,</span> 
+         <span class="n">EvMenu</span><span class="p">(</span><span class="n">shopper</span><span class="p">,</span> <span class="n">menunodes</span><span class="p">,</span> <span class="n">startnode</span><span class="o">=</span><span class="s2">&quot;shopfront&quot;</span><span class="p">,</span> 
                 <span class="n">shopname</span><span class="o">=</span><span class="n">shopname</span><span class="p">,</span> <span class="n">shopkeeper</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wares</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">contents</span><span class="p">)</span>
 
 </pre></div>
@@ -377,7 +378,7 @@ _________________________________________________________
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

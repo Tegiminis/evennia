@@ -66,6 +66,8 @@
 <li><a class="reference internal" href="#viewing-and-joining-channels">Viewing and joining channels</a></li>
 <li><a class="reference internal" href="#talk-on-channels">Talk on channels</a></li>
 <li><a class="reference internal" href="#channel-administration">Channel administration</a><ul>
+<li><a class="reference internal" href="#default-channels-from-settings">Default channels from settings</a></li>
+<li><a class="reference internal" href="#managing-channels-in-game">Managing channels in-game</a></li>
 <li><a class="reference internal" href="#restricting-channel-administration">Restricting channel administration</a></li>
 </ul>
 </li>
@@ -97,8 +99,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -108,7 +111,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Channels.html">1.0 (develop branch)</a></li>
+  <li><a href="Channels.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -136,8 +139,8 @@ it to every other subscriber.</p>
 <li><p>Private guild channels for planning and organization (IC/OOC depending on game)</p></li>
 <li><p>Cyberpunk-style retro chat rooms (IC)</p></li>
 <li><p>In-game radio channels (IC)</p></li>
-<li><p>Group telephathy (IC)</p></li>
-<li><p>Walkie talkies (IC)</p></li>
+<li><p>Group telepathy (IC)</p></li>
+<li><p>Walkie-talkies (IC)</p></li>
 </ul>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 1.0: </span>Channel system changed to use a central ‘channel’ command and nicks instead of
@@ -227,7 +230,34 @@ offline). You can step further back by specifying how many lines back to start:<
 </section>
 <section id="channel-administration">
 <h3>Channel administration<a class="headerlink" href="#channel-administration" title="Permalink to this headline">¶</a></h3>
-<p>To create/destroy a new channel you can do</p>
+<p>Evennia can create certain channels when it starts. Channels can also
+be created on-the-fly in-game.</p>
+<section id="default-channels-from-settings">
+<h4>Default channels from settings<a class="headerlink" href="#default-channels-from-settings" title="Permalink to this headline">¶</a></h4>
+<p>You can specify ‘default’ channels you want to auto-create from the Evennia
+settings. New accounts will automatically be subscribed to such ‘default’ channels if
+they have the right permissions. This is a list of one dict per channel (example is the default public channel):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in mygame/server/conf/settings.py</span>
+<span class="n">DEFAULT_CHANNELS</span> <span class="o">=</span> <span class="p">[</span> 
+	<span class="p">{</span>
+         <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;aliases&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;pub&quot;</span><span class="p">,),</span>
+         <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;Public discussion&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;locks&quot;</span><span class="p">:</span> <span class="s2">&quot;control:perm(Admin);listen:all();send:all()&quot;</span><span class="p">,</span>
+     <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Each dict is fed as <code class="docutils literal notranslate"><span class="pre">**channeldict</span></code> into the <a class="reference internal" href="../api/evennia.utils.create.html#evennia.utils.create.create_channel" title="evennia.utils.create.create_channel"><span class="xref myst py py-func">create_channel</span></a> function, and thus supports all the same keywords.</p>
+<p>Evennia also has two system-related channels:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CHANNEL_MUDINFO</span></code> is a dict describing the “MudInfo” channel. This is assumed to exist and is a place for Evennia to echo important server information. The idea is that server admins and staff can subscribe to this channel to stay in the loop.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CHANNEL_CONECTINFO</span></code> is not defined by default. It will receive connect/disconnect-messages and could be visible also for regular players. If not given, connection-info will just be logged quietly.</p></li>
+</ul>
+</section>
+<section id="managing-channels-in-game">
+<h4>Managing channels in-game<a class="headerlink" href="#managing-channels-in-game" title="Permalink to this headline">¶</a></h4>
+<p>To create/destroy a new channel on the fly you can do</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>channel/create channelname;alias;alias = description
 channel/destroy channelname
 </pre></div>
@@ -235,7 +265,7 @@ channel/destroy channelname
 <p>Aliases are optional but can be good for obvious shortcuts everyone may want to
 use. The description is used in channel-listings. You will automatically join a
 channel you created and will be controlling it. You can also use <code class="docutils literal notranslate"><span class="pre">channel/desc</span></code> to
-change the description on a channel you wnn later.</p>
+change the description on a channel you own later.</p>
 <p>If you control a channel you can also kick people off it:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>channel/boot mychannel = annoyinguser123 : stop spamming!
 </pre></div>
@@ -265,6 +295,7 @@ even be able to join the channel and it will not appear in listings for them.</p
 <li><p><code class="docutils literal notranslate"><span class="pre">control</span></code> - this is assigned to you automatically when you create the channel. With
 control over the channel you can edit it, boot users and do other management tasks.</p></li>
 </ul>
+</section>
 <section id="restricting-channel-administration">
 <h4>Restricting channel administration<a class="headerlink" href="#restricting-channel-administration" title="Permalink to this headline">¶</a></h4>
 <p>By default everyone can use the channel command (<a class="reference internal" href="../api/evennia.commands.default.comms.html#evennia.commands.default.comms.CmdChannel" title="evennia.commands.default.comms.CmdChannel"><span class="xref myst py py-class">evennia.commands.default.comms.CmdChannel</span></a>) to create channels and will then control the channels they created (to boot/ban people etc). If you as a developer does not want regular players to do this (perhaps you want only staff to be able to spawn new channels), you can override the <code class="docutils literal notranslate"><span class="pre">channel</span></code> command and change its <code class="docutils literal notranslate"><span class="pre">locks</span></code> property.</p>
@@ -300,7 +331,7 @@ channels you could override the <code class="docutils literal notranslate"><span
 
 </pre></div>
 </div>
-<p>Add this custom command to your default cmdset and regular users wil now get an
+<p>Add this custom command to your default cmdset and regular users will now get an
 access-denied error when trying to use use these switches.</p>
 </section>
 </section>
@@ -342,7 +373,7 @@ recipient is skipped.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">channel.at_post_channel_msg(message,</span> <span class="pre">**kwargs)</span></code></p></li>
 </ol>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">Accounts</span></code> and <code class="docutils literal notranslate"><span class="pre">Objects</span></code> both have their have separate sets of hooks.
-So make sure you modify the set actually used by your subcribers (or both).
+So make sure you modify the set actually used by your subscribers (or both).
 Default channels all use <code class="docutils literal notranslate"><span class="pre">Account</span></code> subscribers.</p>
 </section>
 <section id="channel-class">
@@ -449,7 +480,7 @@ what maps e.g. <code class="docutils literal notranslate"><span class="pre">alia
 a class-method that will happily remove found channel-aliases from the user linked to <em>any</em>
 channel, not only from the channel the method is called on.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pre_join_channel(subscriber)</span></code> - if this returns <code class="docutils literal notranslate"><span class="pre">False</span></code>, connection will be refused.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">post_join_channel(subscriber)</span></code> - by default this sets up a users’s channel-nicks/aliases.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">post_join_channel(subscriber)</span></code> - by default this sets up a users’ channel-nicks/aliases.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pre_leave_channel(subscriber)</span></code> - if this returns <code class="docutils literal notranslate"><span class="pre">False</span></code>, the user is not allowed to leave.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">post_leave_channel(subscriber)</span></code> - this will clean up any channel aliases/nicks of the user.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">delete</span></code> the standard typeclass-delete mechanism will also automatically un-subscribe all
@@ -486,7 +517,7 @@ subscribers (and thus wipe all their aliases).</p></li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

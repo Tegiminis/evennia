@@ -17,8 +17,8 @@ Channels can be used both for chats between [Accounts](./Accounts.md) and betwee
 - Private guild channels for planning and organization (IC/OOC depending on game)
 - Cyberpunk-style retro chat rooms (IC)
 - In-game radio channels (IC)
-- Group telephathy (IC)
-- Walkie talkies (IC)
+- Group telepathy (IC)
+- Walkie-talkies (IC)
 
 ```{versionchanged} 1.0
 
@@ -112,7 +112,37 @@ This again retrieve 20 lines, but starting 30 lines back (so you'll get lines
 
 ### Channel administration
 
-To create/destroy a new channel you can do
+Evennia can create certain channels when it starts. Channels can also 
+be created on-the-fly in-game. 
+
+#### Default channels from settings 
+
+You can specify 'default' channels you want to auto-create from the Evennia 
+settings. New accounts will automatically be subscribed to such 'default' channels if 
+they have the right permissions. This is a list of one dict per channel (example is the default public channel):
+
+```python
+# in mygame/server/conf/settings.py
+DEFAULT_CHANNELS = [ 
+	{
+         "key": "Public",
+         "aliases": ("pub",),
+         "desc": "Public discussion",
+         "locks": "control:perm(Admin);listen:all();send:all()",
+     },
+]
+```
+
+Each dict is fed as `**channeldict` into the [create_channel](evennia.utils.create.create_channel) function, and thus supports all the same keywords.
+
+Evennia also has two system-related channels:
+ 
+- `CHANNEL_MUDINFO` is a dict describing the "MudInfo" channel. This is assumed to exist and is a place for Evennia to echo important server information. The idea is that server admins and staff can subscribe to this channel to stay in the loop. 
+- `CHANNEL_CONECTINFO` is not defined by default. It will receive connect/disconnect-messages and could be visible also for regular players. If not given, connection-info will just be logged quietly.
+
+#### Managing channels in-game
+
+To create/destroy a new channel on the fly you can do
 
     channel/create channelname;alias;alias = description
     channel/destroy channelname
@@ -120,7 +150,7 @@ To create/destroy a new channel you can do
 Aliases are optional but can be good for obvious shortcuts everyone may want to
 use. The description is used in channel-listings. You will automatically join a
 channel you created and will be controlling it. You can also use `channel/desc` to
-change the description on a channel you wnn later.
+change the description on a channel you own later.
 
 If you control a channel you can also kick people off it:
 
@@ -193,7 +223,7 @@ channels you could override the `help` command and change the lockstring to:
 
 ```
 
-Add this custom command to your default cmdset and regular users wil now get an
+Add this custom command to your default cmdset and regular users will now get an
 access-denied error when trying to use use these switches.
 
 ## Using channels in code
@@ -233,7 +263,7 @@ below:
   3. `channel.at_post_channel_msg(message, **kwargs)`
 
 Note that `Accounts` and `Objects` both have their have separate sets of hooks.
-So make sure you modify the set actually used by your subcribers (or both).
+So make sure you modify the set actually used by your subscribers (or both).
 Default channels all use `Account` subscribers.
 
 ### Channel class
@@ -349,7 +379,7 @@ Notable `Channel` hooks:
   a class-method that will happily remove found channel-aliases from the user linked to _any_
   channel, not only from the channel the method is called on.
 - `pre_join_channel(subscriber)` - if this returns `False`, connection will be refused.
-- `post_join_channel(subscriber)` - by default this sets up a users's channel-nicks/aliases.
+- `post_join_channel(subscriber)` - by default this sets up a users' channel-nicks/aliases.
 - `pre_leave_channel(subscriber)` - if this returns `False`, the user is not allowed to leave.
 - `post_leave_channel(subscriber)` - this will clean up any channel aliases/nicks of the user.
 - `delete` the standard typeclass-delete mechanism will also automatically un-subscribe all

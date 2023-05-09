@@ -76,8 +76,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -87,7 +88,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="evennia.typeclasses.attributes.html">1.0 (develop branch)</a></li>
+  <li><a href="evennia.typeclasses.attributes.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -245,7 +246,9 @@ of a .pk field as a sign that the Attribute was deleted.</p></li>
 <p>Attribute property descriptor. Allows for specifying Attributes as Django-like ‘fields’
 on the class level. Note that while one can set a lock on the Attribute,
 there is no way to <em>check</em> said lock when accessing via the property - use
-the full AttributeHandler if you need to do access checks.</p>
+the full <strong>AttributeHandler</strong> if you need to do access checks. Note however that if you use the
+full <strong>AttributeHandler</strong> to access this Attribute, the <strong>at_get/at_set</strong> methods on this class will
+_not_ fire (because you are bypassing the <strong>AttributeProperty</strong> entirely in that case).</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Character</span><span class="p">(</span><span class="n">DefaultCharacter</span><span class="p">):</span>
     <span class="n">foo</span> <span class="o">=</span> <span class="n">AttributeProperty</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;Bar&quot;</span><span class="p">)</span>
@@ -300,6 +303,10 @@ the input in a custom child class.</p>
 <dd class="field-odd"><p><strong>AttributeError</strong> – If the value is invalid to store.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This is will only fire if you actually set the Attribute via this <strong>AttributeProperty</strong>.
+That is, if you instead set it via the <strong>AttributeHandler</strong> (or via <strong>.db</strong>), you are
+bypassing this <strong>AttributeProperty</strong> entirely and this method is never reached.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -318,6 +325,10 @@ to react to the retrieval or modify the result in some way.</p>
 <dd class="field-even"><p><em>any</em> – The value to return to the caller.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This is will only fire if you actually get the Attribute via this <strong>AttributeProperty</strong>.
+That is, if you instead get it via the <strong>AttributeHandler</strong> (or via <strong>.db</strong>), you are
+bypassing this <strong>AttributeProperty</strong> entirely and this method is never reached.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1294,11 +1305,12 @@ type <strong>attredit</strong> on the Attribute in question.</p></li>
 
 <dl class="py method">
 <dt id="evennia.typeclasses.attributes.AttributeHandler.all">
-<code class="sig-name descname">all</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">accessing_obj</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">default_access</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/typeclasses/attributes.html#AttributeHandler.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.typeclasses.attributes.AttributeHandler.all" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">all</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">accessing_obj</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">default_access</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/typeclasses/attributes.html#AttributeHandler.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.typeclasses.attributes.AttributeHandler.all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all Attribute objects on this object, regardless of category.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>category</strong> (<em>str</em><em>, </em><em>optional</em>) – A given category to limit results to.</p></li>
 <li><p><strong>accessing_obj</strong> (<em>object</em><em>, </em><em>optional</em>) – Check the <strong>attrread</strong>
 lock on each attribute before returning them. If not
 given, this check is skipped.</p></li>
@@ -1605,7 +1617,7 @@ with nicks stored on the Account level.</p></li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

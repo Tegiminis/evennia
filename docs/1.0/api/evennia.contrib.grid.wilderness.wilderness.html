@@ -89,8 +89,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -100,7 +101,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="evennia.contrib.grid.wilderness.wilderness.html">1.0 (develop branch)</a></li>
+  <li><a href="evennia.contrib.grid.wilderness.wilderness.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -198,9 +199,14 @@ provided as a string: a “.” symbol is a location we can walk on.</p>
         <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;This is a room in the pyramid.&quot;</span>
         <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">3</span> <span class="p">:</span>
             <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;You can see far and wide from the top of the pyramid.&quot;</span>
-        <span class="n">room</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="n">desc</span>
+        <span class="n">room</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">active_desc</span> <span class="o">=</span> <span class="n">desc</span>
 </pre></div>
 </div>
+<p>Note that the currently active description is stored as <strong>.ndb.active_desc</strong>. When
+looking at the room, this is what will be pulled and shown.</p>
+<p>&gt; Exits on a room are always present, but locks hide those not used for a
+&gt; location. So make sure to <strong>quell</strong> if you are a superuser (since the superuser ignores
+&gt; locks, those exits will otherwise not be hidden)</p>
 <p>Now we can use our new pyramid-shaped wilderness map. From inside Evennia we
 create a new wilderness (with the name “default”) but using our new map provider:</p>
 <blockquote>
@@ -290,7 +296,9 @@ into storage when they are not needed anymore.</p>
 <dd><p>Attribute property descriptor. Allows for specifying Attributes as Django-like ‘fields’
 on the class level. Note that while one can set a lock on the Attribute,
 there is no way to <em>check</em> said lock when accessing via the property - use
-the full AttributeHandler if you need to do access checks.</p>
+the full <strong>AttributeHandler</strong> if you need to do access checks. Note however that if you use the
+full <strong>AttributeHandler</strong> to access this Attribute, the <strong>at_get/at_set</strong> methods on this class will
+_not_ fire (because you are bypassing the <strong>AttributeProperty</strong> entirely in that case).</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Character</span><span class="p">(</span><span class="n">DefaultCharacter</span><span class="p">):</span>
     <span class="n">foo</span> <span class="o">=</span> <span class="n">AttributeProperty</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;Bar&quot;</span><span class="p">)</span>
@@ -304,7 +312,9 @@ the full AttributeHandler if you need to do access checks.</p>
 <dd><p>Attribute property descriptor. Allows for specifying Attributes as Django-like ‘fields’
 on the class level. Note that while one can set a lock on the Attribute,
 there is no way to <em>check</em> said lock when accessing via the property - use
-the full AttributeHandler if you need to do access checks.</p>
+the full <strong>AttributeHandler</strong> if you need to do access checks. Note however that if you use the
+full <strong>AttributeHandler</strong> to access this Attribute, the <strong>at_get/at_set</strong> methods on this class will
+_not_ fire (because you are bypassing the <strong>AttributeProperty</strong> entirely in that case).</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Character</span><span class="p">(</span><span class="n">DefaultCharacter</span><span class="p">):</span>
     <span class="n">foo</span> <span class="o">=</span> <span class="n">AttributeProperty</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;Bar&quot;</span><span class="p">)</span>
@@ -318,7 +328,9 @@ the full AttributeHandler if you need to do access checks.</p>
 <dd><p>Attribute property descriptor. Allows for specifying Attributes as Django-like ‘fields’
 on the class level. Note that while one can set a lock on the Attribute,
 there is no way to <em>check</em> said lock when accessing via the property - use
-the full AttributeHandler if you need to do access checks.</p>
+the full <strong>AttributeHandler</strong> if you need to do access checks. Note however that if you use the
+full <strong>AttributeHandler</strong> to access this Attribute, the <strong>at_get/at_set</strong> methods on this class will
+_not_ fire (because you are bypassing the <strong>AttributeProperty</strong> entirely in that case).</p>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Character</span><span class="p">(</span><span class="n">DefaultCharacter</span><span class="p">):</span>
     <span class="n">foo</span> <span class="o">=</span> <span class="n">AttributeProperty</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;Bar&quot;</span><span class="p">)</span>
@@ -797,7 +809,7 @@ coordinate.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

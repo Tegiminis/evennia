@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="accounts.html">1.0 (develop branch)</a></li>
+  <li><a href="accounts.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -85,7 +86,6 @@
 <span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
-
 <span class="kn">from</span> <span class="nn">evennia.utils</span> <span class="kn">import</span> <span class="n">class_from_module</span>
 <span class="kn">from</span> <span class="nn">evennia.web.website</span> <span class="kn">import</span> <span class="n">forms</span>
 
@@ -93,7 +93,7 @@
 
 
 <div class="viewcode-block" id="AccountMixin"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.accounts.html#evennia.web.website.views.accounts.AccountMixin">[docs]</a><span class="k">class</span> <span class="nc">AccountMixin</span><span class="p">(</span><span class="n">TypeclassMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is used to grant abilities to classes it is added to.</span>
 
 <span class="sd">    Any view class with this in its inheritance list will be modified to work</span>
@@ -109,7 +109,7 @@
 
 
 <div class="viewcode-block" id="AccountCreateView"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.accounts.html#evennia.web.website.views.accounts.AccountCreateView">[docs]</a><span class="k">class</span> <span class="nc">AccountCreateView</span><span class="p">(</span><span class="n">AccountMixin</span><span class="p">,</span> <span class="n">EvenniaCreateView</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Account creation view.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -119,7 +119,7 @@
     <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AccountCreateView.form_valid"><a class="viewcode-back" href="../../../../../api/evennia.web.website.views.accounts.html#evennia.web.website.views.accounts.AccountCreateView.form_valid">[docs]</a>    <span class="k">def</span> <span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Django hook, modified for Evennia.</span>
 
 <span class="sd">        This hook is called after a valid form is submitted.</span>
@@ -133,25 +133,19 @@
         <span class="n">password</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s2">&quot;password1&quot;</span><span class="p">]</span>
         <span class="n">email</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Create account</span>
+        <span class="c1"># Create account. This also runs all validations on the username/password.</span>
         <span class="n">account</span><span class="p">,</span> <span class="n">errs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">typeclass</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span>
 
-        <span class="c1"># If unsuccessful, display error messages to user</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">account</span><span class="p">:</span>
-            <span class="p">[</span><span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="k">for</span> <span class="n">err</span> <span class="ow">in</span> <span class="n">errs</span><span class="p">]</span>
-
-            <span class="c1"># Call the Django &quot;form failure&quot; hook</span>
+            <span class="c1"># password validation happens earlier, only username checks appear here.</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errs</span><span class="p">))</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">form_invalid</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
-
-        <span class="c1"># Inform user of success</span>
-        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span>
-            <span class="s2">&quot;Your account &#39;</span><span class="si">%s</span><span class="s2">&#39; was successfully created! &quot;</span>
-            <span class="s2">&quot;You may log in using it now.&quot;</span> <span class="o">%</span> <span class="n">account</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="c1"># Redirect the user to the login page</span>
-        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">success_url</span><span class="p">)</span></div></div>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Inform user of success</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Your account &#39;</span><span class="si">{</span><span class="n">account</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; was successfully created!&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">success_url</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -175,7 +169,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

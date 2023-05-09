@@ -67,11 +67,6 @@
 <li><a class="reference internal" href="#building-menu"><code class="docutils literal notranslate"><span class="pre">building_menu</span></code></a></li>
 <li><a class="reference internal" href="#color-markups"><code class="docutils literal notranslate"><span class="pre">color_markups</span></code></a></li>
 <li><a class="reference internal" href="#components"><code class="docutils literal notranslate"><span class="pre">components</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#the-components-contrib">The Components Contrib</a><ul>
 <li><a class="reference internal" href="#custom-gametime"><code class="docutils literal notranslate"><span class="pre">custom_gametime</span></code></a></li>
 <li><a class="reference internal" href="#email-login"><code class="docutils literal notranslate"><span class="pre">email_login</span></code></a></li>
 <li><a class="reference internal" href="#godotwebsocket"><code class="docutils literal notranslate"><span class="pre">godotwebsocket</span></code></a></li>
@@ -79,6 +74,8 @@
 <li><a class="reference internal" href="#menu-login"><code class="docutils literal notranslate"><span class="pre">menu_login</span></code></a></li>
 <li><a class="reference internal" href="#mux-comms-cmds"><code class="docutils literal notranslate"><span class="pre">mux_comms_cmds</span></code></a></li>
 <li><a class="reference internal" href="#unixcommand"><code class="docutils literal notranslate"><span class="pre">unixcommand</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#full-systems">full_systems</a><ul>
 <li><a class="reference internal" href="#evscaperoom"><code class="docutils literal notranslate"><span class="pre">evscaperoom</span></code></a></li>
 </ul>
@@ -86,6 +83,10 @@
 <li><a class="reference internal" href="#game-systems">game_systems</a><ul>
 <li><a class="reference internal" href="#barter"><code class="docutils literal notranslate"><span class="pre">barter</span></code></a></li>
 <li><a class="reference internal" href="#clothing"><code class="docutils literal notranslate"><span class="pre">clothing</span></code></a></li>
+<li><a class="reference internal" href="#containers"><code class="docutils literal notranslate"><span class="pre">containers</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
 <li><a class="reference internal" href="#cooldowns"><code class="docutils literal notranslate"><span class="pre">cooldowns</span></code></a></li>
 <li><a class="reference internal" href="#crafting"><code class="docutils literal notranslate"><span class="pre">crafting</span></code></a></li>
 <li><a class="reference internal" href="#gendersub"><code class="docutils literal notranslate"><span class="pre">gendersub</span></code></a></li>
@@ -151,8 +152,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -162,7 +164,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Contribs-Overview.html">1.0 (develop branch)</a></li>
+  <li><a href="Contribs-Overview.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -183,7 +185,7 @@ in the <a class="reference external" href="https://github.com/evennia/evennia/di
 <p><em>Contribs</em> are optional code snippets and systems contributed by
 the Evennia community. They vary in size and complexity and
 may be more specific about game types and styles than ‘core’ Evennia.
-This page is auto-generated and summarizes all <strong>47</strong> contribs currently included
+This page is auto-generated and summarizes all <strong>48</strong> contribs currently included
 with the Evennia distribution.</p>
 <p>All contrib categories are imported from <code class="docutils literal notranslate"><span class="pre">evennia.contrib</span></code>, such as</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>from evennia.contrib.base_systems import building_menu
@@ -240,50 +242,50 @@ copy its entire folder to your game directory and modify/use it from there.</p>
 <td><p><a class="reference internal" href="#color-markups"><span class="std std-doc">color_markups</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#components"><span class="std std-doc">components</span></a></p></td>
+<td><p><a class="reference internal" href="#containers"><span class="std std-doc">containers</span></a></p></td>
 <td><p><a class="reference internal" href="#cooldowns"><span class="std std-doc">cooldowns</span></a></p></td>
 <td><p><a class="reference internal" href="#crafting"><span class="std std-doc">crafting</span></a></p></td>
 <td><p><a class="reference internal" href="#custom-gametime"><span class="std std-doc">custom_gametime</span></a></p></td>
-<td><p><a class="reference internal" href="#dice"><span class="std std-doc">dice</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#email-login"><span class="std std-doc">email_login</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#dice"><span class="std std-doc">dice</span></a></p></td>
+<td><p><a class="reference internal" href="#email-login"><span class="std std-doc">email_login</span></a></p></td>
 <td><p><a class="reference internal" href="#evadventure"><span class="std std-doc">evadventure</span></a></p></td>
 <td><p><a class="reference internal" href="#evscaperoom"><span class="std std-doc">evscaperoom</span></a></p></td>
 <td><p><a class="reference internal" href="#extended-room"><span class="std std-doc">extended_room</span></a></p></td>
-<td><p><a class="reference internal" href="#fieldfill"><span class="std std-doc">fieldfill</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gendersub"><span class="std std-doc">gendersub</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#fieldfill"><span class="std std-doc">fieldfill</span></a></p></td>
+<td><p><a class="reference internal" href="#gendersub"><span class="std std-doc">gendersub</span></a></p></td>
 <td><p><a class="reference internal" href="#git-integration"><span class="std std-doc">git_integration</span></a></p></td>
 <td><p><a class="reference internal" href="#godotwebsocket"><span class="std std-doc">godotwebsocket</span></a></p></td>
 <td><p><a class="reference internal" href="#health-bar"><span class="std std-doc">health_bar</span></a></p></td>
-<td><p><a class="reference internal" href="#ingame-map-display"><span class="std std-doc">ingame_map_display</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ingame-python"><span class="std std-doc">ingame_python</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ingame-map-display"><span class="std std-doc">ingame_map_display</span></a></p></td>
+<td><p><a class="reference internal" href="#ingame-python"><span class="std std-doc">ingame_python</span></a></p></td>
 <td><p><a class="reference internal" href="#mail"><span class="std std-doc">mail</span></a></p></td>
 <td><p><a class="reference internal" href="#mapbuilder"><span class="std std-doc">mapbuilder</span></a></p></td>
 <td><p><a class="reference internal" href="#menu-login"><span class="std std-doc">menu_login</span></a></p></td>
-<td><p><a class="reference internal" href="#mirror"><span class="std std-doc">mirror</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#multidescer"><span class="std std-doc">multidescer</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#mirror"><span class="std std-doc">mirror</span></a></p></td>
+<td><p><a class="reference internal" href="#multidescer"><span class="std std-doc">multidescer</span></a></p></td>
 <td><p><a class="reference internal" href="#mux-comms-cmds"><span class="std std-doc">mux_comms_cmds</span></a></p></td>
 <td><p><a class="reference internal" href="#name-generator"><span class="std std-doc">name_generator</span></a></p></td>
 <td><p><a class="reference internal" href="#puzzles"><span class="std std-doc">puzzles</span></a></p></td>
-<td><p><a class="reference internal" href="#random-string-generator"><span class="std std-doc">random_string_generator</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#red-button"><span class="std std-doc">red_button</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#random-string-generator"><span class="std std-doc">random_string_generator</span></a></p></td>
+<td><p><a class="reference internal" href="#red-button"><span class="std std-doc">red_button</span></a></p></td>
 <td><p><a class="reference internal" href="#rpsystem"><span class="std std-doc">rpsystem</span></a></p></td>
 <td><p><a class="reference internal" href="#simpledoor"><span class="std std-doc">simpledoor</span></a></p></td>
 <td><p><a class="reference internal" href="#slow-exit"><span class="std std-doc">slow_exit</span></a></p></td>
-<td><p><a class="reference internal" href="#talking-npc"><span class="std std-doc">talking_npc</span></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#traits"><span class="std std-doc">traits</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#talking-npc"><span class="std std-doc">talking_npc</span></a></p></td>
+<td><p><a class="reference internal" href="#traits"><span class="std std-doc">traits</span></a></p></td>
 <td><p><a class="reference internal" href="#tree-select"><span class="std std-doc">tree_select</span></a></p></td>
 <td><p><a class="reference internal" href="#turnbattle"><span class="std std-doc">turnbattle</span></a></p></td>
 <td><p><a class="reference internal" href="#tutorial-world"><span class="std std-doc">tutorial_world</span></a></p></td>
-<td><p><a class="reference internal" href="#unixcommand"><span class="std std-doc">unixcommand</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#wilderness"><span class="std std-doc">wilderness</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#unixcommand"><span class="std std-doc">unixcommand</span></a></p></td>
+<td><p><a class="reference internal" href="#wilderness"><span class="std std-doc">wilderness</span></a></p></td>
 <td><p><a class="reference internal" href="#xyzgrid"><span class="std std-doc">xyzgrid</span></a></p></td>
-<td><p></p></td>
 <td><p></p></td>
 <td><p></p></td>
 </tr>
@@ -303,11 +305,6 @@ login systems, new command syntaxes, and build helpers.</em></p>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Building-Menu.html">Building menu</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Color-Markups.html">Additional Color markups</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Components.html">Components</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Contrib-Components.html#the-components-contrib">The Components Contrib</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Contrib-Components.html#pros">Pros</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Contrib-Components.html#cons">Cons</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Contrib-Components.html#how-to-install">How to install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Contrib-Components.html#full-example">Full Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Custom-Gametime.html">Custom gameime</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Email-Login.html">Email-based login system</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Godotwebsocket.html">Godot Websocket</a></li>
@@ -346,15 +343,12 @@ that will edit any default object, offering to change its key and description.</
 </section>
 <section id="components">
 <h3><code class="docutils literal notranslate"><span class="pre">components</span></code><a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h3>
-<p><strong>Contrib by ChrisLR 2021</strong></p>
-</section>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="the-components-contrib">
-<h1>The Components Contrib<a class="headerlink" href="#the-components-contrib" title="Permalink to this headline">¶</a></h1>
+<p><em>Contrib by ChrisLR, 2021</em></p>
+<p>Expand typeclasses using a components/composition approach.</p>
 <p><a class="reference internal" href="Contrib-Components.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.base_systems.components.html#evennia-contrib-base-systems-components"><span class="std std-ref">Browse the Code</span></a></p>
+</section>
 <section id="custom-gametime">
-<h2><code class="docutils literal notranslate"><span class="pre">custom_gametime</span></code><a class="headerlink" href="#custom-gametime" title="Permalink to this headline">¶</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">custom_gametime</span></code><a class="headerlink" href="#custom-gametime" title="Permalink to this headline">¶</a></h3>
 <p><em>Contrib by vlgeoff, 2017 - based on Griatch’s core original</em></p>
 <p>This reimplements the <code class="docutils literal notranslate"><span class="pre">evennia.utils.gametime</span></code> module but with a <em>custom</em>
 calendar (unusual number of days per week/month/year etc) for your game world.
@@ -363,7 +357,7 @@ in-game times, but now taking this custom calendar into account.</p>
 <p><a class="reference internal" href="Contrib-Custom-Gametime.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.base_systems.custom_gametime.html#evennia-contrib-base-systems-custom-gametime"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
 <section id="email-login">
-<h2><code class="docutils literal notranslate"><span class="pre">email_login</span></code><a class="headerlink" href="#email-login" title="Permalink to this headline">¶</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">email_login</span></code><a class="headerlink" href="#email-login" title="Permalink to this headline">¶</a></h3>
 <p><em>Contrib by Griatch, 2012</em></p>
 <p>This is a variant of the login system that asks for an email-address
 instead of a username to login. Note that it does not verify the email,
@@ -371,7 +365,7 @@ it just uses it as the identifier rather than a username.</p>
 <p><a class="reference internal" href="Contrib-Email-Login.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.base_systems.email_login.html#evennia-contrib-base-systems-email-login"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
 <section id="godotwebsocket">
-<h2><code class="docutils literal notranslate"><span class="pre">godotwebsocket</span></code><a class="headerlink" href="#godotwebsocket" title="Permalink to this headline">¶</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">godotwebsocket</span></code><a class="headerlink" href="#godotwebsocket" title="Permalink to this headline">¶</a></h3>
 <p><em>Contribution by ChrisLR, 2022</em></p>
 <p>This contrib allows you to connect a Godot Client directly to your mud,
 and display regular text with color in Godot’s RichTextLabel using BBCode.
@@ -379,7 +373,7 @@ You can use Godot to provide advanced functionality with proper Evennia support.
 <p><a class="reference internal" href="Contrib-Godotwebsocket.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.base_systems.godotwebsocket.html#evennia-contrib-base-systems-godotwebsocket"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
 <section id="ingame-python">
-<h2><code class="docutils literal notranslate"><span class="pre">ingame_python</span></code><a class="headerlink" href="#ingame-python" title="Permalink to this headline">¶</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">ingame_python</span></code><a class="headerlink" href="#ingame-python" title="Permalink to this headline">¶</a></h3>
 <p><em>Contrib by Vincent Le Goff 2017</em></p>
 <p>This contrib adds the ability to script with Python in-game. It allows trusted
 staff/builders to dynamically add features and triggers to individual objects
@@ -392,7 +386,7 @@ this module carefully before continuing.</p>
 <p><a class="reference internal" href="Contrib-Ingame-Python.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.base_systems.ingame_python.html#evennia-contrib-base-systems-ingame-python"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
 <section id="menu-login">
-<h2><code class="docutils literal notranslate"><span class="pre">menu_login</span></code><a class="headerlink" href="#menu-login" title="Permalink to this headline">¶</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">menu_login</span></code><a class="headerlink" href="#menu-login" title="Permalink to this headline">¶</a></h3>
 <p><em>Contribution by Vincent-lg 2016. Reworked for modern EvMenu by Griatch, 2019.</em></p>
 <p>This changes the Evennia login to ask for the account name and password as a series
 of questions instead of requiring you to enter both at once. It uses Evennia’s
@@ -400,7 +394,7 @@ menu system <code class="docutils literal notranslate"><span class="pre">EvMenu<
 <p><a class="reference internal" href="Contrib-Menu-Login.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.base_systems.menu_login.html#evennia-contrib-base-systems-menu-login"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
 <section id="mux-comms-cmds">
-<h2><code class="docutils literal notranslate"><span class="pre">mux_comms_cmds</span></code><a class="headerlink" href="#mux-comms-cmds" title="Permalink to this headline">¶</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">mux_comms_cmds</span></code><a class="headerlink" href="#mux-comms-cmds" title="Permalink to this headline">¶</a></h3>
 <p><em>Contribution by Griatch 2021</em></p>
 <p>In Evennia 1.0+, the old Channel commands (originally inspired by MUX) were
 replaced by the single <code class="docutils literal notranslate"><span class="pre">channel</span></code> command that performs all these functions.
@@ -410,7 +404,7 @@ main <code class="docutils literal notranslate"><span class="pre">channel</span>
 <p><a class="reference internal" href="Contrib-Mux-Comms-Cmds.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.base_systems.mux_comms_cmds.html#evennia-contrib-base-systems-mux-comms-cmds"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
 <section id="unixcommand">
-<h2><code class="docutils literal notranslate"><span class="pre">unixcommand</span></code><a class="headerlink" href="#unixcommand" title="Permalink to this headline">¶</a></h2>
+<h3><code class="docutils literal notranslate"><span class="pre">unixcommand</span></code><a class="headerlink" href="#unixcommand" title="Permalink to this headline">¶</a></h3>
 <p><em>Contribution by Vincent Le Geoff (vlgeoff), 2017</em></p>
 <p>This module contains a command class with an alternate syntax parser implementing
 Unix-style command syntax in-game. This means <code class="docutils literal notranslate"><span class="pre">--options</span></code>, positional arguments
@@ -419,6 +413,7 @@ but can be really useful for builders when they need to have a single command do
 many things with many options. It uses the <code class="docutils literal notranslate"><span class="pre">ArgumentParser</span></code> from Python’s standard
 library under the hood.</p>
 <p><a class="reference internal" href="Contrib-Unixcommand.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.base_systems.unixcommand.html#evennia-contrib-base-systems-unixcommand"><span class="std std-ref">Browse the Code</span></a></p>
+</section>
 </section>
 <section id="full-systems">
 <h2>full_systems<a class="headerlink" href="#full-systems" title="Permalink to this headline">¶</a></h2>
@@ -454,6 +449,7 @@ the <code class="docutils literal notranslate"><span class="pre">rpg</span></cod
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Barter.html">Barter system</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Clothing.html">Clothing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contrib-Containers.html">Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Cooldowns.html">Cooldowns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Crafting.html">Crafting system</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Gendersub.html">Gendersub</a></li>
@@ -482,6 +478,14 @@ transactions.</p>
 look of these clothes are appended to the character’s description when worn.</p>
 <p><a class="reference internal" href="Contrib-Clothing.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.game_systems.clothing.html#evennia-contrib-game-systems-clothing"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
+<section id="containers">
+<h3><code class="docutils literal notranslate"><span class="pre">containers</span></code><a class="headerlink" href="#containers" title="Permalink to this headline">¶</a></h3>
+<p><em>Adds the ability to put objects into other container objects by providing a container typeclass and extending certain base commands.</em></p>
+</section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="Contrib-Containers.html"><span class="doc std std-doc">Read the documentation</span></a> - <span class="xref myst">Browse the Code</span></p>
 <section id="cooldowns">
 <h3><code class="docutils literal notranslate"><span class="pre">cooldowns</span></code><a class="headerlink" href="#cooldowns" title="Permalink to this headline">¶</a></h3>
 <p><em>Contribution by owllex, 2021</em></p>
@@ -879,7 +883,7 @@ will be overwritten.</small></p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

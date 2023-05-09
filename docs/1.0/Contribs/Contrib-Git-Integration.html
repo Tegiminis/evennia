@@ -84,8 +84,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -95,7 +96,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Contrib-Git-Integration.html">1.0 (develop branch)</a></li>
+  <li><a href="Contrib-Git-Integration.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -117,11 +118,16 @@
 <p>The repositories you want to work with, be it only your local mygame repo, only Evennia core, or both, must be git directories for the command to function. If you are only interested in using this to get upstream Evennia changes, only the Evennia repository needs to be a git repository. <a class="reference external" href="https://www.evennia.com/docs/1.0-dev/Coding/Version-Control.html">Get started with version control here.</a></p>
 <section id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>This package requires the dependency “gitpython”, a python library used to interact with git repositories. To install, it’s easiest to install Evennia’s extra requirements:</p>
+<p>This package requires the dependency “gitpython”, a python library used to
+interact with git repositories. To install, it’s easiest to install Evennia’s
+extra requirements:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip install evennia[extra]
+</pre></div>
+</div>
+<p>If you installed with <code class="docutils literal notranslate"><span class="pre">git</span></code> you can also do</p>
 <ul class="simple">
-<li><p>Activate your <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> to the root of the Evennia repository. There should be an <code class="docutils literal notranslate"><span class="pre">requirements_extra.txt</span></code> file here.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements_extra.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> to the root of the Evennia repository.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">-e</span> <span class="pre">.[extra]</span></code></p></li>
 </ul>
 </section>
 <section id="installation">
@@ -198,7 +204,7 @@ file will be overwritten, so edit that file rather than this one.</small></p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

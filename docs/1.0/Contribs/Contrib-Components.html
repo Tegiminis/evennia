@@ -61,12 +61,14 @@
 <script>$('#searchbox').show(0);</script>
 <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Components</a></li>
+<li><a class="reference internal" href="#">Components</a><ul>
 <li><a class="reference internal" href="#the-components-contrib">The Components Contrib</a></li>
 <li><a class="reference internal" href="#pros">Pros</a></li>
 <li><a class="reference internal" href="#cons">Cons</a></li>
 <li><a class="reference internal" href="#how-to-install">How to install</a></li>
 <li><a class="reference internal" href="#full-example">Full Example</a></li>
+</ul>
+</li>
 </ul>
 
   <h4>Previous topic</h4>
@@ -83,8 +85,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -94,7 +97,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Contrib-Components.html">1.0 (develop branch)</a></li>
+  <li><a href="Contrib-Components.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -107,32 +110,32 @@
             
   <section class="tex2jax_ignore mathjax_ignore" id="components">
 <h1>Components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h1>
-<p><em>Contrib by ChrisLR 2021</em></p>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="the-components-contrib">
-<h1>The Components Contrib<a class="headerlink" href="#the-components-contrib" title="Permalink to this headline">¶</a></h1>
+<p>Contrib by ChrisLR, 2021</p>
+<p>Expand typeclasses using a components/composition approach.</p>
+<section id="the-components-contrib">
+<h2>The Components Contrib<a class="headerlink" href="#the-components-contrib" title="Permalink to this headline">¶</a></h2>
 <p>This contrib introduces Components and Composition to Evennia.
 Each ‘Component’ class represents a feature that will be ‘enabled’ on a typeclass instance.
 You can register these components on an entire typeclass or a single object at runtime.
 It supports both persisted attributes and in-memory attributes by using Evennia’s AttributeHandler.</p>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="pros">
-<h1>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">¶</a></h1>
+<section id="pros">
+<h2>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>You can reuse a feature across multiple typeclasses without inheritance</p></li>
 <li><p>You can cleanly organize each feature into a self-contained class.</p></li>
 <li><p>You can check if your object supports a feature without checking its instance.</p></li>
 </ul>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="cons">
-<h1>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">¶</a></h1>
+<section id="cons">
+<h2>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>It introduces additional complexity.</p></li>
 <li><p>A host typeclass instance is required.</p></li>
 </ul>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="how-to-install">
-<h1>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h1>
+<section id="how-to-install">
+<h2>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h2>
 <p>To enable component support for a typeclass,
 import and inherit the ComponentHolderMixin, similar to this</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia.contrib.base_systems.components</span> <span class="kn">import</span> <span class="n">ComponentHolderMixin</span>
@@ -141,7 +144,7 @@ import and inherit the ComponentHolderMixin, similar to this</p>
 </pre></div>
 </div>
 <p>Components need to inherit the Component class directly and require a name.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia.contrib.components</span> <span class="kn">import</span> <span class="n">Component</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia.contrib.base_systems.components</span> <span class="kn">import</span> <span class="n">Component</span>
 
 <span class="k">class</span> <span class="nc">Health</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;health&quot;</span>
@@ -224,15 +227,15 @@ You only need to import each module/file from there but importing the right clas
 </div>
 <p>Both of the above examples will work.</p>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="full-example">
-<h1>Full Example<a class="headerlink" href="#full-example" title="Permalink to this headline">¶</a></h1>
+<section id="full-example">
+<h2>Full Example<a class="headerlink" href="#full-example" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia.contrib.base_systems</span> <span class="kn">import</span> <span class="n">components</span>
 
 
 <span class="c1"># This is the Component class</span>
 <span class="k">class</span> <span class="nc">Health</span><span class="p">(</span><span class="n">components</span><span class="o">.</span><span class="n">Component</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;health&quot;</span>
-    
+
     <span class="c1"># Stores the current and max values as Attributes on the host, defaulting to 100</span>
     <span class="n">current</span> <span class="o">=</span> <span class="n">components</span><span class="o">.</span><span class="n">DBField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
     <span class="nb">max</span> <span class="o">=</span> <span class="n">components</span><span class="o">.</span><span class="n">DBField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
@@ -283,7 +286,7 @@ You only need to import each module/file from there but importing the right clas
             <span class="c1"># Attempt to retrieve the component, None is obtained if it does not exist.</span>
             <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">health</span><span class="p">:</span>
                 <span class="n">valid_target</span> <span class="o">=</span> <span class="n">target</span>
-        
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">valid_target</span><span class="p">:</span>
             <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;You can&#39;t attack that!&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span>
@@ -292,6 +295,7 @@ You only need to import each module/file from there but importing the right clas
 <hr class="docutils" />
 <p><small>This document page is generated from <code class="docutils literal notranslate"><span class="pre">evennia/contrib/base_systems/components/README.md</span></code>. Changes to this
 file will be overwritten, so edit that file rather than this one.</small></p>
+</section>
 </section>
 
 
@@ -321,7 +325,7 @@ file will be overwritten, so edit that file rather than this one.</small></p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

@@ -92,8 +92,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -103,7 +104,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Contrib-AWSStorage.html">1.0 (develop branch)</a></li>
+  <li><a href="Contrib-AWSStorage.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -153,7 +154,7 @@ Django -&gt; Storage backend
 Storage backend -&gt; file storage location (e.g. hard drive)
 </pre></div>
 </div>
-<p><a class="reference external" href="https://docs.djangoproject.com/en/3.0/ref/settings/#std:setting-STATICFILES_STORAGE">django docs</a></p>
+<p><a class="reference external" href="https://docs.djangoproject.com/en/4.1/ref/settings/#std:setting-STATICFILES_STORAGE">django docs</a></p>
 <p>This plugin, when enabled, overrides the default storage backend,
 which defaults to saving files at mygame/website/, instead,
 sending the files to S3 via the storage backend defined herein.</p>
@@ -220,11 +221,13 @@ create the bucket and set the ACL yourself before you continue.</p>
 <p>This package requires the dependency “boto3 &gt;= 1.4.4”, the official
 AWS python package. To install, it’s easiest to just install Evennia’s
 extra requirements;</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip install evennia[extra]
+</pre></div>
+</div>
+<p>If you installed Evennia with <code class="docutils literal notranslate"><span class="pre">git</span></code>, you can also</p>
 <ul class="simple">
-<li><p>Activate your <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> to the root of the Evennia repository. There should be an <code class="docutils literal notranslate"><span class="pre">requirements_extra.txt</span></code>
-file here.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements_extra.txt</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> to the root of the Evennia repository.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">-e</span> <span class="pre">.[extra]</span></code></p></li>
 </ul>
 </section>
 <section id="configure-evennia">
@@ -356,7 +359,7 @@ file will be overwritten, so edit that file rather than this one.</small></p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

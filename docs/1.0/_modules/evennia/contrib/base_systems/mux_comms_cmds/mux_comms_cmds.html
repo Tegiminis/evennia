@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -63,7 +64,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="mux_comms_cmds.html">1.0 (develop branch)</a></li>
+  <li><a href="mux_comms_cmds.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -128,7 +129,7 @@
 
 
 <div class="viewcode-block" id="CmdAddCom"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdAddCom">[docs]</a><span class="k">class</span> <span class="nc">CmdAddCom</span><span class="p">(</span><span class="n">CmdChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add a channel alias and/or subscribe to a channel</span>
 
 <span class="sd">    Usage:</span>
@@ -149,7 +150,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdAddCom.func"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdAddCom.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Implement the command&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement the command&quot;&quot;&quot;</span>
 
         <span class="n">caller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
@@ -196,7 +197,7 @@
 
 
 <div class="viewcode-block" id="CmdDelCom"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdDelCom">[docs]</a><span class="k">class</span> <span class="nc">CmdDelCom</span><span class="p">(</span><span class="n">CmdChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    remove a channel alias and/or unsubscribe from channel</span>
 
 <span class="sd">    Usage:</span>
@@ -218,7 +219,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdDelCom.func"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdDelCom.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Implementing the command.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implementing the command.&quot;&quot;&quot;</span>
 
         <span class="n">caller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller</span>
 
@@ -257,7 +258,7 @@
 
 
 <div class="viewcode-block" id="CmdAllCom"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdAllCom">[docs]</a><span class="k">class</span> <span class="nc">CmdAllCom</span><span class="p">(</span><span class="n">CmdChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    perform admin operations on all channels</span>
 
 <span class="sd">    Usage:</span>
@@ -279,7 +280,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdAllCom.func"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdAllCom.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Runs the function&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the function&quot;&quot;&quot;</span>
 
         <span class="n">caller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
@@ -332,7 +333,7 @@
 
 
 <div class="viewcode-block" id="CmdCdestroy"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdCdestroy">[docs]</a><span class="k">class</span> <span class="nc">CmdCdestroy</span><span class="p">(</span><span class="n">CmdChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    destroy a channel you created</span>
 
 <span class="sd">    Usage:</span>
@@ -350,7 +351,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdCdestroy.func"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdCdestroy.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Destroy objects cleanly.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Destroy objects cleanly.&quot;&quot;&quot;</span>
 
         <span class="n">caller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller</span>
 
@@ -377,7 +378,7 @@
 
 
 <div class="viewcode-block" id="CmdCBoot"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdCBoot">[docs]</a><span class="k">class</span> <span class="nc">CmdCBoot</span><span class="p">(</span><span class="n">CmdChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    kick an account from a channel you control</span>
 
 <span class="sd">    Usage:</span>
@@ -400,7 +401,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdCBoot.func"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdCBoot.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;implement the function&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;implement the function&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rhs</span><span class="p">:</span>
             <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;Usage: cboot[/quiet] &lt;channel&gt; = &lt;account&gt; [:reason]&quot;</span>
@@ -442,7 +443,7 @@
 
 
 <div class="viewcode-block" id="CmdCWho"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdCWho">[docs]</a><span class="k">class</span> <span class="nc">CmdCWho</span><span class="p">(</span><span class="n">CmdChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    show who is listening to a channel</span>
 
 <span class="sd">    Usage:</span>
@@ -460,7 +461,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdCWho.func"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdCWho.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;implement function&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;implement function&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
             <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;Usage: cwho &lt;channel&gt;&quot;</span>
@@ -480,7 +481,7 @@
 
 
 <div class="viewcode-block" id="CmdChannelCreate"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdChannelCreate">[docs]</a><span class="k">class</span> <span class="nc">CmdChannelCreate</span><span class="p">(</span><span class="n">CmdChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    create a new channel</span>
 
 <span class="sd">    Usage:</span>
@@ -498,7 +499,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdChannelCreate.func"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdChannelCreate.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Implement the command&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement the command&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;Usage ccreate &lt;channelname&gt;[;alias;alias..] = description&quot;</span><span class="p">)</span>
@@ -523,7 +524,7 @@
 
 
 <div class="viewcode-block" id="CmdClock"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdClock">[docs]</a><span class="k">class</span> <span class="nc">CmdClock</span><span class="p">(</span><span class="n">CmdChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    change channel locks of a channel you control</span>
 
 <span class="sd">    Usage:</span>
@@ -542,7 +543,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdClock.func"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdClock.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;run the function&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;run the function&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
             <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;Usage: clock channel [= lockstring]&quot;</span>
@@ -571,7 +572,7 @@
 
 
 <div class="viewcode-block" id="CmdCdesc"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdCdesc">[docs]</a><span class="k">class</span> <span class="nc">CmdCdesc</span><span class="p">(</span><span class="n">CmdChannel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    describe a channel you control</span>
 
 <span class="sd">    Usage:</span>
@@ -591,7 +592,7 @@
     <span class="n">account_caller</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="CmdCdesc.func"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.html#evennia.contrib.base_systems.mux_comms_cmds.mux_comms_cmds.CmdCdesc.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Implement command&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implement command&quot;&quot;&quot;</span>
 
         <span class="n">caller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller</span>
 
@@ -643,7 +644,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

@@ -103,8 +103,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -114,7 +115,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Commands.html">1.0 (develop branch)</a></li>
+  <li><a href="Commands.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -148,7 +149,7 @@ specifics and use the base <code class="docutils literal notranslate"><span clas
     <span class="kn">from</span> <span class="nn">evennia</span> <span class="kn">import</span> <span class="n">Command</span>
 
     <span class="k">class</span> <span class="nc">MyCmd</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">       This is the help-text for the command</span>
 <span class="sd">       &quot;&quot;&quot;</span>
        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;mycommand&quot;</span>
@@ -270,7 +271,7 @@ truthfully report this value - that case the <code class="docutils literal notra
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia</span> <span class="kn">import</span> <span class="n">Command</span>
 
 <span class="k">class</span> <span class="nc">CmdSmile</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A smile command</span>
 
 <span class="sd">    Usage:</span>
@@ -371,7 +372,7 @@ the current execution of your command and wait for more before processing.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">evennia</span> <span class="kn">import</span> <span class="n">Command</span>
 
 <span class="k">class</span> <span class="nc">CmdWait</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A dummy command to show how to wait</span>
 
 <span class="sd">    Usage:</span>
@@ -384,7 +385,7 @@ the current execution of your command and wait for more before processing.</p>
     <span class="n">help_category</span> <span class="o">=</span> <span class="s2">&quot;General&quot;</span>
 
     <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Command execution.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Command execution.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;Beginner-Tutorial to wait ...&quot;</span><span class="p">)</span>
         <span class="k">yield</span> <span class="mi">5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;... This shows after 5 seconds. Waiting ...&quot;</span><span class="p">)</span>
@@ -408,7 +409,7 @@ the current execution of your command and wait for more before processing.</p>
 <p>Here’s a very simple example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CmdConfirm</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A dummy command to show confirmation.</span>
 
 <span class="sd">    Usage:</span>
@@ -538,7 +539,7 @@ corresponds to a known command. This is how the command handler sequence looks f
 <li><p>The caller’s own currently active CmdSet.</p></li>
 <li><p>CmdSets defined on the current account, if caller is a puppeted object.</p></li>
 <li><p>CmdSets defined on the Session itself.</p></li>
-<li><p>The active CmdSets of eventual objects in the same location (if any). This includes commands on <a class="reference internal" href="Objects.html#exits"><span class="std std-doc">Exits</span></a>.</p></li>
+<li><p>The active CmdSets of eventual objects in the same location (if any). This includes commands on <span class="xref myst">Exits</span>.</p></li>
 <li><p>Sets of dynamically created <em>System commands</em> representing available <a class="reference internal" href="Channels.html"><span class="doc std std-doc">Communications</span></a></p></li>
 </ul>
 </li>
@@ -605,7 +606,7 @@ thus do so asynchronously, using callbacks.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

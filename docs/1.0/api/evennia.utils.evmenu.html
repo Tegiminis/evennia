@@ -84,8 +84,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -95,7 +96,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="evennia.utils.evmenu.html">1.0 (develop branch)</a></li>
+  <li><a href="evennia.utils.evmenu.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -219,7 +220,7 @@ its number 1..N.</p>
 <span class="s1">        This is node 2. It only allows you to go back</span>
 <span class="s1">        to the original node1. This extra indent will</span>
 <span class="s1">        be stripped. We don&#39;t include a help text but</span>
-<span class="s1">        here are the variables passed to us: </span><span class="si">{}</span><span class="s1"></span>
+<span class="s1">        here are the variables passed to us: </span><span class="si">{}</span>
 <span class="s1">        &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;goto&quot;</span><span class="p">:</span> <span class="s2">&quot;node1&quot;</span><span class="p">}</span>
     <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="n">options</span>
@@ -746,7 +747,7 @@ given, the decorated node must itself provide a way to continue from the node!</
 </dl>
 <p class="rubric">Example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">available_choices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This will be called by all auto-generated options except any &#39;extra_options&#39;</span>
 <span class="sd">    you return from the node (those you need to handle normally).</span>
 
@@ -930,7 +931,7 @@ single question.</p>
 
 <dl class="py attribute">
 <dt id="evennia.utils.evmenu.CmdYesNoQuestion.aliases">
-<code class="sig-name descname">aliases</code><em class="property"> = ['n', 'no', 'yes', 'abort', 'y', '__nomatch_command', 'a']</em><a class="headerlink" href="#evennia.utils.evmenu.CmdYesNoQuestion.aliases" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">aliases</code><em class="property"> = ['yes', '__nomatch_command', 'y', 'n', 'a', 'abort', 'no']</em><a class="headerlink" href="#evennia.utils.evmenu.CmdYesNoQuestion.aliases" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -956,7 +957,7 @@ single question.</p>
 
 <dl class="py attribute">
 <dt id="evennia.utils.evmenu.CmdYesNoQuestion.search_index_entry">
-<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'n no yes abort y __nomatch_command a', 'category': 'general', 'key': '__noinput_command', 'no_prefix': ' n no yes abort y __nomatch_command a', 'tags': '', 'text': '\n    Handle a prompt for yes or no. Press [return] for the default choice.\n\n    '}</em><a class="headerlink" href="#evennia.utils.evmenu.CmdYesNoQuestion.search_index_entry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'yes __nomatch_command y n a abort no', 'category': 'general', 'key': '__noinput_command', 'no_prefix': ' yes __nomatch_command y n a abort no', 'tags': '', 'text': '\n    Handle a prompt for yes or no. Press [return] for the default choice.\n\n    '}</em><a class="headerlink" href="#evennia.utils.evmenu.CmdYesNoQuestion.search_index_entry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1138,7 +1139,7 @@ Must be on the form <strong>callable(caller, raw_string, **kwargs)</strong>.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

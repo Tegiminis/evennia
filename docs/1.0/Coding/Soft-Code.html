@@ -86,8 +86,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -97,7 +98,7 @@
 </ul>
 <h3>Versions</h3>
 <ul>
-  <li><a href="Soft-Code.html">1.0 (develop branch)</a></li>
+  <li><a href="Soft-Code.html">1.0 (main branch)</a></li>
  <ul>
   <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 
@@ -117,19 +118,19 @@ or more which is obviously not very readable nor (easily) maintainable over time
 <section id="examples-of-softcode">
 <h2>Examples of Softcode<a class="headerlink" href="#examples-of-softcode" title="Permalink to this headline">¶</a></h2>
 <p>Here is a simple ‘Hello World!’ command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>    @set <span class="nv">me</span><span class="o">=</span>HELLO_WORLD.C:<span class="nv">$hello</span>:@pemit %#<span class="o">=</span>Hello World!
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w">    </span>@set<span class="w"> </span><span class="nv">me</span><span class="o">=</span>HELLO_WORLD.C:<span class="nv">$hello</span>:@pemit<span class="w"> </span>%#<span class="o">=</span>Hello<span class="w"> </span>World!
 </pre></div>
 </div>
 <p>Pasting this into a MUX/MUSH and typing ‘hello’ will theoretically yield ‘Hello World!’, assuming
 certain flags are not set on your account object.</p>
 <p>Setting attributes is done via <code class="docutils literal notranslate"><span class="pre">&#64;set</span></code>. Softcode also allows the use of the ampersand (<code class="docutils literal notranslate"><span class="pre">&amp;</span></code>) symbol.
 This shorter version looks like this:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>    <span class="p">&amp;</span>HELLO_WORLD.C <span class="nv">me</span><span class="o">=</span><span class="nv">$hello</span>:@pemit %#<span class="o">=</span>Hello World!
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="p">&amp;</span>HELLO_WORLD.C<span class="w"> </span><span class="nv">me</span><span class="o">=</span><span class="nv">$hello</span>:@pemit<span class="w"> </span>%#<span class="o">=</span>Hello<span class="w"> </span>World!
 </pre></div>
 </div>
 <p>Perhaps I want to break the Hello World into an attribute which is retrieved when emitting:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>    <span class="p">&amp;</span>HELLO_VALUE.D <span class="nv">me</span><span class="o">=</span>Hello World
-    <span class="p">&amp;</span>HELLO_WORLD.C <span class="nv">me</span><span class="o">=</span><span class="nv">$hello</span>:@pemit %#<span class="o">=[</span>v<span class="o">(</span>HELLO_VALUE.D<span class="o">)]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="p">&amp;</span>HELLO_VALUE.D<span class="w"> </span><span class="nv">me</span><span class="o">=</span>Hello<span class="w"> </span>World
+<span class="w">    </span><span class="p">&amp;</span>HELLO_WORLD.C<span class="w"> </span><span class="nv">me</span><span class="o">=</span><span class="nv">$hello</span>:@pemit<span class="w"> </span>%#<span class="o">=[</span>v<span class="o">(</span>HELLO_VALUE.D<span class="o">)]</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">v()</span></code> function returns the <code class="docutils literal notranslate"><span class="pre">HELLO_VALUE.D</span></code> attribute on the object that the command resides
@@ -193,7 +194,7 @@ on objects but complex systems may be organized neatly into real source code mod
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
